@@ -1,8 +1,8 @@
 # P0 Core Nominal Types + Base Classes 审计报告
 
-审计日期：2026-09-03  
-阶段：F6.1 Exact V1 Contract Implementation — P0  
-规范状态：`Exact V1 = FREEZE CANDIDATE`  
+审计日期：2026-09-03
+阶段：F6.1 Exact V1 Contract Implementation — P0
+规范状态：`Exact V1 = FREEZE CANDIDATE`
 阶段结论：**P0 自动验证通过，等待用户 Freeze Checkpoint；P1 尚未授权。**
 
 ## 1. 范围结论
