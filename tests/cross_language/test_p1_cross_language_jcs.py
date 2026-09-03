@@ -19,6 +19,13 @@ def test_python_and_node_rfc8785_outputs_are_byte_identical(tmp_path: Path) -> N
 
     lock_file = NODE_SOURCE / "package-lock.json"
     assert lock_file.is_file(), "package-lock.json must be committed for the frozen Node oracle"
+    subprocess.run(
+        ["git", "ls-files", "--error-unmatch", str(lock_file.relative_to(ROOT))],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
 
     node_dir = tmp_path / "node"
     shutil.copytree(NODE_SOURCE, node_dir)
