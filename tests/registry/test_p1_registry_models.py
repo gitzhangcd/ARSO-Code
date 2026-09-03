@@ -105,3 +105,96 @@ def test_manifest_accepts_unique_object_types() -> None:
     )
     manifest = registry.ObjectRegistryManifest(entries=(first, second))
     assert len(manifest.entries) == 2
+
+
+@pytest.mark.parametrize(
+    ("overrides"),
+    [
+        {"versioned": False},
+        {"historical_ssot": False},
+        {"persistent_ref_kind": "OBJECT_REF"},
+    ],
+)
+def test_canonical_revision_rejects_invalid_persistence_policy(overrides: dict[str, object]) -> None:
+    registry = _registry()
+    if overrides.get("persistent_ref_kind") == "OBJECT_REF":
+        overrides = {**overrides, "persistent_ref_kind": registry.ReferenceKind.OBJECT_REF}
+    with pytest.raises(ValidationError):
+        _entry(**overrides)
+
+
+@pytest.mark.parametrize(
+    "object_class",
+    [
+        CanonicalObjectClass.IMMUTABLE_FACT,
+        CanonicalObjectClass.IMMUTABLE_ROOT,
+        CanonicalObjectClass.IMMUTABLE_GRAPH_NODE,
+        CanonicalObjectClass.SNAPSHOT,
+    ],
+)
+def test_nonversioned_historical_classes_require_object_ref(object_class: CanonicalObjectClass) -> None:
+    registry = _registry()
+    valid = _entry(
+        object_class=object_class,
+        versioned=False,
+        persistent_ref_kind=registry.ReferenceKind.OBJECT_REF,
+    )
+    assert valid.historical_ssot is True
+
+    with pytest.raises(ValidationError):
+        _entry(
+            object_class=object_class,
+            versioned=True,
+            persistent_ref_kind=registry.ReferenceKind.OBJECT_REF,
+        )
+    with pytest.raises(ValidationError):
+        _entry(
+            object_class=object_class,
+            versioned=False,
+            persistent_ref_kind=registry.ReferenceKind.EXACT_OBJECT_REF,
+        )
+    with pytest.raises(ValidationError):
+        _entry(
+            object_class=object_class,
+            versioned=False,
+            persistent_ref_kind=registry.ReferenceKind.OBJECT_REF,
+            historical_ssot=False,
+        )
+
+
+def test_operational_control_state_requires_nonhistorical_nonpersistent_policy() -> None:
+    registry = _registry()
+    valid = _entry(
+        object_class=CanonicalObjectClass.OPERATIONAL_CONTROL_STATE,
+        versioned=False,
+        persistent_ref_kind=registry.ReferenceKind.NONE,
+        historical_ssot=False,
+    )
+    assert valid.historical_ssot is False
+
+    with pytest.raises(ValidationError):
+        _entry(
+            object_class=CanonicalObjectClass.OPERATIONAL_CONTROL_STATE,
+            versioned=False,
+            persistent_ref_kind=registry.ReferenceKind.OBJECT_REF,
+            historical_ssot=False,
+        )
+
+
+def test_unmaterialized_derived_view_requires_nonhistorical_nonpersistent_policy() -> None:
+    registry = _registry()
+    valid = _entry(
+        object_class=CanonicalObjectClass.DERIVED_VIEW,
+        versioned=False,
+        persistent_ref_kind=registry.ReferenceKind.NONE,
+        historical_ssot=False,
+    )
+    assert valid.historical_ssot is False
+
+    with pytest.raises(ValidationError):
+        _entry(
+            object_class=CanonicalObjectClass.DERIVED_VIEW,
+            versioned=False,
+            persistent_ref_kind=registry.ReferenceKind.OBJECT_REF,
+            historical_ssot=False,
+        )
