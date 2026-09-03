@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import ast
 from pathlib import Path
 
 
@@ -45,6 +46,6 @@ def test_non_core_contract_namespaces_remain_skeleton_only() -> None:
     for path in source_root.rglob("*.py"):
         if CORE in path.parents or path == CORE / "__init__.py":
             continue
-        text = path.read_text(encoding="utf-8")
-        assert "BaseModel" not in text
-        assert "RootModel" not in text
+        tree = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
+        class_names = [node.name for node in ast.walk(tree) if isinstance(node, ast.ClassDef)]
+        assert class_names == [], f"P0 forbids non-core classes in {path}: {class_names}"
