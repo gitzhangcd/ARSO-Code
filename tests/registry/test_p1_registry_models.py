@@ -3,6 +3,8 @@ from __future__ import annotations
 import pytest
 from pydantic import ValidationError
 
+from design_intelligence.contracts.core import CanonicalObjectClass
+
 
 EXPECTED_FIELDS = {
     "object_type",
@@ -39,10 +41,10 @@ def _entry(**overrides):
         "canonical": True,
         "primitive_owner": "DI_TEST",
         "capability_owners": ("DI_TEST",),
-        "object_class": "CANONICAL_REVISION",
+        "object_class": CanonicalObjectClass.CANONICAL_REVISION,
         "state_domain": "TASK",
         "versioned": True,
-        "persistent_ref_kind": "EXACT_OBJECT_REF",
+        "persistent_ref_kind": registry.ReferenceKind.EXACT_OBJECT_REF,
         "historical_ssot": True,
         "logical_authoring_ref_allowed": True,
         "system_snapshot_eligible": False,
@@ -97,9 +99,9 @@ def test_manifest_accepts_unique_object_types() -> None:
     second = _entry(
         object_type="di.test.fact",
         python_type="design_intelligence.test.TestFact",
-        object_class="IMMUTABLE_FACT",
+        object_class=CanonicalObjectClass.IMMUTABLE_FACT,
         versioned=False,
-        persistent_ref_kind="OBJECT_REF",
+        persistent_ref_kind=registry.ReferenceKind.OBJECT_REF,
     )
     manifest = registry.ObjectRegistryManifest(entries=(first, second))
     assert len(manifest.entries) == 2
