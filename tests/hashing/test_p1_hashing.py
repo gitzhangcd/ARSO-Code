@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 
 import pytest
+import rfc8785
 
 from design_intelligence.contracts.core import ContentHash
 
@@ -35,10 +36,10 @@ def test_compute_content_hash_is_sha256_of_canonical_bytes() -> None:
 
 @pytest.mark.parametrize("value", [float("nan"), float("inf"), float("-inf")])
 def test_canonical_json_rejects_nonfinite_numbers(value: float) -> None:
-    with pytest.raises(Exception):
+    with pytest.raises(rfc8785.CanonicalizationError):
         _hashing().canonical_json_bytes({"value": value})
 
 
 def test_canonical_json_rejects_non_string_object_keys() -> None:
-    with pytest.raises(Exception):
+    with pytest.raises(rfc8785.CanonicalizationError):
         _hashing().canonical_json_bytes({1: "not-json-object-key"})
