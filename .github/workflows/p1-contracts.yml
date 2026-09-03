@@ -19,12 +19,22 @@ jobs:
           cache: pip
       - name: Install project tests
         run: python -m pip install -e '.[test]'
+      - name: Generate Node oracle lock diagnostic when absent
+        run: |
+          if [ ! -f tests/cross_language/node/package-lock.json ]; then
+            cd tests/cross_language/node
+            npm install --package-lock-only --ignore-scripts --no-audit --no-fund
+            echo '---P1_NODE_PACKAGE_LOCK_BEGIN---'
+            cat package-lock.json
+            echo '---P1_NODE_PACKAGE_LOCK_END---'
+          fi
       - name: P1 targeted tests
         run: >-
           PYTHONPATH=src python -m pytest
           tests/unit/test_p1_refs.py
           tests/schemas/test_p1_reference_schemas.py
-          tests/hashing -q
+          tests/hashing
+          tests/cross_language -q
       - name: Root tests
         run: PYTHONPATH=src python -m pytest -q
       - name: Candidate baseline regression
