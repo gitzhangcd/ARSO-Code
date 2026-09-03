@@ -78,10 +78,12 @@ flowchart TD
 ## 当前阶段门禁
 
 ```text
-Phase 0: COMPLETE / REVIEWED
-Phase 1: COMPLETE / AWAITING REVIEW
-P0: NOT STARTED
+Phase 0: COMPLETE / REVIEWED / APPROVED
+Phase 1: COMPLETE / VERIFIED / FROZEN
+P0: COMPLETE / AUTOMATED CHECKS PASS / AWAITING USER FREEZE REVIEW
+P1: NOT AUTHORIZED
+Exact V1: FREEZE CANDIDATE
 ```
 
-Phase 1 仅建立了仓库治理和目录骨架。其自动验证已经通过，但在用户明确批准
-Freeze Checkpoint 之前，不得实现生产 contract、P0 nominal type 或 base class。
+Phase 1 仅建立仓库治理和目录骨架，并已通过用户 Freeze Checkpoint。P0 nominal type
+与 base class 已完成自动验证；在用户批准 P0 Freeze Checkpoint 之前，不得进入 P1。

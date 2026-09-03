@@ -59,14 +59,6 @@ def test_audit_docs_use_specs_as_only_normative_path() -> None:
         assert "reference_Pack" not in text
 
 
-def test_phase1_does_not_implement_contract_types() -> None:
-    source_root = ROOT / "src" / "design_intelligence"
-    for path in source_root.rglob("*.py"):
-        text = path.read_text(encoding="utf-8")
-        assert "class " not in text
-        assert "BaseModel" not in text
-
-
 def test_spec_checksums_match_manifest() -> None:
     checksum_file = ROOT / "specs" / "SPEC_SOURCE_CHECKSUMS.sha256"
     rows = [

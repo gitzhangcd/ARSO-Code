@@ -101,3 +101,17 @@ Exact V1: FREEZE CANDIDATE
 ```
 
 用户批准本报告后，下一阶段才是 P0：Core nominal types 与 base classes。
+
+## 人工评审结果（2026-09-03）
+
+Phase 1 的自动验证快照保留不变；随后用户已明确批准 Freeze Checkpoint。
+
+```text
+User Freeze Review: APPROVED
+Phase 1: FROZEN
+P0: AUTHORIZED
+```
+
+其中“P0 contract class 扫描为 PASS”是 Phase 1 冻结时点的历史证据，不再作为 P0
+开始后的永久 repository invariant。P0 开始后改由 `tests/repository/test_p0_scope.py`
+约束当前阶段不得提前进入 P1。

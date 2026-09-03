@@ -9,8 +9,8 @@
 本项目是 Design Intelligence V5.0 的 ARSO V2.2.1 Reference Application。
 
 这是一个规范驱动的实现项目。Phase 0 规范摄取与仓库一致性审计已经完成并通过人工评审。
-Phase 1 Contract Repository Skeleton 已完成本地验证，正在等待人工 Freeze Checkpoint。
-在用户明确批准进入 P0 之前，不得实现 nominal type、base contract 或其他生产 contract。
+Phase 1 Contract Repository Skeleton 已完成验证并通过用户 Freeze Checkpoint。
+P0 Core nominal types + base classes 已完成自动验证，正在等待用户 Freeze Checkpoint；在用户批准 P0 之前，不得进入 P1 refs/hash/registry。
 
 ## 审计文档语言
 
