@@ -11,7 +11,7 @@
 这是一个规范驱动的实现项目。Phase 0 规范摄取与仓库一致性审计已经完成并通过人工评审。
 Phase 1 Contract Repository Skeleton 已完成验证并通过用户 Freeze Checkpoint。
 P0 Core nominal types + base classes 已完成自动验证、独立 Freeze Review，并经用户批准后合并到 `main`。
-P1 Exact refs + RFC 8785 canonical hash + registry foundation 已获授权；P1 必须先完成设计/规范消歧，再按 TDD 实现。在 P1 Freeze 前不得进入 P2。
+P1 Exact refs + RFC 8785 canonical hash + registry foundation 已完成 TDD 实现、自动验证与独立二次 Freeze Review，当前状态为 `AWAITING USER FREEZE REVIEW`。P1 尚未 `FROZEN`；在用户 Freeze Checkpoint 前不得进入 P2。
 
 ## 审计文档语言
 
@@ -131,5 +131,6 @@ DEFERRED:
 只有 CS-01 至 CS-32、AC-01 至 AC-18 全部通过且不存在未解决的
 `SPEC_CONFLICT`，Exact V1 才能声明为 `FROZEN`。
 
+P1 当前只允许 Exact refs、RFC 8785 canonical hash 与 registry foundation；P2 仍为 `NOT AUTHORIZED`。
 在 Exact V1 contract layer 冻结之前，不得开发 UI、LLM 集成、图像生成集成、
 vector database、自主优化器或生产部署能力。
