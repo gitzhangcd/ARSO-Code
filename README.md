@@ -5,29 +5,47 @@
 ## 当前阶段
 
 ```text
-Phase 0: COMPLETE / REVIEWED
-Phase 1: COMPLETE / AWAITING REVIEW
-P0: NOT STARTED
+Phase 0: COMPLETE / REVIEWED / APPROVED
+Phase 1: COMPLETE / VERIFIED / FROZEN
+P0: COMPLETE / AUTOMATED CHECKS PASS / AWAITING USER FREEZE REVIEW
+P1: NOT AUTHORIZED
+Exact V1: FREEZE CANDIDATE
 ```
 
-Phase 1 已建立 Contract Repository Skeleton、规范路径、校验测试和版本治理，
-没有实现 P0 nominal type、base contract 或任何 B01-B08 schema。进入 P0 前仍需
-人工 Freeze Checkpoint。
+P0 已实现 core nominal identity、canonical object class wire values 与最小 Pydantic
+base model policy。详细证据与 baseline delta 见
+[`P0_CORE_CONTRACT_AUDIT.md`](P0_CORE_CONTRACT_AUDIT.md)。
+
+在用户批准 P0 Freeze Checkpoint 之前，不得进入 P1 refs/hash/registry。
 
 ## 规范入口
 
 `specs/` 是唯一规范入口。规范优先级和冲突处理方式见
 [`SPEC_AUTHORITY.md`](SPEC_AUTHORITY.md)。
 
-## 现有候选基线
+## Candidate baseline
 
-`di_contracts_v1/` 是 Phase 0 审计时发现的 `FREEZE CANDIDATE` 基线，
-不是规范权威，也不会在 Phase 1 中直接迁移为正式 contract。具体规则见
-[`BASELINE_POLICY.md`](BASELINE_POLICY.md)。
+`di_contracts_v1/` 是只读 `FREEZE CANDIDATE` executable baseline，不是规范权威。
+其使用限制见 [`BASELINE_POLICY.md`](BASELINE_POLICY.md)。
 
-## 验证 Phase 1 骨架
+## 验证 P0
 
 ```bash
-PYTHONDONTWRITEBYTECODE=1 uv run --no-project --with 'pytest>=8,<9' \
-  python -m pytest -p no:cacheprovider tests/repository/test_phase1_skeleton.py -q
+PYTHONPATH=src python -m pytest \
+  tests/unit tests/schemas tests/repository/test_p0_scope.py -q
+
+PYTHONPATH=src python -m pytest -q
+
+(cd di_contracts_v1 && python -m pytest -q)
+
+sha256sum -c specs/SPEC_SOURCE_CHECKSUMS.sha256
+```
+
+当前已验证结果：
+
+```text
+P0 targeted: 24 passed
+Root repository: 29 passed
+Candidate baseline: 46 passed
+Spec checksums: 7 / 7 OK
 ```
