@@ -3,7 +3,7 @@
 审计日期：2026-09-03  
 仓库：ARSOFashion  
 阶段：规范摄取与仓库一致性审计  
-结论：权威链已经建立；Phase 0 已通过评审，Phase 1 已获授权
+结论：权威链已经建立；Phase 0、Phase 1 与 P0 均已通过评审/冻结，P1 已获授权
 
 ## 规范输入路径说明
 
@@ -38,7 +38,9 @@ flowchart TD
     ENG --> EX[1 Exact V1 Schema 与 API 冻结规范]
     X --> EX
     EX --> AUDIT[Phase 0 工程 contract 审计]
-    AUDIT -->|人工评审门禁| P0[Phase 1 Core contract 实现]
+    AUDIT -->|人工评审门禁| P0[Phase 1 Contract Repository Skeleton]
+    P0 --> P1A[P0 Core nominal types + base classes]
+    P1A --> P1[P1 Exact refs + canonical hash + registry foundation]
 ```
 
 箭头表示依赖和标准化方向。如果两份规范发生冲突，仍以数字较小的优先级为准。
@@ -59,7 +61,7 @@ flowchart TD
 
 | 状态 | 当前范围 |
 |---|---|
-| `FROZEN` | 架构；primitive/capability 所有权；exact reference model；不可变历史；Task/System/Knowledge/Review 边界；snapshot 语义；标准化后的 F0-F6 语义 contract；owner-mediated writeback；四类长期 lineage。 |
+| `FROZEN` | 架构；primitive/capability 所有权；exact reference model；不可变历史；Task/System/Knowledge/Review 边界；snapshot 语义；标准化后的 F0-F6 语义 contract；owner-mediated writeback；四类长期 lineage；P0 nominal identity/base policy。 |
 | `FREEZE CANDIDATE` | Exact V1 Pydantic schema；ARSO-MIC interface schema；完整 command/event/protocol 接口；canonical hash 实现。 |
 | `OPEN` | 物理数据库 schema；存储引擎；事件总线；算法、模型和阈值；检索与排序；executor/model 选择；实证结论。 |
 | `DEFERRED` | 自动生产激活与部署；全局语义自主演化；meta-learning；cross-domain/cross-enterprise transfer；持续生产自修改。 |
@@ -80,10 +82,12 @@ flowchart TD
 ```text
 Phase 0: COMPLETE / REVIEWED / APPROVED
 Phase 1: COMPLETE / VERIFIED / FROZEN
-P0: COMPLETE / AUTOMATED CHECKS PASS / AWAITING USER FREEZE REVIEW
-P1: NOT AUTHORIZED
+P0: COMPLETE / REVIEWED / FROZEN
+P1: AUTHORIZED / DESIGN IN PROGRESS
+P2: NOT AUTHORIZED
 Exact V1: FREEZE CANDIDATE
 ```
 
-Phase 1 仅建立仓库治理和目录骨架，并已通过用户 Freeze Checkpoint。P0 nominal type
-与 base class 已完成自动验证；在用户批准 P0 Freeze Checkpoint 之前，不得进入 P1。
+P0 最终 Freeze 决策记录在 `P0_FREEZE_DECISION.md`。P1 已获授权，但必须先对
+Exact refs、RFC 8785 canonical hash 与 registry foundation 完成设计/规范消歧；
+在 P1 Freeze Checkpoint 之前不得进入 P2。
