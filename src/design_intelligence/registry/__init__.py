@@ -1,5 +1,6 @@
 """Public P1 Object Registry contract surface."""
 
+from .index import RegistryIndex
 from .models import (
     ObjectRegistryEntry,
     ObjectRegistryManifest,
@@ -13,5 +14,6 @@ __all__ = [
     "ObjectRegistryManifest",
     "PrimitiveOwner",
     "ReferenceKind",
+    "RegistryIndex",
     "StateDomain",
 ]
