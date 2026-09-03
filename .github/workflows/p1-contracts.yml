@@ -10,6 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -23,7 +25,8 @@ jobs:
           tests/schemas/test_p1_reference_schemas.py
           tests/hashing
           tests/cross_language
-          tests/registry -q
+          tests/registry
+          tests/repository/test_p1_scope.py -q
       - name: Root tests
         run: PYTHONPATH=src python -m pytest -q
       - name: Candidate baseline regression
@@ -32,3 +35,13 @@ jobs:
         run: sha256sum -c specs/SPEC_SOURCE_CHECKSUMS.sha256
       - name: Compile production package
         run: python -m compileall -q src/design_intelligence
+      - name: Patch whitespace check
+        run: git diff --check origin/main...HEAD
+      - name: Authoritative source drift check
+        run: |
+          changed="$(git diff --name-only origin/main...HEAD -- specs/ di_contracts_v1/)"
+          if [ -n "$changed" ]; then
+            echo "P1 must not modify authoritative specs or candidate baseline:"
+            echo "$changed"
+            exit 1
+          fi
