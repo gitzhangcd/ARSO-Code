@@ -1,0 +1,29 @@
+name: P1 contract verification
+
+on:
+  push:
+    branches:
+      - p1-refs-hash-registry
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  contracts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - name: Install project tests
+        run: python -m pip install -e '.[test]'
+      - name: Root tests
+        run: PYTHONPATH=src python -m pytest -q
+      - name: Candidate baseline regression
+        run: cd di_contracts_v1 && PYTHONPATH=. python -m pytest -q
+      - name: Specification checksums
+        run: sha256sum -c specs/SPEC_SOURCE_CHECKSUMS.sha256
+      - name: Compile production package
+        run: python -m compileall -q src/design_intelligence
