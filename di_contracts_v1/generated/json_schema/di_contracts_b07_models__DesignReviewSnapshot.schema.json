@@ -1,0 +1,286 @@
+{
+  "$defs": {
+    "ActorId": {
+      "title": "ActorId",
+      "type": "string"
+    },
+    "ActorRef": {
+      "additionalProperties": false,
+      "properties": {
+        "actor_id": {
+          "$ref": "#/$defs/ActorId"
+        },
+        "actor_type": {
+          "$ref": "#/$defs/ActorType"
+        }
+      },
+      "required": [
+        "actor_type",
+        "actor_id"
+      ],
+      "title": "ActorRef",
+      "type": "object"
+    },
+    "ActorType": {
+      "enum": [
+        "USER",
+        "SERVICE",
+        "AGENT",
+        "SYSTEM",
+        "EXTERNAL"
+      ],
+      "title": "ActorType",
+      "type": "string"
+    },
+    "ContentHash": {
+      "title": "ContentHash",
+      "type": "string"
+    },
+    "ExactObjectRef": {
+      "additionalProperties": false,
+      "properties": {
+        "content_hash": {
+          "$ref": "#/$defs/ContentHash"
+        },
+        "logical_id": {
+          "$ref": "#/$defs/LogicalId"
+        },
+        "object_type": {
+          "$ref": "#/$defs/ObjectType"
+        },
+        "version_id": {
+          "$ref": "#/$defs/ObjectId"
+        }
+      },
+      "required": [
+        "object_type",
+        "logical_id",
+        "version_id",
+        "content_hash"
+      ],
+      "title": "ExactObjectRef",
+      "type": "object"
+    },
+    "JsonValue": {},
+    "LogicalId": {
+      "title": "LogicalId",
+      "type": "string"
+    },
+    "ObjectId": {
+      "title": "ObjectId",
+      "type": "string"
+    },
+    "ObjectRef": {
+      "additionalProperties": false,
+      "properties": {
+        "content_hash": {
+          "$ref": "#/$defs/ContentHash"
+        },
+        "object_id": {
+          "$ref": "#/$defs/ObjectId"
+        },
+        "object_type": {
+          "$ref": "#/$defs/ObjectType"
+        }
+      },
+      "required": [
+        "object_type",
+        "object_id",
+        "content_hash"
+      ],
+      "title": "ObjectRef",
+      "type": "object"
+    },
+    "ObjectType": {
+      "title": "ObjectType",
+      "type": "string"
+    },
+    "Provenance": {
+      "additionalProperties": false,
+      "properties": {
+        "command_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ObjectRef"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "external_source_refs": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "External Source Refs",
+          "type": "array"
+        },
+        "run_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ObjectRef"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "source_refs": {
+          "default": [],
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/ExactObjectRef"
+              },
+              {
+                "$ref": "#/$defs/ObjectRef"
+              }
+            ]
+          },
+          "title": "Source Refs",
+          "type": "array"
+        }
+      },
+      "title": "Provenance",
+      "type": "object"
+    },
+    "SchemaVersion": {
+      "title": "SchemaVersion",
+      "type": "string"
+    },
+    "TenantId": {
+      "title": "TenantId",
+      "type": "string"
+    },
+    "TenantScope": {
+      "additionalProperties": false,
+      "properties": {
+        "scope_type": {
+          "$ref": "#/$defs/TenantScopeType"
+        },
+        "tenant_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/TenantId"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "scope_type"
+      ],
+      "title": "TenantScope",
+      "type": "object"
+    },
+    "TenantScopeType": {
+      "enum": [
+        "GLOBAL",
+        "TENANT"
+      ],
+      "title": "TenantScopeType",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "created_by": {
+      "$ref": "#/$defs/ActorRef"
+    },
+    "design_state_ref": {
+      "$ref": "#/$defs/ObjectRef"
+    },
+    "extensions": {
+      "additionalProperties": {
+        "$ref": "#/$defs/JsonValue"
+      },
+      "title": "Extensions",
+      "type": "object"
+    },
+    "id": {
+      "$ref": "#/$defs/ObjectId"
+    },
+    "object_type": {
+      "$ref": "#/$defs/ObjectType"
+    },
+    "presentation_manifest_ref": {
+      "$ref": "#/$defs/ObjectRef"
+    },
+    "provenance": {
+      "$ref": "#/$defs/Provenance"
+    },
+    "review_runtime_snapshot_ref": {
+      "$ref": "#/$defs/ObjectRef"
+    },
+    "schema_version": {
+      "$ref": "#/$defs/SchemaVersion"
+    },
+    "tenant_scope": {
+      "$ref": "#/$defs/TenantScope"
+    },
+    "visible_diagnostic_presentation_refs": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/ObjectRef"
+      },
+      "title": "Visible Diagnostic Presentation Refs",
+      "type": "array"
+    },
+    "visible_evaluation_presentation_refs": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/ObjectRef"
+      },
+      "title": "Visible Evaluation Presentation Refs",
+      "type": "array"
+    },
+    "visible_evaluation_refs": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/ObjectRef"
+      },
+      "title": "Visible Evaluation Refs",
+      "type": "array"
+    },
+    "visible_instance_refs": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/ObjectRef"
+      },
+      "title": "Visible Instance Refs",
+      "type": "array"
+    },
+    "visible_reference_refs": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/ObjectRef"
+      },
+      "title": "Visible Reference Refs",
+      "type": "array"
+    }
+  },
+  "required": [
+    "schema_version",
+    "id",
+    "object_type",
+    "created_at",
+    "created_by",
+    "tenant_scope",
+    "design_state_ref",
+    "presentation_manifest_ref",
+    "review_runtime_snapshot_ref"
+  ],
+  "title": "DesignReviewSnapshot",
+  "type": "object"
+}

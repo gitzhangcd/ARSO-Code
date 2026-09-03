@@ -1,0 +1,5293 @@
+可以。下面把刚才 **DI-E01–E08 Engineering Cross-Spec Consistency Freeze** 中识别出的 **20 项 normalization 全部正式吸收回主规范**，不再保留旧版 E01–E08 中与本轮 Freeze 冲突的定义。
+
+# Design Intelligence V5.0 Engineering Specification V1.0
+## ARSO V2.2.1 Reference Application Edition
+### Unified Engineering Contract after DI-E01–E08 Cross-Spec Consistency Freeze
+
+**Document ID**
+
+```text id="pnvlp3"
+DI-V5-ENG
+```
+
+**Version**
+
+```text id="q5co6n"
+V1.0
+```
+
+**Date**
+
+```text id="vgt5vz"
+2026-09-03
+```
+
+**Document Type**
+
+```text id="9j5g7p"
+Engineering / Runtime / Data / Interface / Governance Specification
+```
+
+**Upstream**
+
+```text id="897b90"
+ARSO Research Specification V2.2.1
+ARSO Engineering Specification V2.2.1
+
+Design Intelligence V5.0 Application Specification
+Design Intelligence × ARSO V2.2.1 Implementation Blueprint
+
+DI-B01–B08 Application Contracts
+DI-B01–B08 Cross-Spec Consistency Freeze
+
+DI-E01–E08 Engineering Contracts
+DI-E01–E08 Engineering Cross-Spec Consistency Freeze
+```
+
+ARSO V2.2.1 的第一阶段科学核心是有限可观察性下的 `Observability → Evidence → DiagnosticBelief → Identifiability → Action → Intervention → Validation`，而完整 Memory、Meta-learning、Deployment 等属于扩展平台，不是 MIC 必需条件。fileciteturn29file4 fileciteturn30file2 Design Intelligence 则保持独立的业务设计语义链，并通过 ARSO 进行诊断与受控优化，而不是把 ARSO 变成 Design Reasoning Engine。fileciteturn30file1
+
+---
+
+# Part I｜Final Specification Status
+
+经过 E01–E08 及本次 Cross-Spec Freeze，正式状态收敛为：
+
+```text id="u7f5sr"
+Application Architecture                 FROZEN
+Engineering Architecture                 FROZEN
+
+Object Ownership                         FROZEN
+Capability / Primitive Ownership         FROZEN
+Identity / Exact Reference Model         FROZEN
+Immutable Revision Model                 FROZEN
+Storage Classification                   FROZEN
+
+Task / System / Knowledge Boundary       FROZEN
+Snapshot Semantics                       FROZEN
+Runtime Plane Separation                 FROZEN
+
+Design Semantic Runtime                  FROZEN
+Generation Execution Boundary            FROZEN
+Evaluation Epistemic Boundary            FROZEN
+Diagnosis / Identifiability Boundary     FROZEN
+Probe / Action / Intervention Boundary   FROZEN
+Collaboration Governance Boundary        FROZEN
+Knowledge Writeback Boundary             FROZEN
+Lineage Model                            FROZEN
+
+Exact V1 Pydantic Schemas                FREEZE CANDIDATE
+Physical Database Schema                 OPEN
+Algorithms / Models / Thresholds         OPEN
+Empirical Claims                         OPEN
+
+Automatic Production Deployment         DEFERRED
+Autonomous Global Knowledge Evolution    DEFERRED
+Meta-Learning                            DEFERRED
+Cross-Domain Transfer                    DEFERRED
+```
+
+因此本规范已经不是八份 E 文档的机械拼接，而是：
+
+\[
+\boxed{
+OneUnifiedEngineeringContract
+}
+\]
+
+---
+
+# Part II｜Engineering Definition
+
+Design Intelligence V5.0 Engineering 定义为：
+
+> **一个以 immutable business/design semantics 为业务 Source-of-Truth、以 Fashion Semantic Foundation 为领域知识基础、通过 executor-neutral Generation Compiler 将 DesignSpec lowering 到具体视觉执行器、通过结构化 Evaluation 和 ARSO evidence-bounded diagnostic control 对系统失败进行诊断和最小充分干预、通过 immutable Review/Design Lineage 支持多人及人机协作，并通过 evidence-governed Memory / Knowledge Promotion 实现长期企业学习的版本化设计智能运行系统。**
+
+完整方向仍然是：
+
+\[
+\boxed{
+BusinessIntent
+\rightarrow
+DesignSemantics
+\rightarrow
+ExecutableDesign
+\rightarrow
+VisualEvidence
+\rightarrow
+Diagnosis
+\rightarrow
+ControlledImprovement
+\rightarrow
+GovernedLearning
+}
+\]
+
+这一定位继承 V5.0 Application Specification：DI 不是 Prompt Generator 或单纯 Image Generator，而是管理 Design Decision State 与 Design System Improvement。fileciteturn30file0
+
+---
+
+# Part III｜Eight Engineering Contracts after Normalization
+
+八个 E Contract 最终收敛为：
+
+| Contract | 最终职责 |
+|---|---|
+| **DI-E01** | Canonical Data、Identity、Version、Object Registry、Exact Ref |
+| **DI-E02** | Design Semantic Command Runtime、Branch、State Transition |
+| **DI-E03** | Generation Compiler、GenerationPackage、Executor、Model Gateway |
+| **DI-E04** | Objective / Measurement / Evaluator / Structured Evaluation |
+| **DI-E05** | Observability、Evidence、DiagnosticBelief、Identifiability、Probe Recommendation |
+| **DI-E06** | ActionDecision、SystemChange、Sandbox、VG0–VG3 Validation |
+| **DI-E07** | Review、Compare、Edit Request、Fork/Merge、Approval、DesignLineage |
+| **DI-E08** | Memory、Preference、BrandDNA、Knowledge Claim、KG0–KG4、KnowledgeSnapshot |
+
+但八者共享一个统一原则：
+
+\[
+\boxed{
+OneCanonicalObject
+\Rightarrow
+OnePrimitiveOwner
+}
+\]
+
+---
+
+# Part IV｜System Planes
+
+最终采用四个运行 Plane。
+
+## P1｜Design Production Plane
+
+主要：
+
+```text id="1fns90"
+B01
+B02
+B03
+B04
+B07
+```
+
+链：
+
+\[
+StyleBrief
+\rightarrow
+Decision
+\rightarrow
+Route
+\rightarrow
+Spec
+\rightarrow
+Generate
+\rightarrow
+Review
+\]
+
+---
+
+## P2｜ARSO Diagnostic Control Plane
+
+主要：
+
+```text id="d0anfy"
+B04 capability
+B05 capability
+B06 capability
+ARSO Core
+```
+
+链：
+
+\[
+Evaluation
+\rightarrow
+Evidence
+\rightarrow
+Diagnosis
+\rightarrow
+Identifiability
+\rightarrow
+Action
+\rightarrow
+Intervention
+\rightarrow
+Validation
+\]
+
+---
+
+## P3｜Knowledge Governance Plane
+
+主要：
+
+```text id="285ryr"
+B08
++
+B02 semantic governance
+```
+
+链：
+
+\[
+History
+\rightarrow
+Memory
+\rightarrow
+Proposal
+\rightarrow
+KnowledgeClaim
+\rightarrow
+Promotion
+\]
+
+---
+
+## P4｜Deployment Plane
+
+未来负责：
+
+```text id="pjrx2h"
+Shadow
+Canary
+Production
+Rollback
+Activation
+```
+
+但：
+
+\[
+\boxed{
+P4=DEFERRED
+}
+\]
+
+ARSO Engineering 同样明确保留 Deployment Plane 架构，但不将其作为 MIC 第一阶段实现。fileciteturn30file2
+
+---
+
+# Part V｜Capability Ownership ≠ Primitive Ownership
+
+这是本轮 normalization 后最重要的所有权修正。
+
+## 1. DI Capability Owner
+
+```text id="jq2ij9"
+B04 = Fashion Evaluation Capability Owner
+B05 = Fashion Diagnosis Capability Owner
+B06 = Design-System Optimization Capability Owner
+```
+
+## 2. ARSO Primitive Owner
+
+下列通用对象的唯一 canonical owner 是：
+
+```text id="32bm8r"
+ARSO Core
+```
+
+包括：
+
+```text id="p6j0m2"
+ReferenceTaskSpec
+
+SystemSnapshot
+
+RunRecord
+RuntimeEvent
+ObservabilityProfile
+
+ObjectiveSpec
+MeasurementSpec
+EvaluatorBinding
+EvaluationRecord
+
+EvidenceItem
+EvidenceBundle
+
+DiagnosticBelief
+HypothesisRecord
+IdentifiabilityAssessment
+
+ProbePlan
+ProbeResult
+
+ActionDecision
+
+InterventionPlan
+InterventionResult
+
+ValidationPlan
+ValidationResult
+
+ExperimentAssignment
+BudgetReservation
+```
+
+这些正是 ARSO Research → Engineering traceability 所要求的核心对象。fileciteturn29file7
+
+正式：
+
+\[
+\boxed{
+CapabilityOwnership
+\neq
+PrimitiveOwnership
+}
+\]
+
+---
+
+# Part VI｜Final Canonical Ownership Registry
+
+## B01｜Business / Design Semantics
+
+```text id="xr58zo"
+StyleBrief
+DesignContextBinding
+DesignDecision
+DesignRoute
+DesignSpec
+ReferenceIntentBinding
+```
+
+---
+
+## B02｜Fashion Semantic Foundation
+
+```text id="u05owz"
+FashionOntology
+DesignGrammar
+SemanticParameterSpace
+ApplicabilityRule
+```
+
+---
+
+## B03｜Generation Execution
+
+```text id="gz3s9a"
+GenerationCompiler
+CompilerMappingTrace
+GenerationPackage
+DesignInstance
+```
+
+---
+
+## B04｜DI Evaluation Semantics
+
+```text id="vfkmpn"
+ObjectiveDefinition
+EvaluationContract
+EvaluatorCalibrationProfile
+StructuredFinding
+```
+
+而：
+
+```text id="tp09y4"
+ObjectiveSpec
+MeasurementSpec
+EvaluatorBinding
+EvaluationRecord
+```
+
+使用 ARSO canonical primitives。
+
+---
+
+## B05｜DI Diagnostic Extensions
+
+DI owns：
+
+```text id="qnr6dp"
+DiagnosticPolicy
+EvidenceConstructionPolicy
+DiagnosticCalibrationProfile
+FashionFailureExtension
+ProbeRecommendation
+```
+
+ARSO owns：
+
+```text id="l101vq"
+ObservabilityProfile
+EvidenceItem
+EvidenceBundle
+DiagnosticBelief
+HypothesisRecord
+IdentifiabilityAssessment
+ProbePlan
+ProbeResult
+```
+
+---
+
+## B06｜Controlled Optimization
+
+DI owns：
+
+```text id="pp7idp"
+SystemChangeCandidate
+InterventionTransaction
+InterventionRisk
+OptimizationLineageRoot
+```
+
+ARSO owns：
+
+```text id="8e5kre"
+ActionDecision
+InterventionPlan
+InterventionResult
+ValidationPlan
+ValidationResult
+BudgetReservation
+```
+
+---
+
+## B07｜Collaborative Runtime
+
+```text id="c0pae5"
+DesignStateRevision
+DesignEdit
+DesignEditRequest
+
+DesignBranchRoot
+ForkRecord
+MergeAnalysis
+SemanticMergeConflict
+MergeResolution
+MergeRecord
+
+ReviewSessionRoot
+ReviewRoundOpened
+ReviewRoundOutcome
+DesignReviewSnapshot
+ReviewPresentationManifest
+
+DesignComment
+DesignAnnotation
+HumanDecision
+ApprovalRecord
+
+DesignLineageRoot
+```
+
+---
+
+## B08｜Governed Learning
+
+```text id="ompzi9"
+MemoryItem
+MemoryCurationDecision
+
+PreferenceSignal
+BrandDNAProfile
+EnterpriseKnowledgeItem
+
+LearningProposal
+KnowledgeClaim
+PromotionEvidencePack
+KnowledgePromotionDecision
+
+KnowledgeValidity
+RetentionPolicy
+KnowledgeAccessPolicy
+
+KnowledgeSnapshot
+KnowledgeLineageRoot
+```
+
+---
+
+## Infrastructure
+
+不属于 B01–B08 semantic ownership：
+
+```text id="1xfa8c"
+ReferenceAsset
+AssetRef
+
+Artifact
+ArtifactRef
+
+ExecutorCapabilityProfile
+ExecutorBinding
+
+ObjectStore
+AssetStore
+ArtifactRegistry
+```
+
+---
+
+# Part VII｜Canonical Object Classification
+
+E01 正式采用七类对象，而不是把所有东西都叫 immutable canonical object。
+
+| Class | Semantics |
+|---|---|
+| `CANONICAL_REVISION` | 可演进内容的不可变版本 |
+| `IMMUTABLE_FACT` | 已经发生的事实 |
+| `IMMUTABLE_ROOT` | 稳定 identity root |
+| `IMMUTABLE_GRAPH_NODE` | 图中的不可变状态节点 |
+| `SNAPSHOT` | 某个时点的闭包 |
+| `OPERATIONAL_CONTROL_STATE` | 可更新 orchestration/pointer state |
+| `DERIVED_VIEW` | 可删除重建的 projection |
+
+正式：
+
+\[
+\boxed{
+HistoricalTruthImmutable
+}
+\]
+
+但：
+
+\[
+\boxed{
+OperationalPointersMayMutate
+}
+\]
+
+ARSO Engineering 本身也区分 immutable domain records 与 mutable process records；后者通过明确 state transitions/events 管理，而非任意覆写。fileciteturn29file7
+
+---
+
+# Part VIII｜Common Identity Contract
+
+所有稳定对象至少：
+
+```yaml id="03zo8n"
+schema_version:
+id:
+object_type:
+
+created_at:
+created_by:
+
+tenant_scope:
+provenance:
+
+extensions:
+```
+
+Versioned object 增加：
+
+```yaml id="9jwc9k"
+logical_id:
+revision:
+parent_refs:
+```
+
+---
+
+# Part IX｜ID Semantics
+
+正式冻结：
+
+\[
+\boxed{
+ID
+\neq
+LogicalID
+\neq
+Revision
+\neq
+SchemaVersion
+}
+\]
+
+### `id`
+
+某一个具体 immutable object/version 的 opaque identity。
+
+### `logical_id`
+
+同一个逻辑实体的长期 identity。
+
+### `revision`
+
+便于排序和展示。
+
+### `schema_version`
+
+序列化/模型 schema 版本。
+
+---
+
+# Part X｜Exact Reference Contract
+
+版本化 object 使用：
+
+```yaml id="9dzndt"
+ExactObjectRef:
+  object_type:
+  logical_id:
+  version_id:
+  content_hash:
+```
+
+其中：
+
+```text id="0q7v6c"
+version_id = exact canonical object id
+```
+
+非版本化 immutable fact：
+
+```yaml id="4uxkzi"
+ObjectRef:
+  object_type:
+  object_id:
+  content_hash:
+```
+
+Authoring UI 可以使用：
+
+```yaml id="kcwxib"
+LogicalObjectRef:
+  object_type:
+  logical_id:
+```
+
+但：
+
+\[
+\boxed{
+LogicalRef
+MustResolveBefore
+Commit/Compile/Run/Evaluate/Snapshot
+}
+\]
+
+运行时严禁：
+
+```text id="oih6hx"
+latest
+current latest
+most recent available
+```
+
+作为隐式依赖。
+
+---
+
+# Part XI｜Version Contract
+
+正式区分四种版本：
+
+\[
+\boxed{
+SchemaVersion
+}
+\]
+
+\[
+\boxed{
+ObjectRevision
+}
+\]
+
+\[
+\boxed{
+ArtifactVersion
+}
+\]
+
+\[
+\boxed{
+DeploymentState
+}
+\]
+
+它们绝不能共享一个 `version/status` 字段。
+
+---
+
+# Part XII｜Immutable Revision
+
+任何 semantic/system/knowledge 更新：
+
+\[
+v
+\rightarrow
+v+1
+\]
+
+禁止：
+
+\[
+UPDATE(v)
+\]
+
+例如：
+
+```text id="geflxm"
+DesignSpec v12
+→ DesignSpec v13
+```
+
+而不是：
+
+```sql id="k5brea"
+UPDATE design_spec WHERE id=v12
+```
+
+---
+
+# Part XIII｜Branch Revision Number
+
+`revision` 只是 server-assigned ordering metadata。
+
+真正 parentage：
+
+```text id="37gtt7"
+parent_refs
+```
+
+决定。
+
+因此 branching 时：
+
+```text id="sjan6l"
+v12
+├── v13
+└── v14
+```
+
+完全合法。
+
+不能通过：
+
+```text id="xdx5qa"
+revision + 1
+```
+
+推断唯一 lineage。
+
+---
+
+# Part XIV｜Content Hash
+
+推荐：
+
+```text id="giotf7"
+SHA-256
+```
+
+但 hash 输入必须是：
+
+\[
+\boxed{
+CanonicalPayload
+}
+\]
+
+排除：
+
+```text id="emswy0"
+content_hash 自身
+transport metadata
+mutable operational fields
+```
+
+是否包含：
+
+```text id="75hvav"
+created_at
+created_by
+```
+
+由 object identity policy 明确决定，V1 推荐 semantic content hash 不包含这两项。
+
+---
+
+# Part XV｜Canonical Store Protocol
+
+```python id="ntse0o"
+class CanonicalObjectStore(Protocol):
+
+    def put_new(...):
+        ...
+
+    def put_revision(
+        logical_id,
+        expected_parent_refs,
+        new_object,
+    ):
+        ...
+
+    def get_exact(ref):
+        ...
+
+    def list_revisions(logical_id):
+        ...
+
+    def resolve_logical_for_authoring(logical_ref):
+        ...
+```
+
+正式禁止：
+
+```text id="quu1os"
+Last-Write-Wins
+```
+
+---
+
+# Part XVI｜Task State ≠ System State
+
+这是本规范最高优先级边界之一。
+
+\[
+\boxed{
+TaskSemanticState
+\neq
+SystemState
+}
+\]
+
+### Task / Case State
+
+```text id="wcjw3r"
+StyleBrief
+DesignDecision
+DesignRoute
+DesignSpec
+DesignStateRevision
+```
+
+### System State
+
+```text id="87e1p7"
+Compiler
+Policy
+Executor binding
+Evaluator binding
+Retrieval mechanism
+Runtime configuration
+KnowledgeSnapshot binding
+```
+
+因此：
+
+```text id="1lz1cy"
+DesignSpec
+```
+
+不能被当成 ordinary ARSO system artifact。
+
+---
+
+# Part XVII｜DesignTaskBinding
+
+正式补齐：
+
+\[
+StyleBrief
+\rightarrow
+ReferenceTaskSpec
+\]
+
+工程断链。
+
+```yaml id="r84bmf"
+DesignTaskBinding:
+  id:
+
+  design_state_ref:
+  style_brief_ref:
+
+  evaluation_contract_ref:
+
+  enterprise_hard_policy_refs: []
+
+  risk_policy_ref:
+  budget_policy_ref:
+  intervention_policy_ref:
+
+  reference_task_spec_ref:
+
+  created_at:
+```
+
+满足：
+
+\[
+\boxed{
+ReferenceTaskSpec
+=
+Bind(
+StyleBrief,
+EnterprisePolicy,
+EvaluationObjectives,
+Risk,
+Budget
+)
+}
+\]
+
+Blueprint 已明确 StyleBrief 与 ARSO `ReferenceTaskSpec` 不能直接等同。fileciteturn30file1
+
+---
+
+# Part XVIII｜ReferenceTaskSpec
+
+唯一 owner：
+
+```text id="9s3555"
+ARSO
+```
+
+它回答：
+
+> **这次任务怎样才算成功？**
+
+包括：
+
+```text id="d0jrtb"
+goal
+solution geometry
+hard constraints
+soft objectives
+objective refs
+risk
+cost
+data policy
+intervention policy
+```
+
+普通 optimizer 不得修改它。
+
+任何改变都意味着：
+
+```text id="ll7njb"
+new ReferenceTaskSpec version
+```
+
+或：
+
+```text id="yll0v4"
+new experiment condition
+```
+
+ARSO Research 正式要求 Reference Task 与 mutable system state 分开。fileciteturn29file4
+
+---
+
+# Part XIX｜System Artifact Eligibility
+
+并非所有 canonical domain object 都是 ARSO Artifact。
+
+## Artifact-eligible
+
+```text id="xiayqz"
+FashionOntology
+DesignGrammar
+SemanticParameterSpace
+
+GenerationCompiler
+CompilerTemplate
+ReferenceBindingPolicy
+ConstraintLoweringPolicy
+
+Measurement implementation
+Evaluator Prompt / Binding implementation
+
+DiagnosticPolicy
+ActionPolicy
+RetrievalPolicy
+RoutePolicy
+DecisionPolicy
+```
+
+---
+
+## Not System Artifacts
+
+```text id="rhh03m"
+StyleBrief
+DesignDecision
+DesignRoute
+DesignSpec
+
+DesignStateRevision
+
+DesignInstance
+
+HumanDecision
+ApprovalRecord
+```
+
+正式：
+
+\[
+\boxed{
+CanonicalDomainObject
+\not\Rightarrow
+SystemArtifact
+}
+\]
+
+---
+
+# Part XX｜Snapshot Architecture
+
+正式只保留三种主要 Snapshot，加 ARSO ReferenceTaskSpec。
+
+---
+
+## 1. SystemSnapshot
+
+Owner：
+
+```text id="26t3qn"
+ARSO
+```
+
+回答：
+
+> **用什么系统运行？**
+
+包含：
+
+```text id="kvj0ni"
+artifact refs
+executor bindings
+evaluator bindings
+
+adapter versions
+external dependencies
+
+environment
+runtime config
+
+knowledge_snapshot_ref
+
+retrieval policy / implementation
+```
+
+不包含：
+
+```text id="6phgaf"
+StyleBrief
+Decision
+Route
+DesignSpec
+```
+
+ARSO 的 SystemSnapshot 本身就是 immutable behavior/configuration snapshot。fileciteturn30file2
+
+---
+
+## 2. KnowledgeSnapshot
+
+Owner：
+
+```text id="7ecc98"
+B08
+```
+
+回答：
+
+> **当时哪些知识内容可用？**
+
+包含：
+
+```text id="0xu9rx"
+FashionOntology ref
+DesignGrammar ref
+SemanticParameterSpace ref
+
+BrandDNA ref
+
+EnterpriseKnowledge refs
+
+knowledge eligibility/access constraints
+```
+
+不包含：
+
+```text id="t5d0t3"
+embedding model
+retrieval ranking algorithm
+top-k
+retrieval implementation
+```
+
+这些属于 SystemSnapshot。
+
+因此：
+
+\[
+\boxed{
+KnowledgeContent
+\neq
+KnowledgeRetrievalMechanism
+}
+\]
+
+---
+
+## 3. DesignReviewSnapshot
+
+Owner：
+
+```text id="0stt7l"
+B07
+```
+
+回答：
+
+> **Reviewer 当时实际看到了什么？**
+
+```yaml id="cf4k20"
+DesignReviewSnapshot:
+  snapshot_id:
+
+  design_state_ref:
+
+  visible_instance_refs: []
+
+  visible_evaluation_refs: []
+
+  visible_evaluation_presentation_refs: []
+  visible_diagnostic_presentation_refs: []
+
+  visible_reference_refs: []
+
+  presentation_manifest_ref:
+
+  review_runtime_snapshot_ref:
+
+  created_at:
+```
+
+---
+
+# Part XXI｜Materialized Historical Views
+
+下列对象本身是动态 Derived View：
+
+```text id="wq6njm"
+DesignEvaluationAggregate
+
+DiagnosticOutcomeView
+
+ADSI
+
+FailureAttributionView
+
+DesignLineageIndex
+
+CurrentShortlist
+
+KnowledgeHealthView
+```
+
+不能直接作为不可变 Review provenance。
+
+如果 reviewer 实际看到它们，则必须：
+
+\[
+\boxed{
+Materialize
+}
+\]
+
+为：
+
+```text id="if8br5"
+EvaluationPresentationArtifact
+
+DiagnosticPresentationArtifact
+```
+
+例如：
+
+```yaml id="0qpbbe"
+DiagnosticPresentationArtifact:
+  id:
+
+  diagnostic_belief_refs: []
+  hypothesis_refs: []
+
+  rendered_content:
+
+  renderer_version_ref:
+
+  content_hash:
+
+  created_at:
+```
+
+正式：
+
+\[
+\boxed{
+DerivedView
+CannotBecomeHistoricalEvidence
+UnlessMaterialized
+}
+\]
+
+---
+
+# Part XXII｜Run Closure
+
+不再把所有东西塞进 SystemSnapshot。
+
+正确：
+
+\[
+\boxed{
+RunClosure
+=
+ReferenceTaskSpec
++
+ExactInputState
++
+SystemSnapshot
++
+Randomness
++
+RuntimeTrace
+}
+\]
+
+Generation Run：
+
+\[
+RunClosure_{gen}
+=
+T^{ref}
++
+DesignSpec_v
++
+SystemSnapshot_s
++
+\xi
++
+RunRecord
+\]
+
+---
+
+# Part XXIII｜E02 Unified Design Semantic Runtime
+
+Production semantic chain：
+
+\[
+\boxed{
+StyleBrief
+\rightarrow
+DesignContextBinding
+\rightarrow
+DesignDecision
+\rightarrow
+DesignRoute
+\rightarrow
+DesignSpec
+}
+\]
+
+V5.0 已明确这些对象构成 DI 稳定设计语义，而 Prompt 只是执行 artifact。fileciteturn30file0
+
+---
+
+# Part XXIV｜Command-First Mutation
+
+所有 semantic mutation 必须：
+
+```text id="a4tqr5"
+Command
+↓
+Authorization
+↓
+Resolve Exact Refs
+↓
+Expected Head Check
+↓
+Transition Guard
+↓
+Semantic Validation
+↓
+Create New Canonical Revisions
+↓
+Create DesignStateRevision
+↓
+Append Events
+↓
+CAS Head Pointer
+```
+
+正式：
+
+\[
+\boxed{
+UI\not\rightarrow UPDATE\ DesignSpec
+}
+\]
+
+\[
+\boxed{
+Agent\not\rightarrow DirectDatabaseWrite
+}
+\]
+
+---
+
+# Part XXV｜Command ≠ Object ≠ Event
+
+### Command
+
+表达：
+
+> 希望发生什么。
+
+### Object
+
+表达：
+
+> 已提交的 canonical state/fact。
+
+### Event
+
+表达：
+
+> 已经发生什么。
+
+因此：
+
+\[
+\boxed{
+Command
+\neq
+Object
+\neq
+Event
+}
+\]
+
+---
+
+# Part XXVI｜DesignStateRevision
+
+```yaml id="mqvp0g"
+DesignStateRevision:
+  id:
+
+  lineage_ref:
+  branch_ref:
+
+  parent_state_refs: []
+
+  brief_ref:
+  context_binding_ref:
+
+  decision_ref:
+
+  candidate_route_refs: []
+  selected_route_ref:
+
+  spec_ref:
+
+  selected_instance_refs: []
+
+  semantic_stage:
+
+  execution_stage:
+
+  review_stage_projection:
+
+  created_by:
+  created_at:
+
+  transition_reason:
+```
+
+重要修正：
+
+```text id="65sgix"
+review_stage_projection
+```
+
+不是 Review workflow 独立 SSOT。
+
+它只是：
+
+> 该 StateRevision 创建时基于 B07 canonical review facts 的状态 projection。
+
+---
+
+# Part XXVII｜Semantic Closure
+
+任一 DesignStateRevision 必须满足：
+
+\[
+Brief
+\rightarrow
+Context
+\rightarrow
+Decision
+\rightarrow
+Route
+\rightarrow
+Spec
+\]
+
+exact references 一致。
+
+例如：
+
+\[
+Decision.brief\_ref
+=
+State.brief\_ref
+\]
+
+\[
+Route.decision\_ref
+=
+State.decision\_ref
+\]
+
+\[
+Spec.route\_ref
+=
+State.selected\_route\_ref
+\]
+
+定义：
+
+\[
+\boxed{
+SemanticClosure
+}
+\]
+
+---
+
+# Part XXVIII｜Valid Semantic Prefix
+
+DesignState 不要求始终完整到 Spec。
+
+合法：
+
+```text id="44xc7m"
+Brief
+```
+
+合法：
+
+```text id="5ze80m"
+Brief + Context + Decision
+```
+
+合法：
+
+```text id="ohfmd2"
+Brief + Context + Decision + Routes
+```
+
+合法：
+
+```text id="kuosj6"
+Brief + Context + Decision + Selected Route + Spec
+```
+
+即：
+
+\[
+\boxed{
+State=ValidSemanticPrefix
+}
+\]
+
+---
+
+# Part XXIX｜Upstream Change Invalidates Downstream Head State
+
+例如：
+
+```text id="vvb9c7"
+Brief v4
+→ Decision v7
+→ Route v9
+→ Spec v15
+```
+
+修改：
+
+```text id="uolg0j"
+Brief v5
+```
+
+新的 head 不能继续假装：
+
+```text id="3lgqkf"
+Decision v7
+Route v9
+Spec v15
+```
+
+仍然有效。
+
+默认：
+
+| Changed | Invalidated from new active head |
+|---|---|
+| Brief | Context → Decision → Route → Spec |
+| Context | Decision → Route → Spec |
+| Decision | Route → Spec |
+| Selected Route | Spec |
+| Spec | Generation/Evaluation for new spec |
+
+历史对象不删除。
+
+---
+
+# Part XXX｜Design Branch Normalization
+
+旧的 `DesignBranch` 拆成：
+
+## DesignBranchRoot
+
+```yaml id="p8tbi9"
+DesignBranchRoot:
+  branch_id:
+
+  lineage_ref:
+
+  base_state_ref:
+
+  parent_branch_ref:
+
+  created_by:
+  created_at:
+```
+
+immutable。
+
+---
+
+## BranchHeadPointer
+
+```yaml id="6ex51e"
+BranchHeadPointer:
+  branch_ref:
+
+  head_state_ref:
+
+  concurrency_version:
+
+  status:
+```
+
+属于：
+
+```text id="r21bbl"
+OPERATIONAL_CONTROL_STATE
+```
+
+---
+
+# Part XXXI｜Concurrency
+
+每个 mutation command 必须带：
+
+```text id="ra5h0e"
+expected_head_state_ref
+```
+
+如果：
+
+\[
+expected\_head
+\neq
+actual\_head
+\]
+
+则：
+
+```text id="5pycta"
+HEAD_CONFLICT
+```
+
+禁止：
+
+\[
+\boxed{
+LastWriteWins
+}
+\]
+
+解决：
+
+```text id="7ek7kl"
+Rebase
+Fork
+Merge
+```
+
+---
+
+# Part XXXII｜Design Edit Contract
+
+本轮正式冻结四种不同变化：
+
+\[
+\boxed{
+DesignEdit
+\neq
+GenerationEdit
+\neq
+SystemIntervention
+\neq
+KnowledgePromotion
+}
+\]
+
+---
+
+## DesignEdit
+
+修改：
+
+```text id="cdkdkf"
+Design semantics
+```
+
+正确：
+
+```text id="urzcx7"
+DesignEditRequest
+↓
+E02
+↓
+B01 creates DesignSpec v+1
+```
+
+---
+
+## GenerationEdit
+
+B03 只执行：
+
+```text id="vl61fl"
+Source DesignInstance
++
+already committed target DesignSpec
++
+execution keep/edit constraints
+```
+
+B03 不拥有 semantic patch authority。
+
+---
+
+## SystemIntervention
+
+修改：
+
+```text id="i5csmo"
+Compiler
+Policy
+Evaluator
+Executor binding
+Workflow system...
+```
+
+进入 E06。
+
+---
+
+## KnowledgePromotion
+
+改变长期知识 maturity/scope/version。
+
+进入 E08。
+
+---
+
+# Part XXXIII｜Reference Architecture
+
+正式三分：
+
+## Infrastructure
+
+```text id="wf66yp"
+ReferenceAsset
+```
+
+回答：
+
+> 这是什么文件/图像？
+
+## B01
+
+```text id="6kdifk"
+ReferenceIntentBinding
+```
+
+回答：
+
+> 这个 Reference 应表达什么？
+
+典型：
+
+```text id="qpyqjv"
+SILHOUETTE_REFERENCE
+DETAIL_REFERENCE
+MATERIAL_REFERENCE
+COLOR_REFERENCE
+STRUCTURE_REFERENCE
+MOOD_REFERENCE
+KEEP_REFERENCE
+EDIT_REFERENCE
+```
+
+## B03
+
+```text id="dftbfs"
+CompiledReferenceBinding
+```
+
+回答：
+
+> 对这个具体 Executor 怎样实现这个 Intent？
+
+因此：
+
+\[
+\boxed{
+ReferenceAsset
+\neq
+ReferenceIntent
+\neq
+CompiledReferenceBinding
+}
+\]
+
+---
+
+# Part XXXIV｜E03 Generation Compiler Contract
+
+正式：
+
+\[
+\boxed{
+DesignSpec
+\neq
+Prompt
+}
+\]
+
+\[
+\boxed{
+DesignSpec
+\neq
+GenerationPackage
+}
+\]
+
+Compiler：
+
+\[
+\kappa_e:
+(
+DesignSpec,
+ReferenceIntent,
+ExecutorCapability,
+ExecutionPolicy
+)
+\rightarrow
+GenerationPackage_e
+\]
+
+---
+
+# Part XXXV｜Compiler Allowed Responsibility
+
+允许：
+
+```text id="3vbaft"
+Semantic selection
+
+Information ordering
+
+Constraint lowering
+
+Reference binding
+
+Region binding
+
+Executor capability adaptation
+
+Prompt construction
+
+Parameter compilation
+
+Output contract compilation
+```
+
+禁止重新决定：
+
+```text id="52w8cm"
+Primary Design Focus
+
+Silhouette Strategy
+
+Major Proportion
+
+Design Route
+
+Novelty Strategy
+
+Hard Brief Constraints
+```
+
+否则：
+
+\[
+\boxed{
+CompilerSemanticDrift
+}
+\]
+
+Implementation Blueprint 已明确 Compiler 应负责 lowering，而不能重新决定设计语义。fileciteturn30file1
+
+---
+
+# Part XXXVI｜GenerationPackage
+
+```yaml id="7w194a"
+GenerationPackage:
+  id:
+
+  design_spec_ref:
+
+  compiler_ref:
+  compiler_template_ref:
+
+  executor_binding_ref:
+
+  operation:
+  execution_purpose:
+
+  textual_payload:
+
+  reference_bindings: []
+
+  region_bindings: []
+
+  constraints:
+    preserve: []
+    change: []
+    allow_change: []
+    forbid_change: []
+    positive_requirements: []
+    negative_requirements: []
+    preferences: []
+
+  executor_parameters:
+
+  output_contract_ref:
+
+  mapping_trace_ref:
+
+  compilation_policy_ref:
+
+  content_hash:
+
+  created_at:
+```
+
+它是：
+
+```text id="e8x7gt"
+IMMUTABLE_FACT / EXECUTION ARTIFACT
+```
+
+---
+
+# Part XXXVII｜CompilerMappingTrace
+
+任何有行为意义的 DesignSpec semantic 必须获得 disposition：
+
+```text id="zkti4l"
+TEXT_EXPLICIT
+REFERENCE_BOUND
+REGION_BOUND
+PARAMETER_BOUND
+CONSTRAINT_BOUND
+IMPLICITLY_SATISFIED
+APPROXIMATED
+NOT_APPLICABLE
+DROPPED_UNSUPPORTED
+DROPPED_BY_POLICY
+```
+
+正式：
+
+\[
+\boxed{
+SemanticLoss
+MustBecomeTrace
+}
+\]
+
+Hard semantic unsupported 时默认：
+
+```text id="vea8v2"
+COMPILATION_FAILED
+```
+
+不能 silently drop。
+
+---
+
+# Part XXXVIII｜Executor Capability
+
+```yaml id="q8mju4"
+ExecutorCapabilityProfile:
+  provider:
+  executor_family:
+  model:
+  model_version:
+
+  supported_operations: []
+
+  reference_capabilities:
+  edit_capabilities:
+  region_capabilities:
+  parameter_capabilities:
+
+  observability:
+
+  limitations: []
+```
+
+Capability：
+
+```text id="5oobsq"
+SUPPORTED
+UNSUPPORTED
+LIMITED
+GUARDED
+UNKNOWN
+```
+
+Executor 不支持 seed 时：
+
+```text id="rzwt24"
+UNSUPPORTED
+```
+
+不能伪造确定性。
+
+---
+
+# Part XXXIX｜Model Gateway Boundary
+
+所有具体模型调用：
+
+```text id="epk3ya"
+DI
+→ ModelGateway
+→ ExecutorAdapter
+→ Provider
+```
+
+业务层不得直接：
+
+```text id="ci0rxs"
+provider SDK call
+```
+
+从而保证：
+
+```text id="g6nw76"
+provider
+model
+model version
+parameters
+latency
+cost
+input/output hashes
+```
+
+统一可追踪。
+
+Blueprint 已明确要求统一 Model Gateway 与 Executor Adapter。fileciteturn30file1
+
+---
+
+# Part XL｜GenerationJob ≠ RunRecord
+
+### GenerationJob
+
+```text id="an68ij"
+logical execution intent
+```
+
+可以有多个 attempt。
+
+### ARSO RunRecord
+
+```text id="r47b61"
+one actual execution attempt
+```
+
+所以：
+
+\[
+\boxed{
+OneGenerationJob
+\rightarrow
+ManyRunRecords
+}
+\]
+
+---
+
+# Part XLI｜Retry Semantics
+
+严格区分：
+
+\[
+\boxed{
+ExecutionRetry
+\neq
+Recompile
+\neq
+ExecutorSwitch
+\neq
+DesignRevision
+}
+\]
+
+### Retry
+
+same GenerationPackage。
+
+### Recompile
+
+same DesignSpec，new GenerationPackage。
+
+### ExecutorSwitch
+
+same DesignSpec，但必须针对新 Executor recompile。
+
+### DesignRevision
+
+回到 B01/E02，产生 new DesignSpec。
+
+---
+
+# Part XLII｜DesignInstance
+
+```yaml id="gmcmq0"
+DesignInstance:
+  id:
+
+  design_spec_ref:
+
+  generation_package_ref:
+
+  run_ref:
+
+  executor_binding_ref:
+
+  asset_refs: []
+
+  operation:
+
+  source_instance_refs: []
+
+  generation_metadata:
+
+  parent_instance_refs: []
+
+  content_hash:
+
+  created_at:
+```
+
+不保存：
+
+```text id="c0qssk"
+quality_score
+approved
+commercial_success
+```
+
+因为：
+
+\[
+DesignInstance
+\neq
+Evaluation
+\neq
+Approval
+\]
+
+---
+
+# Part XLIII｜Evaluation Ownership after Normalization
+
+B04 定义 Fashion-specific：
+
+```text id="0selom"
+ObjectiveDefinition
+EvaluationContract
+StructuredFinding
+Calibration
+```
+
+实际 runtime 使用 ARSO：
+
+```text id="kewfz7"
+ObjectiveSpec
+MeasurementSpec
+EvaluatorBinding
+EvaluationRecord
+```
+
+因此正式删除第二套：
+
+```text id="4aqrpn"
+di.measurement_record
+di.evaluation_record
+```
+
+作为 canonical SSOT。
+
+---
+
+# Part XLIV｜Objective ≠ Measurement ≠ Evaluator ≠ Evaluation
+
+冻结：
+
+\[
+\boxed{
+Objective
+\neq
+Measurement
+\neq
+Evaluator
+\neq
+Evaluation
+}
+\]
+
+ARSO V2.2.1 已将四者明确实现为独立对象。fileciteturn30file2
+
+---
+
+# Part XLV｜Core Fashion Evaluation Families
+
+推荐 V1：
+
+## F1｜Business / Intent
+
+```text id="kh5bmx"
+Brief Fidelity
+Constraint Satisfaction
+Commercial Role Fidelity
+```
+
+## F2｜Design Semantic Quality
+
+```text id="9bsgir"
+Design Logic
+Semantic Consistency
+Design Coherence
+Visual Hierarchy
+Route Fidelity
+```
+
+## F3｜Execution Fidelity
+
+```text id="wc763o"
+Generation Fidelity
+Region Fidelity
+Reference Intent Fidelity
+Controlled Edit Compliance
+Protected Attribute Preservation
+```
+
+## F4｜Fashion Plausibility
+
+```text id="z4f22g"
+Category Validity
+Construction Plausibility
+Material Plausibility
+Wearability Plausibility
+```
+
+## F5｜Contextual Preference
+
+```text id="4j34r7"
+Commercial Fit
+Brand Fit
+Novelty Fit
+Trend Expression
+```
+
+---
+
+# Part XLVI｜Design Quality ≠ Generation Fidelity
+
+正式：
+
+\[
+\boxed{
+DesignQuality
+\neq
+GenerationFidelity
+}
+\]
+
+可能存在：
+
+```text id="heradr"
+Bad Design
++
+Excellent Generation Fidelity
+```
+
+也可能：
+
+```text id="exvsol"
+Excellent Design
++
+Poor Generation Fidelity
+```
+
+这是 V5.0 的核心评价边界。fileciteturn30file0
+
+---
+
+# Part XLVII｜Hard Constraint ≠ Soft Score
+
+Hard requirement 采用：
+
+```text id="01g750"
+Gate
+```
+
+不能通过：
+
+```text id="ptjqc4"
+Weighted Average
+```
+
+被别的高分抵消。
+
+状态：
+
+```text id="pun5oc"
+SATISFIED
+PARTIALLY_SATISFIED
+VIOLATED
+UNDETERMINED
+NOT_APPLICABLE
+UNOBSERVABLE
+```
+
+正式：
+
+\[
+\boxed{
+UNOBSERVABLE
+\neq
+VIOLATED
+}
+\]
+
+---
+
+# Part XLVIII｜Expected / Observed
+
+EvaluationTargetBinding：
+
+```yaml id="ankpjh"
+EvaluationTargetBinding:
+  subject_ref:
+  subject_type:
+
+  expected_ref:
+  expected_type:
+
+  context_refs: []
+  comparison_refs: []
+
+  evaluation_mode:
+```
+
+例如：
+
+### Generation Fidelity
+
+```text id="siz2zv"
+Expected = DesignSpec
+Observed = DesignInstance
+```
+
+### Brief Fidelity
+
+```text id="16inmc"
+Expected = StyleBrief
+Observed = DesignSpec / DesignInstance
+```
+
+---
+
+# Part XLIX｜Generation Snapshot ≠ Evaluation Snapshot
+
+正式消除原 E04 ambiguity。
+
+DesignInstance provenance：
+
+```text id="uu1v59"
+DesignInstance.run_ref
+→ Generation RunRecord
+→ Generation SystemSnapshot
+```
+
+Evaluation provenance：
+
+```text id="24dk47"
+EvaluationRecord.run_id
+→ Evaluation RunRecord
+→ Evaluator SystemSnapshot
+```
+
+因此：
+
+\[
+\boxed{
+SubjectSystemSnapshot
+\neq
+EvaluatorSystemSnapshot
+}
+\]
+
+这是以后区分：
+
+```text id="dh298t"
+R7 Executor
+vs
+R8 Evaluator
+```
+
+的必要条件。
+
+---
+
+# Part L｜Operational vs Audit Evaluator
+
+冻结：
+
+```text id="rgulr8"
+OPERATIONAL
+AUDIT
+```
+
+Optimization 可以依赖 Operational Critic。
+
+但最终验证不能无条件由同一个 Critic 自我证明。
+
+因此：
+
+\[
+\boxed{
+OperationalEvaluator
+\neq
+SoleAuditTruth
+}
+\]
+
+---
+
+# Part LI｜Aggregate Score
+
+允许产品显示：
+
+```text id="8v88o4"
+Overall = 84
+```
+
+但：
+
+\[
+\boxed{
+AggregateScore
+=
+SelectionView
+}
+\]
+
+不是 canonical epistemic truth。
+
+诊断始终保留完整：
+
+\[
+\mathbf Q=[Q_1,\ldots,Q_n]
+\]
+
+---
+
+# Part LII｜E05 Observability Contract
+
+正式：
+
+\[
+\boxed{
+Observation
+\neq
+Observability
+}
+\]
+
+必须区分：
+
+```text id="yliohe"
+OBSERVED
+NOT_OCCURRED
+MISSING
+REDACTED
+UNSUPPORTED
+NOT_INSTRUMENTED
+SAMPLED
+CORRUPTED
+UNKNOWN
+```
+
+因此：
+
+\[
+MissingTrace
+\neq
+EventDidNotOccur
+\]
+
+这继承 ARSO 核心 Observability 原则。fileciteturn30file2
+
+---
+
+# Part LIII｜DI Observability Channels
+
+建议 V1：
+
+```text id="lobfed"
+BRIEF_CONTRACT
+
+CONTEXT_ASSEMBLY
+
+FASHION_SEMANTIC_SNAPSHOT
+
+DESIGN_DECISION
+
+ROUTE_CANDIDATES
+ROUTE_SELECTION
+
+DESIGN_SPEC
+
+COMPILER_MAPPING
+
+REFERENCE_SELECTION
+REFERENCE_BINDING
+
+GENERATION_PACKAGE
+
+MODEL_REQUEST
+MODEL_RESPONSE
+
+DESIGN_INSTANCE
+
+EVALUATION_RESULT
+EVALUATOR_TRACE
+
+HUMAN_REVIEW
+
+DESIGN_EDIT
+
+ENVIRONMENT
+
+COST_LATENCY
+```
+
+---
+
+# Part LIV｜Evaluation ≠ Evidence
+
+E04：
+
+```text id="b4tfok"
+StructuredFinding
+EvaluationRecord
+```
+
+回答：
+
+> 测到了什么？
+
+E05：
+
+```text id="g455ln"
+EvidenceItem
+```
+
+回答：
+
+> 哪些信息在明确 provenance/scope/observability 条件下可以支持或削弱某个 hypothesis？
+
+因此：
+
+\[
+\boxed{
+Evaluation
+\neq
+Evidence
+}
+\]
+
+---
+
+# Part LV｜EvidenceItem
+
+使用 ARSO canonical。
+
+至少表达：
+
+\[
+\boxed{
+Evidence
+=
+Source
+\times
+Content
+\times
+Relation
+\times
+Acquisition
+}
+\]
+
+例如：
+
+### Source
+
+```text id="r1cztl"
+RUNTIME
+EVALUATOR
+HUMAN
+EXTERNAL
+SIMULATION
+```
+
+### Relation
+
+```text id="hfritc"
+DIRECT
+CONTRASTIVE
+COUNTERFACTUAL
+HISTORICAL
+INTERVENTIONAL
+```
+
+### Acquisition
+
+```text id="7clfis"
+PASSIVE
+REPLAY
+PROBE
+ADJUDICATION
+```
+
+---
+
+# Part LVI｜Evidence Independence
+
+必须支持：
+
+```text id="cr37fh"
+independence_group
+```
+
+所以：
+
+\[
+\boxed{
+EvidenceCount
+\neq
+IndependentEvidenceCount
+}
+\]
+
+LLM 对同一 VLM output 的三次 summary 不能算三份独立证据。
+
+---
+
+# Part LVII｜DiagnosticBelief
+
+使用 ARSO canonical。
+
+允许：
+
+```text id="jehxx1"
+multiple loci
+compound failures
+open-set uncertainty
+counterevidence
+```
+
+不要求：
+
+\[
+\sum_i Support(R_i)=1
+\]
+
+因此：
+
+\[
+\boxed{
+Diagnosis
+\neq
+ForcedClassification
+}
+\]
+
+ARSO 科学核心明确要求可以表达不确定和 open-set diagnosis。fileciteturn29file5
+
+---
+
+# Part LVIII｜Failure Loci
+
+继续使用 ARSO seed loci：
+
+```text id="tdco28"
+R0 Objective
+
+R1 Data / Context
+
+R2 Semantic Model
+
+R3 Decision
+
+R4 Route / Topology
+
+R5 Specification
+
+R6 Compiler
+
+R7 Executor
+
+R8 Evaluator
+
+R9 Environment
+```
+
+DI 使用 namespace extension，而不创建第二套顶级 taxonomy。
+
+---
+
+# Part LIX｜Diagnostic Status
+
+正式：
+
+```text id="16iy2z"
+IDENTIFIED
+
+AMBIGUOUS
+
+INSUFFICIENT_EVIDENCE
+
+UNIDENTIFIABLE
+
+OUT_OF_TAXONOMY
+```
+
+其中：
+
+\[
+IDENTIFIED
+\neq
+CausallyProven
+\]
+
+---
+
+# Part LX｜Hypothesis Contract
+
+每个 Hypothesis 必须：
+
+\[
+\boxed{
+Locus
++
+Mechanism
++
+Scope
++
+Prediction
++
+Falsifier
+}
+\]
+
+禁止：
+
+```text id="3i0b0s"
+“The image model is bad.”
+```
+
+这不构成合格 DiagnosticHypothesis。
+
+---
+
+# Part LXI｜ProbeRecommendation ≠ ProbePlan
+
+这是本轮 normalization 解决的 E05/E06 顺序问题。
+
+正确：
+
+```text id="8nn5yc"
+DiagnosticBelief
+↓
+Identifiability
+↓
+ProbeRecommendation     [E05]
+↓
+ActionDecision          [E06]
+```
+
+只有：
+
+```text id="850s2p"
+ActionDecision = REQUEST_EVIDENCE
+```
+
+之后才：
+
+```text id="s4gnux"
+ProbePlan               [ARSO/E05]
+↓
+Probe Execution
+```
+
+因此：
+
+\[
+\boxed{
+ProbeRecommendation
+\neq
+ExecutableProbePlan
+}
+\]
+
+---
+
+# Part LXII｜Probe Loop
+
+必须：
+
+\[
+ProbePlan
+\rightarrow
+ProbeResult
+\rightarrow
+NewEvidence
+\rightarrow
+NewDiagnosticBelief
+\]
+
+不能：
+
+\[
+ProbeResult
+\rightarrow
+Repair
+\]
+
+直接跳跃。
+
+ARSO Engineering 明确将 Probe 设为 Core，并要求 Probe 回流形成 Evidence 与 Rediagnosis。fileciteturn30file2
+
+---
+
+# Part LXIII｜DI Probe Library V1
+
+建议：
+
+```text id="rofu4h"
+REPEAT_GENERATION
+
+TRACE_ENRICHMENT
+
+CROSS_EXECUTOR_REPLAY
+
+COMPILER_BYPASS
+
+EXPERT_SPEC_REPLACEMENT
+
+REFERENCE_ABLATION
+
+EVALUATOR_CROSSCHECK
+
+FREEZE_AND_CHANGE
+```
+
+如果 Probe 涉及真正 system mutation：
+
+```text id="fb1y7k"
+E06 sandbox authority
+```
+
+负责执行。
+
+因此：
+
+\[
+\boxed{
+ProbeIntent
+\neq
+MutationAuthority
+}
+\]
+
+---
+
+# Part LXIV｜E06 ActionDecision
+
+使用 ARSO canonical action space：
+
+```text id="lvg1zy"
+NO_CHANGE
+
+ABSTAIN
+
+REQUEST_EVIDENCE
+
+REQUEST_HUMAN
+
+INTERVENE
+
+SEARCH
+
+STOP
+```
+
+正式：
+
+\[
+\boxed{
+Action
+\neq
+Search
+}
+\]
+
+只有：
+
+```text id="3bwpud"
+SEARCH
+```
+
+才创建 SearchPlan。
+
+---
+
+# Part LXV｜NO_CHANGE ≠ ABSTAIN
+
+### NO_CHANGE
+
+当前 evidence 支持：
+
+> 没有值得进行 system modification 的 actionable failure。
+
+### ABSTAIN
+
+当前系统：
+
+> 没有足够依据安全决定 repair。
+
+---
+
+# Part LXVI｜Capability ≠ Permission
+
+正式：
+
+\[
+EffectivePermission
+=
+Capability
+\cap
+TaskPolicy
+\cap
+GovernancePolicy
+\]
+
+状态：
+
+```text id="53p1ge"
+DENIED
+READ_ONLY
+SANDBOX_ONLY
+HUMAN_GATED
+AUTO_ALLOWED
+```
+
+技术上“能改”不等于治理上“允许改”。
+
+ARSO Engineering 已明确分离 capability 与 permission。fileciteturn30file2
+
+---
+
+# Part LXVII｜SystemChangeCandidate
+
+```yaml id="01z9ak"
+SystemChangeCandidate:
+  metadata:
+
+  base_system_snapshot_ref:
+
+  diagnosis_refs: []
+  hypothesis_refs: []
+
+  target_loci: []
+
+  changes: []
+
+  validation_plan_ref:
+
+  candidate_status:
+
+  created_at:
+```
+
+必须：
+
+\[
+\boxed{
+CandidateHasDiagnosticRationale
+}
+\]
+
+禁止：
+
+```text id="mm8oll"
+LLM randomly proposes optimization
+→ directly becomes candidate
+```
+
+---
+
+# Part LXVIII｜Minimum-Sufficient Intervention
+
+原则：
+
+\[
+\min_{\Delta\Theta}Cost(\Delta\Theta)
+\]
+
+subject to：
+
+\[
+TargetRepair(\Delta\Theta)\ge\tau
+\]
+
+\[
+ProtectedRegression(\Delta\Theta)\le\epsilon
+\]
+
+以及：
+
+\[
+Permission(\Delta\Theta)=Allowed
+\]
+
+但：
+
+\[
+\boxed{
+Minimum
+\neq
+SingleArtifact
+}
+\]
+
+如果 Schema + Compiler 必须同步变化，则允许 coupled intervention。
+
+---
+
+# Part LXIX｜Intervention Must Fork Snapshot
+
+所有 system change：
+
+```text id="69630x"
+Base SystemSnapshot
+↓
+Fork
+↓
+Sandbox SystemSnapshot
+↓
+Candidate Artifact Versions
+↓
+Validation
+```
+
+原 base snapshot 永远不改。
+
+---
+
+# Part LXX｜VG0–VG3
+
+正式：
+
+## VG0｜Integrity / Safety
+
+验证：
+
+```text id="v8gfze"
+valid schema
+exact refs resolve
+permission
+no undeclared mutation
+ReferenceTaskSpec unchanged
+tenant isolation
+snapshot closure
+```
+
+---
+
+## VG1｜Target Repair
+
+验证：
+
+> 声称修复的 failure 是否真的改善？
+
+---
+
+## VG2｜Protected Regression
+
+验证：
+
+> 有没有修好一个地方，却破坏其他受保护行为？
+
+---
+
+## VG3｜Replication / Generalization
+
+验证：
+
+> 是否只是 single-case / single-seed 偶然改善？
+
+ARSO Engineering 已冻结这四级 intervention validation structure。fileciteturn29file3
+
+---
+
+# Part LXXI｜Validated ≠ Deployed ≠ Knowledge
+
+最重要的 E06/E08 边界：
+
+\[
+\boxed{
+ValidatedSystemChange
+\neq
+ProductionDeployment
+}
+\]
+
+以及：
+
+\[
+\boxed{
+ValidatedSystemChange
+\neq
+StableKnowledge
+}
+\]
+
+V1 不自动激活 validated candidate。
+
+---
+
+# Part LXXII｜OptimizationLineageRoot
+
+最终不维护不断 revision 的 graph blob。
+
+```yaml id="5ieltu"
+OptimizationLineageRoot:
+  lineage_id:
+
+  root_subject_ref:
+
+  root_failure_ref:
+
+  base_system_snapshot_ref:
+
+  created_at:
+```
+
+其他对象：
+
+```text id="fg5ndu"
+ActionDecision
+SystemChangeCandidate
+InterventionTransaction
+ValidationResult
+```
+
+各自持：
+
+```text id="8qplm1"
+optimization_lineage_ref
+```
+
+---
+
+# Part LXXIII｜E07 Review Architecture
+
+E02 是：
+
+```text id="plzb9a"
+State Transition Engine
+```
+
+E07 是：
+
+```text id="85sz96"
+Collaborative Runtime
+```
+
+两者不重叠。
+
+---
+
+# Part LXXIV｜ReviewSession Normalization
+
+不再使用带 mutable `closed_at` 的所谓 immutable ReviewSession。
+
+正式：
+
+```yaml id="16lap9"
+ReviewSessionRoot:
+  session_id:
+
+  lineage_ref:
+  branch_ref:
+
+  purpose:
+
+  approval_policy_ref:
+
+  created_by:
+  created_at:
+```
+
+关闭通过：
+
+```text id="0oleaq"
+ReviewSessionClosedEvent
+```
+
+或 operational control state 表达。
+
+---
+
+# Part LXXV｜ReviewRound Normalization
+
+拆成：
+
+```text id="j1f27m"
+ReviewRoundOpened
+```
+
+和：
+
+```text id="i1iqsn"
+ReviewRoundOutcome
+```
+
+例如：
+
+```yaml id="tmezsc"
+ReviewRoundOutcome:
+  round_ref:
+
+  outcome:
+
+  resulting_state_ref:
+
+  decided_at:
+```
+
+Outcome：
+
+```text id="tc4tjy"
+CHANGES_REQUESTED
+REJECTED
+APPROVED
+FINAL_APPROVED
+SUPERSEDED
+CANCELLED
+```
+
+---
+
+# Part LXXVI｜ReviewStage Is a Projection
+
+不允许：
+
+```text id="r6tjwe"
+DesignStateRevision.review_stage
+```
+
+和：
+
+```text id="jeww5o"
+ReviewRoundOutcome
+```
+
+分别修改。
+
+最终：
+
+\[
+\boxed{
+ReviewRoundOutcome
+=
+CanonicalWorkflowFact
+}
+\]
+
+而：
+
+```text id="6fl5ah"
+review_stage_projection
+```
+
+只是 DesignStateRevision 创建时的 projection。
+
+---
+
+# Part LXXVII｜What Reviewer Saw Is Provenance
+
+所有正式 Decision 必须绑定：
+
+```text id="o30932"
+DesignReviewSnapshot
+```
+
+包含：
+
+```text id="cuagae"
+exact Design State
+
+visible instances
+
+visible evaluations
+
+materialized evaluation presentations
+
+materialized diagnostic presentations
+
+references
+
+presentation manifest
+```
+
+因此：
+
+\[
+\boxed{
+HumanDecision
+MustBindToVisibleContext
+}
+\]
+
+---
+
+# Part LXXVIII｜PresentationManifest
+
+至少记录：
+
+```text id="nvk3jp"
+candidate order
+
+candidate labels
+
+grouping
+
+score visibility
+
+diagnosis visibility
+
+reference visibility
+
+AI recommendation visibility
+
+blinding
+
+randomization
+
+UI version
+```
+
+否则未来：
+
+```text id="bw2nvj"
+PREFER B
+```
+
+无法知道是否受排序或 AI recommendation bias 影响。
+
+---
+
+# Part LXXIX｜HumanDecision
+
+正式：
+
+```text id="7z051w"
+VIEW
+
+SHORTLIST
+
+PREFER
+
+REJECT
+
+REQUEST_EDIT
+
+APPROVE
+
+FINAL_APPROVE
+```
+
+但：
+
+\[
+\boxed{
+HumanDecision
+\neq
+QualityLabel
+}
+\]
+
+尤其：
+
+\[
+APPROVE
+\neq
+DesignQuality
+\]
+
+\[
+FINAL\_APPROVE
+\neq
+CommercialSuccess
+\]
+
+---
+
+# Part LXXX｜HumanDecision ≠ HumanEvaluation
+
+### HumanDecision
+
+回答：
+
+> 人做了什么业务行为？
+
+### HumanEvaluation
+
+回答：
+
+> 人按照特定 measurement protocol 测到了什么？
+
+后者进入 E04 / ARSO EvaluationRecord。
+
+---
+
+# Part LXXXI｜DesignEditRequest
+
+```yaml id="wx21l7"
+DesignEditRequest:
+  request_id:
+
+  review_round_ref:
+
+  source_state_ref:
+
+  target_semantic_paths: []
+
+  target_visual_regions: []
+
+  requested_changes: []
+
+  preserve_paths: []
+
+  forbidden_paths: []
+
+  rationale:
+
+  created_at:
+```
+
+它不能直接修改 DesignSpec。
+
+正确：
+
+```text id="2bj8wf"
+EditRequest
+↓
+E02 Command
+↓
+B01 DesignSpec v+1
+```
+
+---
+
+# Part LXXXII｜Comments / Annotations
+
+Comment：
+
+```text id="uv8z7p"
+Observation / Discussion
+```
+
+EditRequest：
+
+```text id="ur7agb"
+Actionable semantic modification request
+```
+
+Annotation：
+
+```text id="64zlka"
+Visual region annotation
+```
+
+正式：
+
+\[
+Comment
+\neq
+EditRequest
+\]
+
+\[
+Annotation
+\neq
+SemanticTruth
+\]
+
+---
+
+# Part LXXXIII｜Fork
+
+Fork：
+
+\[
+\boxed{
+ShareUntilChanged
+}
+\]
+
+例如：
+
+```text id="qyx31t"
+A → Spec v12
+B → Spec v12
+```
+
+B 修改后：
+
+```text id="zzesp8"
+B → Spec v13
+```
+
+无需 Fork 时复制所有 canonical objects。
+
+---
+
+# Part LXXXIV｜Merge
+
+Merge：
+
+\[
+\boxed{
+SemanticSynthesis
+}
+\]
+
+禁止：
+
+```text id="3sca95"
+generic JSON merge
+```
+
+正确：
+
+```text id="q40q8l"
+Common Ancestor
+↓
+Semantic Diff
+↓
+SemanticMergeConflict
+↓
+MergeResolution
+↓
+B01 synthesis
+↓
+B02 validation
+↓
+New DesignSpec Revision
+```
+
+---
+
+# Part LXXXV｜Approval
+
+Approval 是：
+
+\[
+\boxed{
+GovernedWorkflowFact
+}
+\]
+
+不是 evaluation result。
+
+Approval 必须绑定：
+
+```text id="3ntsai"
+exact DesignState
+exact ReviewSnapshot
+ApprovalPolicy
+authorized actor
+```
+
+---
+
+# Part LXXXVI｜Immutable Approved History
+
+如果：
+
+```text id="0lajj1"
+State #80 = FINAL_APPROVED
+```
+
+后续修改：
+
+```text id="lqd6xh"
+Fork / Reopen
+→ State #81
+```
+
+#80 永远保持历史 Final Approved。
+
+正式：
+
+\[
+\boxed{
+ApprovedHistoryImmutable
+}
+\]
+
+---
+
+# Part LXXXVII｜Approval ≠ Commercial Release
+
+Design Intelligence Final Approval 不等于：
+
+```text id="nbyut2"
+SKU Release
+Production Order
+Manufacturing Release
+Commercial Launch
+```
+
+后者属于未来业务/Deployment plane。
+
+---
+
+# Part LXXXVIII｜DesignLineageRoot
+
+最终：
+
+```yaml id="u9sy5g"
+DesignLineageRoot:
+  lineage_id:
+
+  tenant_ref:
+
+  project_ref:
+  collection_ref:
+  style_ref:
+
+  root_brief_ref:
+  root_state_ref:
+
+  created_by:
+  created_at:
+```
+
+其他 State / Edit / Review / Fork / Merge / Approval 使用：
+
+```text id="4k4m1g"
+lineage_ref
+```
+
+重建 history。
+
+---
+
+# Part LXXXIX｜Four Long-Term Lineages
+
+正式只保留四条。
+
+## BusinessLineage
+
+```text id="dg7r0r"
+Project
+→ Collection
+→ Style
+```
+
+## DesignLineage
+
+```text id="zyont7"
+Brief
+→ Decision
+→ Route
+→ Spec
+→ State
+→ HumanDecision
+```
+
+## OptimizationLineage
+
+```text id="fw9dzw"
+Evaluation
+→ Evidence
+→ Diagnosis
+→ Action
+→ Intervention
+→ Validation
+```
+
+## KnowledgeLineage
+
+```text id="cq1lbv"
+History
+→ Memory
+→ Proposal
+→ Promotion
+→ KnowledgeVersion
+```
+
+Execution：
+
+```text id="cct147"
+Compiler
+→ Package
+→ Executor
+→ Output
+```
+
+只是：
+
+\[
+\boxed{
+RuntimeTrace
+}
+\]
+
+不建立第五条 `ExecutionLineage`。
+
+---
+
+# Part XC｜E08 Extended Capability Boundary
+
+B08 / E08 是：
+
+\[
+\boxed{
+DI\text{-}M3
+}
+\]
+
+不是 E01–E07 的正常运行前置条件。
+
+ARSO V2.2.1 也明确将 persistent memory / knowledge promotion 保留为 Extended Platform，而不是 MIC mandatory。fileciteturn29file1
+
+因此：
+
+```text id="z3nrac"
+Production
+Evaluation
+Diagnosis
+Intervention
+```
+
+必须在 E08 unavailable 时仍然可运行。
+
+---
+
+# Part XCI｜History ≠ Memory ≠ Knowledge
+
+正式：
+
+\[
+\boxed{
+History
+\neq
+Memory
+\neq
+Knowledge
+}
+\]
+
+以及：
+
+\[
+\boxed{
+Store
+\neq
+Curate
+\neq
+Learn
+\neq
+Promote
+}
+\]
+
+B08 上游规范明确将这一分离作为核心治理原则。fileciteturn29file18
+
+---
+
+# Part XCII｜Memory Maturity Normalization
+
+本轮正式把 Memory 与 Knowledge maturity 类型分开。
+
+## MemoryMaturity
+
+```text id="5eyyow"
+RAW
+
+CURATED
+
+REUSABLE
+
+STALE
+
+QUARANTINED
+```
+
+## KnowledgeMaturity
+
+```text id="zh09rd"
+RAW
+
+CANDIDATE
+
+PROVISIONAL
+
+VALIDATED
+
+STABLE
+```
+
+因此：
+
+\[
+\boxed{
+MemoryMaturity
+\neq
+KnowledgeMaturity
+}
+\]
+
+防止 Memory 与 Knowledge 在 schema 上重新塌缩成同一个概念。
+
+---
+
+# Part XCIII｜Memory Model
+
+继续：
+
+\[
+\boxed{
+Memory
+=
+Type
+\times
+Scope
+\times
+Maturity
+\times
+Retention
+}
+\]
+
+Memory Type：
+
+```text id="9shrh0"
+CASE
+
+PREFERENCE
+
+DESIGN_PATTERN
+
+FAILURE_PATTERN
+
+INTERVENTION
+
+EVALUATION
+
+META_EXPERIENCE
+```
+
+---
+
+# Part XCIV｜MemoryItem
+
+```yaml id="zn54p1"
+MemoryItem:
+  metadata:
+
+  logical_id:
+  revision:
+
+  memory_type:
+
+  scope:
+
+  maturity:
+
+  content_ref:
+
+  source_object_refs: []
+
+  evidence_refs: []
+
+  validity_ref:
+
+  confidence:
+
+  retention_policy_ref:
+  access_policy_ref:
+
+  lifecycle_status:
+```
+
+---
+
+# Part XCV｜Case Memory
+
+必须保留：
+
+```text id="mhk98u"
+Approved
+Rejected
+Edited
+Abstained
+Failed
+```
+
+而不是只存：
+
+```text id="34geb7"
+Approved Designs
+```
+
+否则会产生：
+
+\[
+\boxed{
+SurvivorshipBias
+}
+\]
+
+---
+
+# Part XCVI｜Similarity ≠ Applicability
+
+Memory Retrieval 可以利用：
+
+```text id="gf6dyn"
+semantic similarity
+category
+commercial role
+design focus
+mechanism
+```
+
+但：
+
+\[
+\boxed{
+Similar
+\not\Rightarrow
+Applicable
+}
+\]
+
+Memory Retrieval 只是 Context Input。
+
+不能直接覆盖：
+
+```text id="678kb3"
+Brief MUST
+DesignDecision
+```
+
+---
+
+# Part XCVII｜PreferenceSignal
+
+必须保留：
+
+```text id="dg78lt"
+actor
+
+source human decision
+
+review snapshot
+
+presentation manifest
+
+comparison context
+
+semantic scope
+
+explicit/implicit
+
+strength
+
+confounders
+```
+
+因此：
+
+\[
+VIEW
+\not\Rightarrow
+Preference
+\]
+
+\[
+APPROVE
+\not\Rightarrow
+BrandRule
+\]
+
+---
+
+# Part XCVIII｜BrandDNA
+
+正式定义：
+
+\[
+\boxed{
+BrandDNA
+=
+StablePreference
++
+SemanticRange
++
+Constraint
++
+HistoricalEvidence
+}
+\]
+
+同时必须保留：
+
+```text id="9s3y73"
+Continuity Zone
+
+Adjacent Innovation Zone
+
+Exploration Zone
+```
+
+避免：
+
+\[
+\boxed{
+HistoricalStyleCollapse
+}
+\]
+
+---
+
+# Part XCIX｜LearningProposal
+
+任何长期学习型改变首先：
+
+```text id="c3l6mw"
+LearningProposal
+```
+
+不能：
+
+```text id="2hx30c"
+LLM observation
+→ stable rule
+```
+
+至少表达：
+
+```text id="vsfuza"
+target scope
+proposed change
+observed pattern
+supporting evidence
+counterevidence
+independence
+applicability
+expected benefit
+risk
+conflicts
+```
+
+---
+
+# Part C｜KnowledgeClaim
+
+必须：
+
+\[
+\boxed{
+Scope
++
+Conditions
++
+Prediction
++
+Exceptions
++
+Falsifier
+}
+\]
+
+DiagnosticHypothesis 与 KnowledgeClaim 分开：
+
+### DiagnosticHypothesis
+
+回答：
+
+> 当前 case 为什么失败？
+
+### KnowledgeClaim
+
+回答：
+
+> 这个模式是否具有跨 case 可复用性？
+
+---
+
+# Part CI｜PromotionEvidencePack
+
+本轮正式 normalization：
+
+\[
+\boxed{
+PromotionEvidencePack
+=
+EvidenceIndex
++
+GovernanceMetadata
+}
+\]
+
+它不能创建第二套 Evidence substrate。
+
+它只能引用：
+
+```text id="zysits"
+ARSO EvidenceItem / EvidenceBundle
+
+EvaluationRecord
+
+ValidationResult
+
+Human audit records
+```
+
+并聚合：
+
+```text id="mhrmcn"
+independent group count
+
+scope coverage
+
+counterevidence coverage
+
+temporal span
+
+category / collection / tenant coverage
+
+bias
+
+confounding
+
+leakage
+```
+
+---
+
+# Part CII｜KG0–KG4
+
+正式：
+
+## KG0｜Provenance Integrity
+
+来源是否完整？
+
+## KG1｜Evidence Sufficiency
+
+证据强度是否匹配 claim？
+
+## KG2｜Counterevidence / Regression
+
+是否主动检查反例？
+
+## KG3｜Scope Validation
+
+Claim scope 是否过宽？
+
+## KG4｜Governance Approval
+
+是否具备相应权限？
+
+---
+
+# Part CIII｜Knowledge Promotion Decision
+
+```text id="jgd49f"
+PROMOTE
+
+PROMOTE_WITH_LIMITED_SCOPE
+
+REMAIN_PROVISIONAL
+
+REJECT
+
+QUARANTINE
+```
+
+因此：
+
+\[
+\boxed{
+ScopeNarrowing
+=
+FirstClassOperation
+}
+\]
+
+局部知识不需要因为不能成为 Global Fashion Truth 就被全部否定。
+
+---
+
+# Part CIV｜Enterprise Knowledge ≠ Fashion Truth
+
+正式：
+
+\[
+\boxed{
+User
+\neq
+Team
+\neq
+Brand
+\neq
+Tenant
+\neq
+FashionDomain
+\neq
+Global
+}
+\]
+
+越大 scope：
+
+\[
+\boxed{
+RequiredEvidence\uparrow
+}
+\]
+
+---
+
+# Part CV｜Semantic Writeback
+
+对于：
+
+```text id="asjxr2"
+Ontology
+Grammar
+SemanticParameterSpace
+Applicability
+```
+
+B08 只能：
+
+```text id="rcc22a"
+Proposal
++
+Governance
+```
+
+真正 canonical version：
+
+```text id="48dhl5"
+B02 commits
+```
+
+正确：
+
+```text id="tqau2h"
+B08 LearningProposal
+↓
+KnowledgeClaim
+↓
+KG0–KG4
+↓
+SemanticChangeRequest
+↓
+B02
+↓
+FashionOntology / Grammar v+1
+```
+
+因此：
+
+\[
+\boxed{
+PromotionAuthority
+\neq
+SemanticObjectOwnership
+}
+\]
+
+Design Intelligence V5.0 已明确 B08 只能提出和治理 semantic change，最终 Fashion semantic version ownership 仍在 B02。fileciteturn30file0
+
+---
+
+# Part CVI｜System Learning Writeback
+
+对：
+
+```text id="3waagn"
+Compiler
+Evaluator
+Workflow
+Retrieval
+Policy
+```
+
+B08 不直接修改。
+
+正确：
+
+```text id="tbq1c3"
+B08 pattern
+↓
+LearningProposal
+↓
+E05 Diagnosis
+↓
+E06 Intervention
+↓
+Owner Candidate Artifact
+↓
+VG0–VG3
+```
+
+---
+
+# Part CVII｜Evaluator Firewall
+
+尤其：
+
+```text id="aacg6q"
+B08
+→ directly update evaluator
+```
+
+禁止。
+
+正确：
+
+```text id="d2i0bg"
+B08
+→ LearningProposal
+→ E05
+→ E06
+→ B04 Candidate Evaluator
+→ Independent Audit Validation
+```
+
+防止：
+
+\[
+\boxed{
+SelfConfirmingEvaluationLoop
+}
+\]
+
+---
+
+# Part CVIII｜KnowledgeSnapshot
+
+```yaml id="quk1le"
+KnowledgeSnapshot:
+  snapshot_id:
+
+  fashion_ontology_ref:
+
+  design_grammar_ref:
+
+  semantic_parameter_space_ref:
+
+  brand_dna_ref:
+
+  enterprise_knowledge_refs: []
+
+  eligibility_policy_refs: []
+
+  access_policy_refs: []
+
+  content_hash:
+
+  created_at:
+```
+
+不再保存：
+
+```text id="pj23qp"
+retrieval algorithm
+embedding model
+ranking policy
+```
+
+这些进 SystemSnapshot。
+
+---
+
+# Part CIX｜Promotion ≠ Commit ≠ Activation
+
+正式三分：
+
+### PROMOTE
+
+Epistemic governance。
+
+### COMMIT
+
+Object Owner 创建 canonical new version。
+
+### ACTIVATE
+
+未来 System Configuration / Deployment 决定新 run 是否使用。
+
+因此：
+
+\[
+\boxed{
+Promotion
+\neq
+Commit
+\neq
+Activation
+}
+\]
+
+---
+
+# Part CX｜B08 不拥有 Activation
+
+正式移除：
+
+```text id="8fn65w"
+knowledge_snapshot.activated
+```
+
+作为 B08-owned domain event。
+
+B08 可以产生：
+
+```text id="rfzu05"
+KnowledgeSnapshotCreated
+
+KnowledgeEligibleForUse
+```
+
+真正 run 使用哪个 KnowledgeSnapshot：
+
+```text id="h7vchq"
+SystemSnapshot.knowledge_snapshot_ref
+```
+
+决定。
+
+V1 可通过人工配置。
+
+---
+
+# Part CXI｜KnowledgeLineageRoot
+
+```yaml id="a91523"
+KnowledgeLineageRoot:
+  lineage_id:
+
+  knowledge_family:
+
+  root_source_refs: []
+
+  target_scope:
+
+  tenant_ref:
+
+  created_at:
+```
+
+其他：
+
+```text id="dt20lw"
+MemoryItem
+LearningProposal
+KnowledgeClaim
+PromotionEvidencePack
+KnowledgePromotionDecision
+Knowledge Version
+```
+
+分别引用：
+
+```text id="7pad1x"
+knowledge_lineage_ref
+```
+
+---
+
+# Part CXII｜Cross-Lineage Reference ≠ Parentage
+
+例如：
+
+```text id="lc6am9"
+HumanDecision
+```
+
+可以成为：
+
+```text id="e3xc3e"
+PreferenceSignal.source_ref
+```
+
+但：
+
+```text id="90bgkr"
+HumanDecision
+```
+
+不是：
+
+```text id="4xsjmj"
+KnowledgeClaim parent
+```
+
+同理：
+
+```text id="88o7ue"
+Evaluation
+```
+
+可以支持 Optimization / Knowledge，
+
+但不改变其 own lineage identity。
+
+---
+
+# Part CXIII｜Final Static Ownership DAG
+
+最终：
+
+```text id="o248o3"
+                         B02
+                          │
+                          ▼
+                         B01
+                          │
+                          ▼
+                         B03
+                          │
+                          ▼
+                         B04
+                          │
+                          ▼
+                         B05
+                          │
+                          ▼
+                         B06
+```
+
+B07：
+
+```text id="mmjeuv"
+collaboration overlay
+on B01 / B03 / B04
+```
+
+B08：
+
+```text id="dvipd5"
+consumes immutable B01–B07 history
+```
+
+Temporal writeback：
+
+```text id="516azv"
+B08 → B02
+
+B08 → E05/E06 → B03/B04/B07
+```
+
+但必须：
+
+\[
+\boxed{
+CrossVersionBoundary
+}
+\]
+
+因此：
+
+\[
+\boxed{
+TemporalFeedbackLoop
+\neq
+StaticOwnershipCycle
+}
+\]
+
+---
+
+# Part CXIV｜Canonical End-to-End Chain
+
+现在统一主链正式写为：
+
+\[
+K^{fashion}_v
+\]
+
+\[
+\downarrow
+\]
+
+\[
+StyleBrief_v
+\]
+
+\[
+\downarrow
+\]
+
+\[
+DesignTaskBinding
+\rightarrow
+ReferenceTaskSpec_v
+\]
+
+\[
+\downarrow
+\]
+
+\[
+DesignContextBinding
+\rightarrow
+DesignDecision_v
+\rightarrow
+DesignRoute_v
+\rightarrow
+DesignSpec_v
+\]
+
+\[
+\downarrow
+\]
+
+\[
+GenerationCompiler_v
+\rightarrow
+CompilerMappingTrace
+\rightarrow
+GenerationPackage
+\]
+
+\[
+\downarrow
+\]
+
+\[
+RunRecord_{gen}
++
+SystemSnapshot_{gen}
+\]
+
+\[
+\downarrow
+\]
+
+\[
+DesignInstance
+\]
+
+\[
+\downarrow
+\]
+
+\[
+ObjectiveSpec
++
+MeasurementSpec
++
+EvaluatorBinding
+\]
+
+\[
+\downarrow
+\]
+
+\[
+RunRecord_{eval}
+\rightarrow
+EvaluationRecord
+\]
+
+\[
+\downarrow
+\]
+
+\[
+ObservabilityProfile
+\]
+
+\[
+\downarrow
+\]
+
+\[
+EvidenceBundle
+\rightarrow
+DiagnosticBelief
+\rightarrow
+HypothesisRecord
+\rightarrow
+IdentifiabilityAssessment
+\]
+
+\[
+\downarrow
+\]
+
+\[
+ActionDecision
+\]
+
+\[
+\downarrow
+\]
+
+\[
+\{
+NO\_CHANGE,
+ABSTAIN,
+REQUEST\_EVIDENCE,
+REQUEST\_HUMAN,
+INTERVENE,
+SEARCH,
+STOP
+\}
+\]
+
+若：
+
+\[
+REQUEST\_EVIDENCE
+\]
+
+则：
+
+\[
+ProbePlan
+\rightarrow
+ProbeResult
+\rightarrow
+Evidence'
+\rightarrow
+Diagnosis'
+\]
+
+若：
+
+\[
+INTERVENE
+\]
+
+则：
+
+\[
+SystemChangeCandidate
+\rightarrow
+InterventionPlan
+\rightarrow
+SandboxSystemSnapshot
+\]
+
+\[
+\downarrow
+\]
+
+\[
+VG0
+\rightarrow
+VG1
+\rightarrow
+VG2
+\rightarrow
+VG3
+\]
+
+\[
+\downarrow
+\]
+
+\[
+ValidationResult
+\]
+
+同时：
+
+\[
+DesignStateRevision
+\rightarrow
+Review
+\rightarrow
+HumanDecision
+\rightarrow
+Edit/Fork/Merge/Approval
+\]
+
+长期：
+
+\[
+History
+\rightarrow
+Memory
+\rightarrow
+LearningProposal
+\rightarrow
+KnowledgeClaim
+\rightarrow
+PromotionEvidencePack
+\]
+
+\[
+\downarrow
+\]
+
+\[
+KG0
+\rightarrow
+KG1
+\rightarrow
+KG2
+\rightarrow
+KG3
+\rightarrow
+KG4
+\]
+
+\[
+\downarrow
+\]
+
+\[
+KnowledgeVersion_{v+1}
+\]
+
+---
+
+# Part CXV｜Deprecated / Forbidden Names
+
+正式进入兼容层或删除。
+
+| Old Name | Final Treatment |
+|---|---|
+| `di.MeasurementRecord` | REMOVE canonical |
+| `di.EvaluationRecord` | REMOVE canonical; ARSO EvaluationRecord |
+| `EvaluationTrace` | VIEW only |
+| `EvidenceRecord` | → ARSO EvidenceItem |
+| `di.EvidenceBundle` | → ARSO EvidenceBundle |
+| `di.DiagnosticBelief` | → ARSO DiagnosticBelief |
+| `DiagnosticHypothesis` | → ARSO HypothesisRecord |
+| `FailureAttribution` | DiagnosticBelief view |
+| `ADSI` | Diagnostic UI/view |
+| `di.ProbePlan` | → ARSO ProbePlan |
+| `di.ActionDecision` | → ARSO ActionDecision |
+| `InterventionValidationResult` | → ARSO ValidationResult |
+| `SystemCandidate` | FORBIDDEN |
+| bare `Candidate` | FORBIDDEN |
+| bare `Validation` | FORBIDDEN |
+| bare `Knowledge` | FORBIDDEN in schema/API |
+| bare `State` | FORBIDDEN where ambiguous |
+| `DesignExecutionRecord` | thin link/view only |
+| revisioned DesignLineage blob | REMOVE |
+| revisioned OptimizationLineage blob | REMOVE |
+| revisioned KnowledgeLineage blob | REMOVE |
+
+---
+
+# Part CXVI｜Final Core Invariants
+
+从现在起，任何下游代码/API/schema 都必须满足至少以下 **32 条全局不变量**：
+
+1. `StyleBrief ≠ Prompt`
+2. `StyleBrief ≠ ReferenceTaskSpec`
+3. `Decision ≠ Spec`
+4. `Route ≠ RandomVariant`
+5. `DesignSpec ≠ FashionTruth`
+6. `DesignSpec ≠ GenerationPackage`
+7. `DesignSpec ≠ SystemArtifact by default`
+8. `ReferenceAsset ≠ ReferenceIntent ≠ CompiledReferenceBinding`
+9. `DesignQuality ≠ GenerationFidelity`
+10. `Objective ≠ Measurement ≠ Evaluator ≠ Evaluation`
+11. `Evaluation ≠ Evidence`
+12. `Evidence ≠ Diagnosis`
+13. `Diagnosis ≠ Causality`
+14. `DiagnosticBelief ≠ ForcedClassification`
+15. `Confidence ≠ Identifiability`
+16. `ProbeRecommendation ≠ ProbePlan`
+17. `Probe ≠ Intervention`
+18. `Action ≠ Search`
+19. `DesignEdit ≠ GenerationEdit`
+20. `GenerationEdit ≠ SystemIntervention`
+21. `SystemIntervention ≠ KnowledgePromotion`
+22. `HumanDecision ≠ HumanEvaluation`
+23. `HumanApproval ≠ DesignQuality`
+24. `CommercialOutcome ≠ PureDesignReward`
+25. `History ≠ Memory ≠ Knowledge`
+26. `MemoryMaturity ≠ KnowledgeMaturity`
+27. `EnterpriseKnowledge ≠ FashionTruth`
+28. `KnowledgePromotion ≠ SemanticOwnership`
+29. `KnowledgePromotion ≠ Activation`
+30. `Capability ≠ Permission`
+31. `TemporalFeedbackLoop ≠ OwnershipCycle`
+32. `EveryLongTermLoopMustCrossImmutableVersionBoundary`
+
+---
+
+# Part CXVII｜Cross-Spec Conformance Suite
+
+在 Exact Schema 正式从 `FREEZE CANDIDATE → FROZEN` 前，必须至少通过以下统一测试。
+
+| ID | Requirement |
+|---|---|
+| **CS-01** | 每个 canonical object 只有一个 Primitive Owner |
+| **CS-02** | Capability Owner 与 Primitive Owner 可显式区分 |
+| **CS-03** | StyleBrief 不能直接作为 ReferenceTaskSpec |
+| **CS-04** | 每个 ARSO Run 可解析 exact ReferenceTaskSpec |
+| **CS-05** | SystemSnapshot 不包含 per-case Brief/Decision/Route/Spec |
+| **CS-06** | DesignSpec 不被普通 System Intervention 当 artifact 修改 |
+| **CS-07** | System Artifact 与 Task Semantic Object 类型可区分 |
+| **CS-08** | B03 EDIT 不创建新的 Design semantics |
+| **CS-09** | Reference 三层对象严格区分 |
+| **CS-10** | Design/Optimization/Knowledge lineage 均为 immutable root |
+| **CS-11** | Execution 不生成第五条长期 Lineage |
+| **CS-12** | Jobs/Pointers 不成为 historical SSOT |
+| **CS-13** | Branch head 使用 CAS |
+| **CS-14** | Historical DesignState 永不更新 |
+| **CS-15** | Review Session/round root 不被 close action 修改 |
+| **CS-16** | ReviewStage 只能是 collaboration fact 的 projection |
+| **CS-17** | ReviewSnapshot 不引用动态未物化 View |
+| **CS-18** | 任一 HumanDecision 可重建 reviewer 实际看到的内容 |
+| **CS-19** | Generation 与 Evaluation snapshot 分别追溯 |
+| **CS-20** | Review 可比较多个不同 executor provenance 的 instances |
+| **CS-21** | ProbeRecommendation 不可直接执行 |
+| **CS-22** | REQUEST_EVIDENCE 后才生成 executable ProbePlan |
+| **CS-23** | ProbeResult 必须先形成 Evidence 再 Rediagnose |
+| **CS-24** | PromotionEvidencePack 不复制第二套 Evidence |
+| **CS-25** | B08 无 Knowledge activation authority |
+| **CS-26** | Knowledge content 与 Retrieval mechanism 分离 |
+| **CS-27** | MemoryMaturity / KnowledgeMaturity type-safe |
+| **CS-28** | Semantic writeback 最终由 B02 commit |
+| **CS-29** | Compiler/Evaluator learning 必须经过 E05/E06 |
+| **CS-30** | Stable Knowledge 不自动进入 active SystemSnapshot |
+| **CS-31** | Validated Intervention 不自动成为 Stable Knowledge |
+| **CS-32** | 所有长期反馈产生新 version/snapshot |
+
+---
+
+# Part CXVIII｜Implementation Maturity
+
+最终建议继续按：
+
+## DI-M0｜Executable
+
+```text id="hfce88"
+E01
+E02
+E03
+E04 basic
+```
+
+达到：
+
+\[
+Designable
+\]
+
+---
+
+## DI-M1｜Collaborative
+
+加入：
+
+```text id="2hnlck"
+E07
+```
+
+达到：
+
+\[
+HumanCollaborative
+\]
+
+---
+
+## DI-M2｜Diagnosable / Safely Intervenable
+
+加入：
+
+```text id="cm3lrq"
+E05
+E06
+```
+
+达到：
+
+\[
+Observable
++
+Diagnosable
++
+SafelyIntervenable
+\]
+
+这也是 ARSO V2.2.1 最具直接科研价值的阶段。Blueprint 原本就建议从 Designable → Observable/Measurable → Diagnosable → Safely Intervenable，再进入 adaptive learning。fileciteturn29file8
+
+---
+
+## DI-M3｜Governed Learning
+
+加入：
+
+```text id="wezhs9"
+E08
+```
+
+达到：
+
+\[
+AdaptivelyLearnable
+\]
+
+但仍不是：
+
+```text id="x4foyp"
+AutonomousSelfModifyingProductionSystem
+```
+
+---
+
+# Part CXIX｜Recommended V1 Build Order
+
+统一规范落地后，工程优先级正式定为：
+
+```text id="tsvnu4"
+P0  E01 Canonical Contracts + Registry
+
+P1  E02 Semantic Runtime
+
+P2  B02 Minimal Fashion Semantics
+
+P3  E03 Generation Compiler + Model Gateway
+
+P4  E04 Structured Evaluation
+
+P5  E07 Review / Collaboration
+
+P6  E05 Observability + Diagnosis
+
+P7  E06 Sandbox Intervention + Validation
+
+P8  Cross-Spec Conformance
+
+P9  E08 Case Memory
+
+P10 Brand / Enterprise Learning
+
+P11 Knowledge Promotion / Semantic Evolution
+```
+
+不要因为 E08 规范已经存在，就提前在 P0–P3 建设完整 autonomous learning stack。
+
+---
+
+# Part CXX｜What V1 Explicitly Does Not Claim
+
+即使本规范冻结，也不能声称：
+
+```text id="z6mhic"
+ARSO diagnosis is empirically superior
+
+cross-executor semantic transfer is proven
+
+automated ontology induction works
+
+automatic grammar evolution is safe
+
+VLM critic equals expert truth
+
+BrandDNA can be learned reliably from approval alone
+
+commercial outcomes can be attributed causally to design
+
+knowledge promotion can safely be fully automated
+
+DesignSpec representation is universally superior
+
+DI architecture improves every fashion task
+```
+
+ARSO Research V2.2.1 仍明确规定：
+
+\[
+\boxed{
+EmpiricalClaims=OPEN
+}
+\]
+
+其当前工作是 scientific claim hardening，而不是 empirical confirmation。fileciteturn29file5
+
+---
+
+# Part CXXI｜Final Engineering Formula
+
+Design Production：
+
+\[
+\boxed{
+\begin{aligned}
+T^{ref}
+&=
+Bind(B,Policy,Objective,Risk,Budget)\\
+C
+&=
+BindContext(B,K_v,R)\\
+D
+&=
+Decide(B,C)\\
+R_d
+&=
+Route(D)\\
+S
+&=
+Specify(R_d)\\
+P_e
+&=
+Compile(S,e)\\
+I
+&=
+Execute(P_e,SystemSnapshot,\xi)
+\end{aligned}
+}
+\]
+
+Evaluation / Diagnosis：
+
+\[
+\boxed{
+\begin{aligned}
+Q_t
+&=
+Evaluate(Expected,Observed)\\
+\Omega_t
+&=
+Observe(Runtime)\\
+E_t
+&=
+BuildEvidence(Q_t,\Omega_t,Runtime)\\
+(B_t,H_t,ID_t)
+&=
+Diagnose(E_t,\Omega_t)
+\end{aligned}
+}
+\]
+
+Action：
+
+\[
+\boxed{
+a_t
+=
+ActionPolicy(
+B_t,
+ID_t,
+Permission,
+Risk,
+Budget
+)
+}
+\]
+
+其中：
+
+\[
+a_t\in
+\{
+NO\_CHANGE,
+ABSTAIN,
+REQUEST\_EVIDENCE,
+REQUEST\_HUMAN,
+INTERVENE,
+SEARCH,
+STOP
+\}
+\]
+
+若 Intervention：
+
+\[
+\boxed{
+SystemSnapshot_t
+\xrightarrow{Sandbox+\Delta\Theta}
+SystemSnapshot'_t
+\xrightarrow{VG0-VG3}
+Validation
+}
+\]
+
+长期知识：
+
+\[
+\boxed{
+History
+\rightarrow
+Memory
+\rightarrow
+LearningProposal
+\rightarrow
+KnowledgeClaim
+\rightarrow
+PromotionEvidence
+\rightarrow
+KG0-KG4
+\rightarrow
+KnowledgeVersion_{v+1}
+}
+\]
+
+---
+
+# Part CXXII｜Final Freeze Statement
+
+> **Design Intelligence V5.0 Engineering Specification V1.0 正式采用单一 canonical primitive ownership、exact-version reference、immutable historical state、typed operational control state 与 owner-mediated writeback。Design Intelligence 自身拥有 Fashion Business Semantics、Fashion Semantic Foundation、Generation Execution、Human Collaboration 与 Enterprise Knowledge 对象；ARSO Core 唯一拥有通用的 ReferenceTaskSpec、SystemSnapshot、RunRecord、EvaluationRecord、EvidenceBundle、DiagnosticBelief、IdentifiabilityAssessment、Probe、ActionDecision、Intervention 和 Validation primitives。StyleBrief、DesignDecision、DesignRoute 与 DesignSpec 属于 task semantic state，不得进入 SystemSnapshot 或被普通 System Intervention 作为系统资产修改；StyleBrief 通过 DesignTaskBinding 与受保护的 ARSO ReferenceTaskSpec 相连。SystemSnapshot 只描述行为系统，KnowledgeSnapshot 只描述知识内容，DesignReviewSnapshot 只冻结 Reviewer 实际可见上下文；Generation subject provenance、Evaluator provenance 与 Review provenance 均通过 exact references 独立重建。Design semantic edits 必须由 B01/E02 创建新的 DesignSpec revision，B03 visual edit 只能实现已经提交的目标 DesignSpec；系统修复必须经过 E05 Diagnosis、E06 ActionDecision、Sandbox Intervention 与 VG0–VG3 Validation。Human decisions、Approval、Fork、Merge 均形成不可变 collaboration facts，任何已批准历史不得 retroactively mutation。长期学习严格遵守 History ≠ Memory ≠ Knowledge；B08 可以治理 Knowledge Promotion，但 Ontology / Grammar 等 Fashion Semantic Truth 仍由 B02 创建新版本，Compiler / Evaluator / Workflow 等 system learning 必须重新经过 E05/E06，且 Knowledge Promotion 与 Production Activation 完全分离。Business、Design、Optimization 与 Knowledge 四条长期 lineage 使用 immutable identity roots，Execution 仅作为 RuntimeTrace；任何跨 Plane feedback 都只能通过 exact cross-lineage references 与新的 immutable version 实现。**
+
+因此最终全系统最重要的五条公式是：
+
+\[
+\boxed{
+OneCanonicalObject
+\Rightarrow
+OnePrimitiveOwner
+}
+\]
+
+\[
+\boxed{
+TaskState
+\neq
+SystemState
+\neq
+KnowledgeState
+\neq
+ReviewState
+}
+\]
+
+\[
+\boxed{
+Evaluation
+\neq
+Evidence
+\neq
+Diagnosis
+\neq
+Action
+\neq
+Intervention
+}
+\]
+
+\[
+\boxed{
+DesignEdit
+\neq
+GenerationEdit
+\neq
+SystemIntervention
+\neq
+KnowledgePromotion
+}
+\]
+
+以及：
+
+\[
+\boxed{
+EveryLongTermFeedbackLoop
+CrossesImmutableVersionBoundary
+}
+\]
+
+---
+
+# Final Decision
+
+**《Design Intelligence V5.0 Engineering Specification V1.0｜ARSO V2.2.1 Reference Application Edition》在 Architecture / Ownership / Runtime Boundary / Lineage / Feedback Governance 层面正式达到 `FROZEN`。**
+
+**Exact V1 Pydantic Schemas 继续保持 `FREEZE CANDIDATE`**，因为下一步应该做的不是再添加新的 E09，而是进入最后一轮更偏代码级的：
+
+\[
+\boxed{
+DI\text{-}E01\text{–}E08
+Schema\ \&\ API\ Conformance\ Freeze
+}
+\]
+
+重点把这份统一规范真正压成一套**可直接编码的 Pydantic models + Registry manifest + Command schemas + Event schemas + Protocol interfaces + CS-01–CS-32 自动测试**。完成那一步之后，V1 Exact Schemas 才应该由 `FREEZE CANDIDATE` 正式提升到 `FROZEN`。

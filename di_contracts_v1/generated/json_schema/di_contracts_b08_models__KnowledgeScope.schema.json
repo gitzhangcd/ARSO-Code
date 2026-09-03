@@ -1,0 +1,109 @@
+{
+  "$defs": {
+    "ContentHash": {
+      "title": "ContentHash",
+      "type": "string"
+    },
+    "ExactObjectRef": {
+      "additionalProperties": false,
+      "properties": {
+        "content_hash": {
+          "$ref": "#/$defs/ContentHash"
+        },
+        "logical_id": {
+          "$ref": "#/$defs/LogicalId"
+        },
+        "object_type": {
+          "$ref": "#/$defs/ObjectType"
+        },
+        "version_id": {
+          "$ref": "#/$defs/ObjectId"
+        }
+      },
+      "required": [
+        "object_type",
+        "logical_id",
+        "version_id",
+        "content_hash"
+      ],
+      "title": "ExactObjectRef",
+      "type": "object"
+    },
+    "KnowledgeScopeType": {
+      "enum": [
+        "INSTANCE",
+        "STYLE",
+        "COLLECTION",
+        "PROJECT",
+        "USER",
+        "TEAM",
+        "BRAND",
+        "TENANT",
+        "CATEGORY",
+        "FASHION_DOMAIN",
+        "GLOBAL"
+      ],
+      "title": "KnowledgeScopeType",
+      "type": "string"
+    },
+    "LogicalId": {
+      "title": "LogicalId",
+      "type": "string"
+    },
+    "ObjectId": {
+      "title": "ObjectId",
+      "type": "string"
+    },
+    "ObjectRef": {
+      "additionalProperties": false,
+      "properties": {
+        "content_hash": {
+          "$ref": "#/$defs/ContentHash"
+        },
+        "object_id": {
+          "$ref": "#/$defs/ObjectId"
+        },
+        "object_type": {
+          "$ref": "#/$defs/ObjectType"
+        }
+      },
+      "required": [
+        "object_type",
+        "object_id",
+        "content_hash"
+      ],
+      "title": "ObjectRef",
+      "type": "object"
+    },
+    "ObjectType": {
+      "title": "ObjectType",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "scope_ref": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ExactObjectRef"
+        },
+        {
+          "$ref": "#/$defs/ObjectRef"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Scope Ref"
+    },
+    "scope_type": {
+      "$ref": "#/$defs/KnowledgeScopeType"
+    }
+  },
+  "required": [
+    "scope_type"
+  ],
+  "title": "KnowledgeScope",
+  "type": "object"
+}

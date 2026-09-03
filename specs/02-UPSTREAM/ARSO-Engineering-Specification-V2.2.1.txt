@@ -1,0 +1,3995 @@
+下面正式进入 **《ARSO Engineering Specification V2.2.1》**。
+
+这一版不是把旧 V2.2 Engineering 部分重新排版，而是以刚刚冻结的 **Research Specification V2.2.1** 为唯一上游科学规范，将 R4.1 的 Minimum Implementable Core、R5 的 Scientific Kill Tests、R6 的 Revision Decisions 落成真正可以编码和测试的工程合同。
+
+原 V2.2 已经建立了 Artifact Registry、SystemSnapshot、RuntimeEvent、TaskIR→DecisionIR→ExecutionIR、Evaluation/Evidence/Attribution/Hypothesis、Intervention、Validation、Router、Domain/Pattern Pack 等完整平台骨架；同时原 V2.2 的 V0 又把三层 IR、Candidate、DeploymentTransaction 等大量对象列为第一批 mandatory model。 本版最重要的修订就是：**保留长期平台架构，但不再让完整平台绑架第一阶段研究实现。**
+
+---
+
+# ARSO Engineering Specification V2.2.1
+
+## MIC + Progressive Platform Edition
+
+### Adaptive Reflective Semantic Optimizer
+
+**版本：** V2.2.1
+**文档性质：** Engineering / Runtime / Interface Specification
+**上游科学规范：** ARSO Research Specification V2.2.1
+**状态：**
+
+```text
+Conceptual Architecture        FROZEN
+ARSO-MIC Interface             FREEZE CANDIDATE
+Extended Semantic Platform     OPEN / DEFERRED
+Production Deployment Plane    ARCHITECTURE RETAINED / IMPLEMENTATION DEFERRED
+Empirical Algorithms           OPEN
+```
+
+---
+
+# Part I｜Engineering Mission
+
+## 1. 工程目标
+
+ARSO V2.2.1 Engineering 的第一目标不是：
+
+> 建设一个包含 Semantic IR、Memory、Meta-Router、跨域迁移和 Production Deployment 的完整 AI optimization operating system。
+
+第一目标是：
+
+$$
+\boxed{
+ExistingSystem
+\rightarrow
+Observable
+\rightarrow
+Evaluatable
+\rightarrow
+Diagnosable
+\rightarrow
+EvidenceBoundedAction
+}
+$$
+
+具体必须支持：
+
+$$
+Run
+\rightarrow
+Evaluation
+\rightarrow
+Evidence
+\rightarrow
+DiagnosticBelief
+\rightarrow
+Identifiability
+\rightarrow
+ActionDecision
+$$
+
+然后：
+
+$$
+ActionDecision=
+\begin{cases}
+NO\_CHANGE\\
+ABSTAIN\\
+REQUEST\_EVIDENCE\\
+REQUEST\_HUMAN\\
+INTERVENE\\
+SEARCH\\
+STOP
+\end{cases}
+$$
+
+---
+
+# 2. Engineering V2.2.1 的两层结构
+
+正式分为：
+
+## Layer A｜ARSO-MIC
+
+Minimum Implementable Core。
+
+必须能支持 Research V2.2.1 的：
+
+```text
+SC1 Open-set diagnosis
+SC2 Observability calibration
+SC3 Diagnosis → Repair mediation
+SC4 Uncertainty-conditioned selective action
+```
+
+---
+
+## Layer B｜Extended ARSO Platform
+
+保留长期能力：
+
+```text
+TaskIR
+DecisionIR
+ExecutionIR
+Compiler
+Semantic K
+Functional Operator Graph
+Domain Pack
+Pattern Pack
+Persistent Memory
+Knowledge Promotion
+Adaptive Search
+Meta-Learning
+Cross-Executor Transfer
+Cross-Domain Transfer
+Deployment Controller
+```
+
+但这些：
+
+$$
+\boxed{
+NOT\ MIC\ MANDATORY
+}
+$$
+
+---
+
+# Part II｜Hard Engineering Invariants
+
+# 3. Reference Task ≠ Mutable System State
+
+正式冻结：
+
+$$
+\boxed{
+ReferenceTaskSpec
+\neq
+MutableSystemState
+}
+$$
+
+Optimizer 不允许通过普通 intervention 修改：
+
+```text
+任务成功定义
+sealed evaluation target
+hard constraint
+风险边界
+benchmark partition
+```
+
+如果必须修改 ReferenceTaskSpec：
+
+> 创建新版本，并视为新的 experiment condition。
+
+---
+
+# 4. Observed ≠ Observable
+
+正式冻结：
+
+$$
+\boxed{
+MissingEvent
+\neq
+EventDidNotOccur
+}
+$$
+
+必须区分：
+
+```text
+NOT_OCCURRED
+MISSING
+NOT_INSTRUMENTED
+UNSUPPORTED
+REDACTED
+SAMPLED_OUT
+CORRUPTED
+UNKNOWN
+```
+
+否则 SC2 无法成立。
+
+---
+
+# 5. Objective ≠ Measurement ≠ Evaluator ≠ Evaluation
+
+原 V2.2 已明确指出 `Objective ≠ Measurement ≠ Evaluator`，但其第一批数据对象主要只冻结了 EvaluationRecord。
+
+V2.2.1 正式落实为四个独立 object。
+
+---
+
+# 6. Diagnosis ≠ Classification
+
+Diagnostic subsystem 必须可以表达：
+
+```text
+IDENTIFIED
+AMBIGUOUS
+INSUFFICIENT_EVIDENCE
+UNIDENTIFIABLE
+OUT_OF_TAXONOMY
+```
+
+不能强迫：
+
+```text
+argmax(R0 ... R9)
+```
+
+---
+
+# 7. Action ≠ Search
+
+旧 V2.2 Complexity Ladder 将 `NO-OP / REQUEST_EVIDENCE / Local Repair / Single-Lineage / Population / Meta Search` 混在同一层级。原规范确实冻结过该结构。
+
+V2.2.1 正式取消这一 engineering contract。
+
+改为：
+
+$$
+\boxed{
+ActionDecision
+\perp
+SearchPlan
+}
+$$
+
+---
+
+# 8. Artifact ≠ Candidate ≠ Deployment
+
+继续继承 V2.2 已经意识到的三者分离原则，但进一步去除 Artifact 内的 deployment 状态。原 V2.2 已将 Candidate、Intervention、Deployment 分为不同 lifecycle。
+
+---
+
+# 9. Probe 是 Core
+
+`REQUEST_EVIDENCE` 必须有：
+
+$$
+ProbePlan
+\rightarrow
+ProbeResult
+\rightarrow
+NewEvidence
+\rightarrow
+Rediagnosis
+$$
+
+不能只是 Router enum。
+
+---
+
+# Part III｜Runtime Architecture
+
+# 10. 四个工程平面
+
+V2.2.1 将完整系统明确划分为四个 plane。
+
+## P1｜Execution Plane
+
+业务系统自身执行：
+
+$$
+Input\rightarrow ExistingSystem\rightarrow Output
+$$
+
+ARSO 不要求接管业务主执行权。
+
+---
+
+## P2｜Diagnostic Control Plane
+
+负责：
+
+```text
+Observe
+Evaluate
+Build Evidence
+Diagnose
+Assess Identifiability
+Decide Action
+Probe
+Intervene
+Validate
+```
+
+这是 MIC 核心。
+
+---
+
+## P3｜Experimental Plane
+
+负责：
+
+```text
+experiment assignment
+paired conditions
+randomization
+oracle/wrong/no diagnosis
+budget matching
+sealed-test firewall
+lineage
+```
+
+这是 SC3 与 R5 Kill Test 的必要基础设施。
+
+---
+
+## P4｜Deployment Plane
+
+负责未来：
+
+```text
+Shadow
+Canary
+Production
+Rollback
+CAS promotion
+```
+
+架构继续保留。
+
+但是：
+
+$$
+\boxed{
+P4\notin MIC\ V0
+}
+$$
+
+---
+
+# 11. Data Plane Failure Independence
+
+继续保留 V2.2 的重要原则：
+
+> ARSO Control Plane 故障不得天然导致 Production Data Plane 停机。
+
+MIC 应设计成：
+
+```text
+Control Plane unavailable
+→ Existing application continues using last stable snapshot
+```
+
+研究环境例外可以明确 fail-fast。
+
+---
+
+# Part IV｜Common Data Contract
+
+# 12. 所有稳定对象的统一元数据
+
+所有 stable model 至少包含：
+
+```text
+schema_version
+id
+created_at
+created_by
+provenance
+```
+
+版本化对象增加：
+
+```text
+version
+parent_id
+```
+
+---
+
+# 13. ID
+
+建议：
+
+```text
+UUID / ULID / equivalent opaque ID
+```
+
+Core 不允许：
+
+```text
+id = business-readable-name
+```
+
+作为唯一主键。
+
+---
+
+# 14. 时间
+
+统一：
+
+```text
+ISO-8601 UTC
+```
+
+例如：
+
+```text
+2026-09-02T04:32:11.584Z
+```
+
+---
+
+# 15. Schema policy
+
+继承 V2.2 建议：
+
+```python
+extra = "forbid"
+```
+
+Domain-specific extension 统一进入：
+
+```text
+extensions:
+  namespace:
+    ...
+```
+
+不能随意向 Core model 增加：
+
+```text
+fashion_color
+rag_top_k
+medical_stage
+```
+
+这样的领域字段。
+
+---
+
+# Part V｜ReferenceTaskSpec
+
+# 16. 定义
+
+```yaml
+ReferenceTaskSpec:
+  schema_version:
+  task_id:
+  version:
+
+  goal:
+  solution_geometry:
+  interaction_horizon:
+  representation_contract:
+
+  hard_constraints: []
+  soft_objectives: []
+
+  objective_refs: []
+
+  distribution_spec:
+  stochasticity_spec:
+  risk_profile:
+  cost_policy:
+
+  data_policy:
+  intervention_policy:
+
+  provenance:
+```
+
+---
+
+# 17. Solution Geometry
+
+继续兼容 V2.2：
+
+```text
+POINT_TARGET
+FEASIBLE_SET
+POLICY_TRAJECTORY
+MIXED
+```
+
+原 V2.2 Task Contract 已把 Solution Geometry、Evaluation Regime、Observability、Interaction Horizon、Representation Contract、Stochasticity、Risk 和 Cost 组合起来。
+
+---
+
+# 18. ReferenceTaskSpec immutable
+
+在一个 ExperimentAssignment 中：
+
+$$
+\boxed{
+ReferenceTaskSpecVersion
+=
+Frozen
+}
+$$
+
+任何变化都意味着：
+
+```text
+new condition
+or
+new experiment
+```
+
+---
+
+# Part VI｜Capability & Permission
+
+# 19. CapabilityProfile
+
+回答：
+
+> 系统技术上能观察和修改什么？
+
+```yaml
+CapabilityProfile:
+  capability_id:
+  subject_ref:
+
+  observe:
+    input:
+    output:
+    prompt:
+    retrieval_trace:
+    tool_trace:
+    workflow_trace:
+    compiler_trace:
+    evaluator_trace:
+    environment_state:
+
+  mutate:
+    prompt:
+    examples:
+    retriever:
+    route:
+    workflow:
+    compiler:
+    executor_binding:
+    evaluator_binding:
+
+  extensions:
+```
+
+每项：
+
+```text
+SUPPORTED
+UNSUPPORTED
+READ_ONLY
+GUARDED
+```
+
+---
+
+# 20. Permission 与 Capability 分开
+
+技术能力：
+
+```text
+can_modify_evaluator = true
+```
+
+不意味着：
+
+```text
+may_modify_evaluator = true
+```
+
+因此：
+
+$$
+EffectivePermission
+=
+Capability
+\cap
+TaskPolicy
+\cap
+GovernancePolicy
+$$
+
+---
+
+# 21. EffectiveMutationPermission
+
+建议运行时构造：
+
+```yaml
+EffectiveMutationPermission:
+  target_type:
+  capability_status:
+  task_policy:
+  governance_policy:
+  effective_status:
+```
+
+其中：
+
+```text
+DENIED
+READ_ONLY
+SANDBOX_ONLY
+HUMAN_GATED
+AUTO_ALLOWED
+```
+
+---
+
+# Part VII｜Artifact Model
+
+# 22. Artifact
+
+ARSO V2.2 已经把所有影响行为的 Prompt、Examples、Ontology、Schema、Grammar、Workflow、Retriever Config、Evaluation Rubric、Compiler 等都视为 Artifact。
+
+继续保留。
+
+```yaml
+Artifact:
+  artifact_id:
+  artifact_type:
+  version:
+
+  content_ref:
+  checksum:
+
+  parent_refs: []
+  dependency_refs: []
+
+  provenance:
+  owner_scope:
+  compatibility:
+
+  intrinsic_status:
+```
+
+---
+
+# 23. Artifact intrinsic status
+
+只允许：
+
+```text
+AVAILABLE
+DEPRECATED
+QUARANTINED
+```
+
+MIC 中删除：
+
+```text
+CANDIDATE
+VALIDATED
+PRODUCTION
+```
+
+因为这些是外部 usage state。
+
+---
+
+# 24. ArtifactRef
+
+```yaml
+ArtifactRef:
+  artifact_id:
+  version:
+  checksum:
+```
+
+所有运行时行为资产必须通过 Ref 绑定版本。
+
+---
+
+# Part VIII｜SystemSnapshot
+
+# 25. 定义
+
+```yaml
+SystemSnapshot:
+  snapshot_id:
+  parent_snapshot_id:
+
+  artifact_refs: []
+  executor_bindings: []
+  evaluator_bindings: []
+
+  adapter_versions: []
+  external_dependency_refs: []
+  data_snapshot_refs: []
+
+  environment_ref:
+  runtime_config:
+
+  reproducibility_level:
+  provenance:
+```
+
+---
+
+# 26. Snapshot immutable
+
+一旦产生：
+
+$$
+\boxed{
+SnapshotContent\ cannot\ mutate
+}
+$$
+
+修改通过：
+
+```text
+fork(base_snapshot)
+→ new snapshot
+```
+
+---
+
+# 27. Reproducibility Level
+
+不再无条件声称 Snapshot 保证 behavioral reproducibility。
+
+定义：
+
+```text
+CONFIGURATION_BOUND
+ENVIRONMENT_PINNED
+DETERMINISTIC_ELIGIBLE
+```
+
+只有 pin：
+
+```text
+model build
+dependency version
+environment
+data snapshot
+seed
+```
+
+后才可升级级别。
+
+---
+
+# Part IX｜Execution Records
+
+# 28. RunRecord
+
+```yaml
+RunRecord:
+  run_id:
+  task_ref:
+  snapshot_ref:
+
+  input_ref:
+  output_ref:
+
+  executor_ref:
+
+  started_at:
+  completed_at:
+
+  status:
+  seed:
+  environment_ref:
+
+  cost_record_ref:
+  event_stream_ref:
+
+  experiment_assignment_ref:
+```
+
+状态：
+
+```text
+CREATED
+RUNNING
+COMPLETED
+FAILED
+CANCELLED
+TIMED_OUT
+```
+
+---
+
+# 29. ExecutionResult 不再独立
+
+R4.1 决定：
+
+$$
+RunRecord + OutputRefs
+$$
+
+足以承担 MIC 执行事实。
+
+因此旧：
+
+```text
+ExecutionResult
+```
+
+可以作为 DTO/view，而不是一等 persistent domain object。
+
+---
+
+# Part X｜RuntimeEvent
+
+# 30. 事件原则
+
+继续保留：
+
+$$
+\boxed{
+AppendOnly
+}
+$$
+
+推荐交付语义：
+
+$$
+AtLeastOnce
+$$
+
+消费者必须：
+
+$$
+Idempotent
+$$
+
+---
+
+# 31. RuntimeEvent schema
+
+```yaml
+RuntimeEvent:
+  event_id:
+  run_id:
+
+  event_type:
+  sequence_no:
+
+  emitted_at:
+  observed_at:
+
+  producer_ref:
+  parent_event_id:
+  correlation_id:
+
+  artifact_refs: []
+  payload_ref:
+
+  instrumentation_status:
+```
+
+---
+
+# 32. Event types
+
+MIC 至少支持：
+
+```text
+run.start
+run.end
+
+module.start
+module.end
+
+model.request
+model.response
+
+tool.request
+tool.response
+
+retrieval.query
+retrieval.result
+
+artifact.read
+
+constraint.result
+evaluation.result
+
+error
+retry
+timeout
+```
+
+Structured Mode 可增加：
+
+```text
+decision.created
+compiler.lowering
+workflow.branch
+```
+
+---
+
+# 33. Instrumentation status
+
+每个 expected channel 必须能够区分：
+
+```text
+OBSERVED
+NOT_OCCURRED
+MISSING
+REDACTED
+UNSUPPORTED
+NOT_INSTRUMENTED
+SAMPLED
+CORRUPTED
+UNKNOWN
+```
+
+---
+
+# Part XI｜ObservabilityProfile
+
+# 34. 定义
+
+这是 V2.2.1 新增的核心 object。
+
+```yaml
+ObservabilityProfile:
+  observability_id:
+  run_id:
+  snapshot_ref:
+
+  channels: []
+  expected_channels: []
+  unavailable_channels: []
+
+  global_summary:
+  provenance:
+```
+
+---
+
+# 35. ObservabilityChannel
+
+```yaml
+ObservabilityChannel:
+  channel_id:
+  channel_type:
+
+  target_loci: []
+
+  status:
+
+  completeness:
+  reliability:
+  resolution:
+  freshness:
+  sampling_rate:
+
+  missingness_reason:
+  trust_source:
+```
+
+---
+
+# 36. TraceQuality 降级为 summary
+
+旧：
+
+```text
+FULL
+PARTIAL
+MINIMAL
+UNKNOWN
+```
+
+仍可存在：
+
+```text
+global_summary = PARTIAL
+```
+
+但禁止 DiagnosisEngine 只依据这一字段完成 observability reasoning。
+
+---
+
+# Part XII｜Evaluation Model
+
+# 37. ObjectiveSpec
+
+```yaml
+ObjectiveSpec:
+  objective_id:
+  version:
+
+  name:
+  semantic_definition:
+
+  direction:
+  hard_or_soft:
+  priority:
+
+  scope:
+  provenance:
+```
+
+---
+
+# 38. MeasurementSpec
+
+```yaml
+MeasurementSpec:
+  measurement_id:
+  version:
+
+  objective_ref:
+
+  input_scope:
+  method:
+  scale:
+  aggregation:
+
+  uncertainty_method:
+  validity_scope:
+  known_limitations:
+
+  provenance:
+```
+
+---
+
+# 39. EvaluatorBinding
+
+```yaml
+EvaluatorBinding:
+  evaluator_binding_id:
+  version:
+
+  measurement_ref:
+
+  evaluator_type:
+  implementation_ref:
+
+  model_ref:
+  prompt_ref:
+  tool_ref:
+
+  parameters:
+  provenance:
+```
+
+---
+
+# 40. EvaluationRecord
+
+```yaml
+EvaluationRecord:
+  evaluation_id:
+  run_id:
+
+  objective_ref:
+  measurement_ref:
+  evaluator_binding_ref:
+
+  raw_result:
+  normalized_result:
+
+  uncertainty:
+  granularity:
+  slice_refs: []
+
+  created_at:
+  provenance:
+```
+
+---
+
+# 41. Operational vs Audit Evaluator
+
+正式支持：
+
+```text
+OPERATIONAL
+AUDIT
+```
+
+R8 evaluator fault 实验必须能够：
+
+```text
+corrupt operational evaluator
+while audit evaluator stays fixed
+```
+
+否则无法判断 metric gaming。
+
+---
+
+# Part XIII｜Evidence Model
+
+# 42. EvidenceItem
+
+```yaml
+EvidenceItem:
+  evidence_id:
+  run_refs: []
+
+  source:
+  content:
+  relation:
+  acquisition:
+
+  payload_ref:
+
+  scope:
+  provenance:
+
+  reliability:
+  confidence:
+
+  independence_group:
+  selection_bias_risk:
+  leakage_risk:
+
+  observability_ref:
+```
+
+---
+
+# 43. EvidenceSource
+
+```text
+RUNTIME
+EVALUATOR
+HUMAN
+EXTERNAL
+SIMULATION
+```
+
+---
+
+# 44. EvidenceContent
+
+```text
+OUTCOME
+CONSTRAINT
+PROCESS
+LOCAL_STATE
+BEHAVIOR_PATTERN
+```
+
+---
+
+# 45. EvidenceRelation
+
+```text
+DIRECT
+CONTRASTIVE
+COUNTERFACTUAL
+HISTORICAL
+INTERVENTIONAL
+```
+
+---
+
+# 46. EvidenceAcquisition
+
+```text
+PASSIVE
+REPLAY
+PROBE
+ADJUDICATION
+```
+
+---
+
+# 47. EvidenceBundle
+
+```yaml
+EvidenceBundle:
+  bundle_id:
+  case_scope:
+
+  evidence_refs: []
+
+  observability_ref:
+  evaluation_refs: []
+
+  construction_policy_ref:
+  created_at:
+```
+
+`EvidenceBuilder` 不允许产生：
+
+```text
+root cause = compiler
+```
+
+这种 diagnosis conclusion。
+
+---
+
+# Part XIV｜DiagnosticBelief
+
+# 48. 定义
+
+```yaml
+DiagnosticBelief:
+  belief_id:
+  case_scope:
+
+  evidence_bundle_ref:
+  observability_ref:
+
+  locus_beliefs: []
+  hypothesis_refs: []
+
+  out_of_taxonomy_score:
+
+  uncertainty_summary:
+  ambiguity_sets: []
+
+  identifiability_status:
+
+  calibration_context:
+  diagnosis_engine_ref:
+
+  created_at:
+```
+
+---
+
+# 49. LocusBelief
+
+```yaml
+LocusBelief:
+  locus:
+  marginal_support:
+  confidence_interval:
+  supporting_evidence_refs: []
+  counterevidence_refs: []
+```
+
+解释为：
+
+$$
+P(R_i=1\mid E,\Omega)
+$$
+
+的操作性信念。
+
+不要求：
+
+$$
+\sum_i p_i=1
+$$
+
+---
+
+# 50. Seed loci
+
+默认：
+
+```text
+R0 OBJECTIVE
+R1 DATA_CONTEXT
+R2 SEMANTIC_MODEL
+R3 DECISION
+R4 ROUTE_TOPOLOGY
+R5 SPECIFICATION
+R6 COMPILER
+R7 EXECUTOR
+R8 EVALUATOR
+R9 ENVIRONMENT
+```
+
+领域可通过 namespace 扩展：
+
+```text
+fashion.compiler.reference_binding
+rag.retrieval.ranking
+agent.tool_argument
+```
+
+但不能修改全局含义。
+
+---
+
+# Part XV｜IdentifiabilityAssessment
+
+# 51. Schema
+
+```yaml
+IdentifiabilityAssessment:
+  assessment_id:
+  belief_ref:
+
+  status:
+
+  competing_hypothesis_refs: []
+  ambiguity_sets: []
+
+  missing_evidence: []
+  blocking_observability: []
+
+  recommended_probe_types: []
+
+  confidence:
+  rationale_ref:
+```
+
+---
+
+# 52. Status
+
+```text
+IDENTIFIED
+AMBIGUOUS
+INSUFFICIENT_EVIDENCE
+UNIDENTIFIABLE
+OUT_OF_TAXONOMY
+```
+
+---
+
+# 53. INSufficient ≠ Unidentifiable
+
+`INSUFFICIENT_EVIDENCE`：
+
+> 还可以通过新的 probe 获得区分能力。
+
+`UNIDENTIFIABLE`：
+
+> 当前 capability / experiment design 下，继续获取同类型证据也无法区分。
+
+这是 ActionPolicy 的关键输入。
+
+---
+
+# Part XVI｜HypothesisRecord
+
+# 54. Schema
+
+```yaml
+HypothesisRecord:
+  hypothesis_id:
+
+  locus_set: []
+  mechanism:
+  scope:
+
+  supporting_evidence_refs: []
+  counterevidence_refs: []
+
+  prediction:
+  falsifier:
+
+  required_observations: []
+  proposed_probe_refs: []
+
+  causal_support_grade:
+  status:
+
+  parent_hypothesis_refs: []
+  created_at:
+```
+
+---
+
+# 55. Status
+
+```text
+PROPOSED
+ASSOCIATIONALLY_SUPPORTED
+CONTRASTIVELY_SUPPORTED
+INTERVENTIONALLY_SUPPORTED
+WEAKENED
+FALSIFIED
+INCONCLUSIVE
+```
+
+禁止：
+
+```text
+CONFIRMED_ROOT_CAUSE
+```
+
+除非另有严格领域协议。
+
+---
+
+# Part XVII｜Probe
+
+# 56. ProbePlan
+
+```yaml
+ProbePlan:
+  probe_id:
+
+  belief_ref:
+  target_hypothesis_refs: []
+
+  evidence_gap:
+  probe_type:
+
+  variables_changed: []
+  variables_held_fixed: []
+
+  expected_observation:
+  expected_information_value:
+
+  budget_request:
+  risk:
+
+  executor_requirements: []
+  stop_conditions: []
+
+  authorization:
+```
+
+---
+
+# 57. Probe types
+
+MIC 第一版：
+
+```text
+REPEAT
+TRACE_ENRICHMENT
+COUNTERFACTUAL_REPLACEMENT
+FREEZE_AND_CHANGE
+EVALUATOR_CROSSCHECK
+HUMAN_ADJUDICATION
+```
+
+Optional：
+
+```text
+CROSS_EXECUTOR_REPLAY
+SIMULATION
+```
+
+---
+
+# 58. ProbeResult
+
+```yaml
+ProbeResult:
+  probe_result_id:
+  probe_plan_ref:
+
+  status:
+  run_refs: []
+
+  new_evidence_refs: []
+  observed_effects:
+
+  expected_vs_observed:
+  information_gain_estimate:
+
+  cost:
+  risk_events: []
+```
+
+---
+
+# 59. Probe lifecycle
+
+```text
+PROPOSED
+→ AUTHORIZED
+→ RUNNING
+→ COMPLETED
+```
+
+异常：
+
+```text
+FAILED
+CANCELLED
+INCONCLUSIVE
+BUDGET_EXHAUSTED
+```
+
+---
+
+# 60. Probe 后必须重新诊断
+
+正式状态约束：
+
+$$
+ProbeResult
+\not\rightarrow Intervention
+$$
+
+直接跳转不允许。
+
+必须：
+
+$$
+ProbeResult
+\rightarrow
+EvidenceBundle_{t+1}
+\rightarrow
+DiagnosticBelief_{t+1}
+$$
+
+---
+
+# Part XVIII｜ActionDecision
+
+# 61. Schema
+
+```yaml
+ActionDecision:
+  decision_id:
+
+  belief_ref:
+  identifiability_ref:
+  observability_ref:
+
+  action:
+
+  target_loci: []
+  requested_probe_type:
+
+  allowed_intervention_scope:
+
+  expected_benefit:
+  expected_information_value:
+  expected_cost:
+  risk_estimate:
+
+  policy_ref:
+  rationale_ref:
+
+  created_at:
+```
+
+---
+
+# 62. Action enum
+
+```text
+NO_CHANGE
+ABSTAIN
+REQUEST_EVIDENCE
+REQUEST_HUMAN
+INTERVENE
+SEARCH
+STOP
+```
+
+---
+
+# 63. ActionPolicy V0
+
+第一版必须：
+
+$$
+\boxed{
+RuleBased
+}
+$$
+
+不允许因为最终愿景中存在 Meta-Policy 就直接做 learned router。
+
+原 V2.2 本身也曾明确 V0 应采用 rule-based，而 Learned Router 保持开放。
+
+---
+
+# 64. ActionPolicy 示例逻辑
+
+仅作默认 policy，不作为科学真理：
+
+```text
+if risk > allowed:
+    REQUEST_HUMAN or STOP
+
+elif identifiability == INSUFFICIENT_EVIDENCE:
+    REQUEST_EVIDENCE
+
+elif identifiability == UNIDENTIFIABLE:
+    ABSTAIN
+
+elif identifiability == OUT_OF_TAXONOMY:
+    ABSTAIN or REQUEST_HUMAN
+
+elif no actionable failure:
+    NO_CHANGE
+
+elif high-confidence localized repair exists:
+    INTERVENE
+
+else:
+    SEARCH
+```
+
+阈值：
+
+$$
+OPEN
+$$
+
+---
+
+# Part XIX｜SearchPlan
+
+# 65. Search 不是 MIC 必选
+
+仅当：
+
+```text
+ActionDecision = SEARCH
+```
+
+时产生。
+
+```yaml
+SearchPlan:
+  search_plan_id:
+
+  target_loci: []
+  mutation_space:
+
+  topology:
+  budget:
+
+  candidate_limit:
+  stop_conditions:
+
+  search_algorithm_ref:
+```
+
+---
+
+# 66. Search topology
+
+可以包括：
+
+```text
+LOCAL
+SINGLE_LINEAGE
+BRANCH
+BEAM
+POPULATION
+HYBRID
+```
+
+但不再用：
+
+```text
+C0 C1 C2 C3 C4 C5
+```
+
+表示 action 与 search 的混合复杂度。
+
+---
+
+# Part XX｜Intervention
+
+# 67. InterventionPlan
+
+```yaml
+InterventionPlan:
+  intervention_id:
+
+  belief_ref:
+  hypothesis_refs: []
+
+  base_snapshot_ref:
+  target_artifact_refs: []
+
+  operations: []
+
+  hard_constraints: []
+  preserve_refs: []
+
+  expected_effects:
+
+  validation_plan_ref:
+
+  permission_evidence:
+  operator_ref:
+
+  budget_request:
+  risk:
+```
+
+---
+
+# 68. Intervention operation
+
+至少：
+
+```yaml
+Operation:
+  target_ref:
+  operation_type:
+  before_ref:
+  after_candidate_ref:
+  parameters:
+```
+
+---
+
+# 69. Minimum sufficient coupled set
+
+正式保留：
+
+$$
+\min Cost(\Delta\Theta)
+$$
+
+但不强迫：
+
+$$
+|\Delta\Theta|=1
+$$
+
+例如：
+
+```text
+Schema + Compiler
+```
+
+可能必须同步修改。
+
+---
+
+# 70. InterventionResult
+
+```yaml
+InterventionResult:
+  intervention_result_id:
+  intervention_plan_ref:
+
+  sandbox_snapshot_ref:
+
+  changed_artifact_refs: []
+
+  status:
+  cost:
+  runtime_events_ref:
+```
+
+---
+
+# 71. Intervention lifecycle
+
+```text
+PLANNED
+→ AUTHORIZED
+→ SANDBOX_APPLIED
+→ VALIDATING
+→ ACCEPTED / REJECTED / INCONCLUSIVE
+```
+
+MIC 中没有：
+
+```text
+PRODUCTION
+```
+
+---
+
+# Part XXI｜Validation
+
+# 72. ValidationPlan
+
+```yaml
+ValidationPlan:
+  validation_plan_id:
+
+  target_metrics: []
+  protected_metrics: []
+
+  target_case_refs: []
+  regression_case_refs: []
+  replication_case_refs: []
+
+  thresholds:
+  evaluator_bindings: []
+
+  required_gates:
+```
+
+---
+
+# 73. Candidate Validation Gates
+
+正式采用：
+
+## VG0｜Integrity / Safety
+
+```text
+schema valid
+permissions valid
+hard constraints valid
+runtime integrity
+safety constraints
+```
+
+---
+
+## VG1｜Target Repair
+
+回答：
+
+> 目标 failure 是否真正改善？
+
+---
+
+## VG2｜Protected Regression
+
+检查：
+
+```text
+previous success cases
+protected slices
+hard constraints
+cost
+risk
+```
+
+---
+
+## VG3｜Generalization / Replication
+
+检查：
+
+```text
+other seeds
+matched cases
+other slices
+repeat rollout
+```
+
+---
+
+# 74. Scientific Level 与 VG 分离
+
+科研等级：
+
+```text
+SL0 Conformance
+SL1 Mechanism
+SL2 End-to-End
+SL3 Generalization
+```
+
+candidate gate：
+
+```text
+VG0
+VG1
+VG2
+VG3
+```
+
+禁止再称：
+
+```text
+G0-G3
+```
+
+而不说明是哪一体系。
+
+---
+
+# 75. ValidationResult
+
+```yaml
+ValidationResult:
+  validation_result_id:
+  validation_plan_ref:
+  intervention_result_ref:
+
+  gate_results:
+    VG0:
+    VG1:
+    VG2:
+    VG3:
+
+  metric_results:
+  evaluator_refs:
+
+  final_status:
+  rationale_ref:
+```
+
+状态：
+
+```text
+ACCEPTED
+REJECTED
+INCONCLUSIVE
+```
+
+---
+
+# Part XXII｜ExperimentAssignment
+
+# 76. 为什么必须成为 Core
+
+Research V2.2.1 最核心的 SC3：
+
+$$
+DiagnosisCorrectness
+\rightarrow
+RepairOutcome
+$$
+
+必须能够工程化控制 Diagnosis condition。
+
+---
+
+# 77. Schema
+
+```yaml
+ExperimentAssignment:
+  experiment_id:
+  assignment_id:
+
+  case_ref:
+  paired_case_ref:
+
+  condition:
+
+  reference_task_ref:
+  base_snapshot_ref:
+  evidence_snapshot_ref:
+
+  diagnosis_condition:
+  diagnosis_ref:
+
+  action_policy_ref:
+  intervention_policy_ref:
+
+  teacher_ref:
+  evaluator_refs: []
+
+  information_access_profile:
+
+  budget_assignment:
+  randomization_group:
+  seed_group:
+
+  data_partition_role:
+
+  created_at:
+```
+
+---
+
+# 78. diagnosis_condition
+
+```text
+ORACLE_CORRECT
+PREDICTED
+WRONG_CONTROL
+NO_DIAGNOSIS
+IMPLICIT_DIAGNOSIS
+UNCERTAIN
+```
+
+这样 E0/E1 才能严格实现。
+
+---
+
+# 79. InformationAccessProfile
+
+必须记录每个方法能看到：
+
+```text
+output
+score
+structured evaluation
+runtime trace
+module labels
+probe results
+oracle labels
+```
+
+避免：
+
+> ARSO 看 full trace，baseline 只看 score，然后说 diagnosis 算法更强。
+
+---
+
+# Part XXIII｜Budget
+
+# 80. MIC Budget 只管理 Research / Optimization
+
+正式与：
+
+```text
+ProductionQuota
+```
+
+分开。
+
+---
+
+# 81. BudgetReservation
+
+```yaml
+BudgetReservation:
+  reservation_id:
+
+  experiment_ref:
+  action_ref:
+
+  resource_type:
+  estimated_amount:
+  reserved_amount:
+  consumed_amount:
+
+  status:
+```
+
+---
+
+# 82. Resource types
+
+至少：
+
+```text
+STUDENT_CALL
+TEACHER_CALL
+JUDGE_CALL
+TOOL_CALL
+IMAGE_GENERATION
+SIMULATION
+HUMAN_REVIEW
+TOKENS
+GPU_SECONDS
+WALL_CLOCK
+DOLLAR_COST
+```
+
+这继承 V2.2 对 matched-budget fairness 的要求。
+
+---
+
+# Part XXIV｜MIC Protocol Surface
+
+正式冻结 **13 个 Protocol**。
+
+```text
+ArtifactStore
+SnapshotStore
+
+ExecutorAdapter
+TraceCollector
+
+Evaluator
+EvidenceBuilder
+DiagnosisEngine
+
+ProbeOperator
+ActionPolicy
+
+InterventionOperator
+ValidationRunner
+
+ExperimentRecorder
+BudgetManager
+```
+
+---
+
+# 83. ArtifactStore
+
+唯一职责：
+
+```text
+put immutable artifact
+resolve exact version
+read dependencies
+quarantine
+deprecate
+```
+
+不负责：
+
+```text
+candidate promotion
+production deployment
+memory curation
+```
+
+---
+
+# 84. SnapshotStore
+
+概念签名：
+
+```python
+create_snapshot(...)
+get_snapshot(...)
+fork_snapshot(base_snapshot_id, changes)
+diff_snapshots(a, b)
+```
+
+任何 intervention 必须：
+
+```text
+fork base
+```
+
+不能原地修改。
+
+---
+
+# 85. ExecutorAdapter
+
+核心接口：
+
+```python
+run(
+    snapshot,
+    task_input,
+    run_context
+) -> RunRecord
+```
+
+### 关键要求
+
+L0 Adapter 可以只有：
+
+```text
+input
+run()
+output
+```
+
+绝不能强制实现 DecisionIR。
+
+---
+
+# 86. TraceCollector
+
+职责：
+
+```text
+collect RuntimeEvents
+know expected instrumentation
+detect missingness
+build ObservabilityProfile
+```
+
+不是简单 log sink。
+
+---
+
+# 87. Evaluator
+
+概念接口：
+
+```python
+evaluate(
+    run,
+    measurement_spec,
+    evaluator_binding
+) -> EvaluationRecord
+```
+
+Evaluator 不拥有 Objective definition。
+
+---
+
+# 88. EvidenceBuilder
+
+```python
+build(
+    run_records,
+    evaluation_records,
+    observability_profile,
+    prior_evidence=None
+) -> EvidenceBundle
+```
+
+不得直接返回：
+
+```text
+root_cause
+```
+
+---
+
+# 89. DiagnosisEngine
+
+```python
+diagnose(
+    reference_task,
+    evidence_bundle,
+    observability_profile
+) -> DiagnosisOutput
+```
+
+其中：
+
+```text
+DiagnosisOutput:
+  DiagnosticBelief
+  HypothesisRecords
+  IdentifiabilityAssessment
+```
+
+---
+
+# 90. ProbeOperator
+
+```python
+execute_probe(
+    probe_plan,
+    base_snapshot
+) -> ProbeResult
+```
+
+---
+
+# 91. ActionPolicy
+
+```python
+decide(
+    diagnostic_belief,
+    identifiability,
+    observability,
+    permission,
+    risk,
+    budget
+) -> ActionDecision
+```
+
+---
+
+# 92. InterventionOperator
+
+```python
+apply(
+    intervention_plan,
+    base_snapshot
+) -> InterventionResult
+```
+
+必须返回新的：
+
+```text
+sandbox_snapshot_ref
+```
+
+---
+
+# 93. ValidationRunner
+
+```python
+validate(
+    intervention_result,
+    validation_plan
+) -> ValidationResult
+```
+
+---
+
+# 94. ExperimentRecorder
+
+负责：
+
+```text
+condition assignment
+paired comparisons
+lineage
+split firewall
+research metadata
+reproducibility metadata
+```
+
+这是第一篇研究的重要 infrastructure。
+
+---
+
+# 95. BudgetManager
+
+概念：
+
+```python
+estimate()
+reserve()
+commit()
+release()
+```
+
+但只针对：
+
+$$
+ResearchOptimizationBudget
+$$
+
+---
+
+# Part XXV｜Core State Machine
+
+# 96. 主状态机
+
+```text
+CREATED
+↓
+SNAPSHOT_BOUND
+↓
+RUNNING
+↓
+EVALUATING
+↓
+BUILDING_EVIDENCE
+↓
+DIAGNOSING
+↓
+ASSESSING_IDENTIFIABILITY
+↓
+DECIDING_ACTION
+```
+
+---
+
+# 97. NO_CHANGE path
+
+```text
+DECIDING_ACTION
+→ NO_CHANGE
+→ COMPLETED
+```
+
+---
+
+# 98. ABSTAIN path
+
+```text
+DECIDING_ACTION
+→ ABSTAINED
+→ COMPLETED
+```
+
+必须保存：
+
+```text
+reason
+belief
+identifiability
+```
+
+---
+
+# 99. Probe path
+
+```text
+DECIDING_ACTION
+→ PROBE_PLANNING
+→ PROBING
+→ NEW_EVIDENCE
+→ DIAGNOSING
+```
+
+---
+
+# 100. Human path
+
+```text
+DECIDING_ACTION
+→ WAITING_HUMAN
+→ HUMAN_EVIDENCE
+→ DIAGNOSING
+```
+
+---
+
+# 101. Intervention path
+
+```text
+DECIDING_ACTION
+→ INTERVENTION_PLANNING
+→ SANDBOX_APPLIED
+→ VALIDATING
+→ ACCEPTED / REJECTED / INCONCLUSIVE
+```
+
+---
+
+# 102. Search path
+
+```text
+DECIDING_ACTION
+→ SEARCH_SUBROUTINE
+→ INTERVENTION_CANDIDATE
+→ VALIDATING
+```
+
+---
+
+# Part XXVI｜Lineage
+
+# 103. 所有关键关系必须可追踪
+
+必须回答：
+
+```text
+这个 Run 使用哪个 Snapshot？
+这个 Evaluation 使用哪个 Evaluator？
+这条 Evidence 来自哪些 Run？
+这个 Belief 使用了哪些 Evidence？
+这个 Hypothesis 被什么支持/反驳？
+这个 Action 为什么被选择？
+这个 Probe 测了哪个 Hypothesis？
+这个 Intervention 改了哪些 Artifact？
+这个 Validation 为什么接受/拒绝？
+这个实验属于什么 condition？
+```
+
+---
+
+# 104. 最小 lineage edge
+
+```text
+Run
+→ Evaluation
+→ Evidence
+→ DiagnosticBelief
+→ Hypothesis
+→ ActionDecision
+→ Probe / Intervention
+→ Validation
+```
+
+不能只保存：
+
+```text
+prompt v1 → prompt v2
+```
+
+---
+
+# Part XXVII｜Sealed-Test Firewall
+
+# 105. DataPartitionRole
+
+```text
+TRAIN
+OPTIMIZATION
+VALIDATION
+SEALED_TEST
+```
+
+---
+
+# 106. SEALED_TEST 禁止进入
+
+```text
+EvidenceBuilder for optimization
+DiagnosisEngine adaptation
+Hypothesis generation
+Probe selection
+ActionPolicy learning
+Intervention generation
+Search
+Memory
+Meta-learning
+```
+
+一旦使用：
+
+$$
+\boxed{
+NoLongerSealed
+}
+$$
+
+---
+
+# 107. ExperimentRecorder 必须自动检查
+
+不能只靠论文作者记住。
+
+例如：
+
+```text
+if evidence.source.partition == SEALED_TEST:
+    reject optimization write
+```
+
+---
+
+# Part XXVIII｜Progressive Adoption
+
+这是 V2.2.1 相比 V2.2 最大的工程改动之一。
+
+原 V2.2 一方面提出 Progressive Adoption，另一方面生产 Data Plane 又默认要求 TaskIR→DecisionIR→Compiler→ExecutionIR。
+
+本版正式解决这一矛盾。
+
+---
+
+# 108. L0｜Opaque Mode
+
+最低要求：
+
+```text
+ReferenceTaskSpec
+ExecutorAdapter
+Evaluator
+RunRecord
+```
+
+流程：
+
+$$
+Input
+\rightarrow
+ExistingSystem
+\rightarrow
+Output
+$$
+
+ARSO 可以：
+
+```text
+evaluate
+output-level evidence
+limited diagnosis
+abstain
+repeat probe
+```
+
+不需要：
+
+```text
+TaskIR
+DecisionIR
+Compiler
+```
+
+---
+
+# 109. L1｜Observable Mode
+
+增加：
+
+```text
+RuntimeEvent
+ObservabilityProfile
+module boundaries
+tool trace
+retrieval trace
+cost
+error
+```
+
+能力：
+
+```text
+multi-locus diagnosis
+observability calibration
+trace-enrichment probe
+counterfactual probe
+```
+
+---
+
+# 110. L2｜Structured Mode
+
+可选引入：
+
+```text
+TaskIR
+DecisionIR
+ExecutionIR
+Workflow
+CompilerMappingTrace
+```
+
+此时可以更清楚诊断：
+
+```text
+Decision
+Route
+Compiler
+Executor
+```
+
+边界。
+
+---
+
+# 111. L3｜Semantic Mode
+
+增加：
+
+```text
+Domain Semantic Model K
+Ontology
+Schema
+Grammar
+Semantic Decision State
+Domain Pack
+```
+
+用于研究：
+
+```text
+semantic repair
+semantic compilation
+cross-executor transfer
+semantic asset evolution
+```
+
+---
+
+# Part XXIX｜Optional Three-Layer IR
+
+# 112. 三层 IR 没有被否定
+
+原 V2.2 的：
+
+$$
+TaskIR
+\rightarrow
+DecisionIR
+\rightarrow
+ExecutionIR
+$$
+
+仍作为 Extended Architecture 保留。
+
+只是：
+
+$$
+\boxed{
+L2+,\ not\ MIC
+}
+$$
+
+---
+
+# 113. TaskIR
+
+回答：
+
+> 当前 instance 要完成什么？
+
+```yaml
+TaskIR:
+  goal:
+  inputs:
+  outputs:
+  hard_constraints:
+  soft_preferences:
+  evaluation_refs:
+```
+
+---
+
+# 114. DecisionIR
+
+回答：
+
+> 系统决定了什么？
+
+```yaml
+DecisionIR:
+  assumptions:
+  evidence:
+  decomposition:
+  decisions:
+  constraints:
+  route:
+  verification:
+```
+
+---
+
+# 115. ExecutionIR
+
+回答：
+
+> 当前 executor 实际怎样执行？
+
+```yaml
+ExecutionIR:
+  executor_ref:
+  prompt:
+  examples:
+  references:
+  tools:
+  parameters:
+  retry_policy:
+  output_schema:
+```
+
+---
+
+# 116. CompilerMappingTrace
+
+如果启用 Compiler：
+
+必须记录：
+
+$$
+DecisionElement
+\rightarrow
+ExecutionElement
+$$
+
+的 mapping。
+
+否则：
+
+> semantic information loss
+
+无法诊断。
+
+---
+
+# Part XXX｜Extended Semantic Platform
+
+# 117. \(K,\mathcal F,\mathcal T\)
+
+继续保留 V2.2 的长期问题模型：
+
+$$
+\mathbb P=(K,\mathcal F,\mathcal T)
+$$
+
+但仅在 L3 完整启用。
+
+---
+
+# 118. Domain Pack
+
+原 V2.2 将 Domain Pack 定义为领域知识、Artifact Types、Objectives/Evaluators、Intervention Operators、Validation Suites 等容器，并明确 RAG/Agent 应属于 Pattern Pack 而不是 Domain Pack。
+
+这一分离继续 Freeze。
+
+Extended Domain Pack 可包括：
+
+```text
+Ontology
+Schema
+Grammar
+Artifact Types
+Evaluation Semantics
+Fault Extensions
+Intervention Operators
+Validation Suites
+Domain Governance
+```
+
+---
+
+# 119. Pattern Pack
+
+负责执行组织模式：
+
+```text
+RAG
+Agent
+Multi-Agent
+Planner-Executor
+Generate-Verify
+Retrieve-Reason-Retrieve
+```
+
+Pattern 不拥有领域语义。
+
+---
+
+# 120. Domain × Pattern
+
+例如：
+
+```text
+Fashion + Generate/Verify
+Biomedical + RAG
+Code + Agent
+Scientific Protocol + Planner/Executor
+```
+
+ARSO Core 不应为每个组合增加新顶层模块。
+
+---
+
+# Part XXXI｜Memory
+
+# 121. MIC 不含 Adaptive Memory
+
+第一阶段持久化：
+
+```text
+Runs
+Events
+Evidence
+Diagnosis
+Experiments
+Interventions
+Validation
+```
+
+叫：
+
+$$
+ExperimentHistory
+$$
+
+而不是：
+
+$$
+AdaptiveMemory
+$$
+
+---
+
+# 122. Future Memory Layer
+
+未来可重新引入 V2.2 的：
+
+```text
+Case Memory
+Semantic Memory
+Intervention Memory
+Meta Memory
+```
+
+但需在 SC1–SC4 survive 后进入。
+
+---
+
+# 123. Knowledge Promotion
+
+不属于 V0。
+
+未来必须经过：
+
+```text
+provenance
+scope
+support
+counterevidence
+validation
+compatibility
+quarantine
+revalidation
+```
+
+而不能：
+
+```text
+LLM said it repeatedly
+→ stable knowledge
+```
+
+---
+
+# Part XXXII｜Deployment
+
+# 124. MIC 到哪里为止
+
+MIC：
+
+$$
+BaseSnapshot
+\rightarrow
+SandboxSnapshot
+\rightarrow
+ValidatedCandidateSnapshot
+$$
+
+到此结束。
+
+---
+
+# 125. Production Deployment Deferred
+
+未来：
+
+```text
+SHADOW
+CANARY
+PRODUCTION
+STABLE
+ROLLBACK
+```
+
+属于独立 Deployment Plane。
+
+---
+
+# 126. Artifact 不持有 Production 状态
+
+同一个 Artifact 可以：
+
+```text
+Production in App A
+Canary in App B
+Offline in App C
+```
+
+所以：
+
+$$
+ProductionStatus
+$$
+
+只能属于 deployment binding/pointer。
+
+---
+
+# Part XXXIII｜Engineering Support for E0–E7
+
+# 127. E0｜Oracle Diagnosis Value
+
+最小需要：
+
+```text
+ReferenceTaskSpec
+SystemSnapshot
+RunRecord
+Evaluation
+EvidenceBundle
+ExperimentAssignment
+Intervention
+Validation
+Budget
+```
+
+**不需要 DiagnosisEngine。**
+
+这是非常重要的开发顺序。
+
+---
+
+# 128. E1｜Diagnosis Mediation
+
+增加：
+
+```text
+DiagnosticBelief
+DiagnosisEngine
+diagnosis_condition
+```
+
+支持：
+
+```text
+oracle
+predicted
+wrong
+none
+implicit
+```
+
+---
+
+# 129. E2｜Observability Degradation
+
+需要：
+
+```text
+ObservabilityProfile
+TraceCollector
+controlled event masking
+hidden masking condition
+```
+
+---
+
+# 130. E3｜Open-Set Diagnosis
+
+需要：
+
+```text
+out-of-taxonomy fault
+unknown mechanism
+compound fault
+ambiguous case
+```
+
+以及：
+
+```text
+DiagnosticBelief
+IdentifiabilityAssessment
+```
+
+---
+
+# 131. E4｜Selective Action
+
+增加：
+
+```text
+ActionPolicy
+ActionDecision
+coverage logging
+```
+
+---
+
+# 132. E5｜Targeted Probe
+
+增加：
+
+```text
+ProbePlan
+ProbeOperator
+ProbeResult
+```
+
+并支持：
+
+```text
+equal-budget random rollout
+```
+
+control。
+
+---
+
+# 133. E6｜Cross-Artifact Minimal Repair
+
+增加多个 intervention target 类型。
+
+第一阶段每个 system 只建议：
+
+$$
+3\text{–}4
+$$
+
+个 locus。
+
+---
+
+# 134. E7｜Epistemic Adaptive Search
+
+最后才增加：
+
+```text
+SearchPlan
+SearchController
+```
+
+不应早于 E0–E6。
+
+---
+
+# Part XXXIV｜Prototype Roadmap
+
+# 135. P0｜Scientific Skeleton
+
+实现：
+
+```text
+ReferenceTaskSpec
+Artifact
+SystemSnapshot
+RunRecord
+RuntimeEvent
+
+ObjectiveSpec
+MeasurementSpec
+EvaluatorBinding
+EvaluationRecord
+
+EvidenceBundle
+
+ExperimentAssignment
+
+InterventionPlan/Result
+ValidationPlan/Result
+
+Budget
+```
+
+目标：
+
+$$
+\boxed{
+Run\ E0
+}
+$$
+
+---
+
+# 136. P1｜Diagnostic Core
+
+增加：
+
+```text
+ObservabilityProfile
+DiagnosticBelief
+IdentifiabilityAssessment
+HypothesisRecord
+DiagnosisEngine
+```
+
+目标：
+
+$$
+E1-E3
+$$
+
+---
+
+# 137. P2｜Epistemic Control
+
+增加：
+
+```text
+ProbePlan
+ProbeResult
+ProbeOperator
+
+ActionDecision
+ActionPolicy
+```
+
+目标：
+
+$$
+E4-E5
+$$
+
+---
+
+# 138. P3｜Cross-Artifact Optimization
+
+增加：
+
+```text
+Multiple intervention loci
+SearchPlan
+Optional search algorithms
+```
+
+目标：
+
+$$
+E6-E7
+$$
+
+---
+
+# 139. P4+｜Extended Platform
+
+才进入：
+
+```text
+TaskIR
+DecisionIR
+ExecutionIR
+Compiler
+
+Domain Pack
+Pattern Pack
+
+Memory
+Knowledge Promotion
+Transfer
+Meta-learning
+Deployment
+```
+
+---
+
+# Part XXXV｜MIC Conformance Tests
+
+只有以下 FT1–FT10 全部通过，ARSO-MIC Interface 才允许从：
+
+```text
+Freeze Candidate
+```
+
+升级：
+
+```text
+Frozen
+```
+
+---
+
+# 140. FT1｜Black-Box Drop-In
+
+只有：
+
+```python
+run(input) -> output
+```
+
+的系统可以进入 L0。
+
+若必须先实现 DecisionIR：
+
+$$
+FAIL
+$$
+
+---
+
+# 141. FT2｜Trace Missingness
+
+系统能够区分：
+
+```text
+event did not occur
+```
+
+与：
+
+```text
+event not observed
+```
+
+否则：
+
+$$
+FAIL
+$$
+
+---
+
+# 142. FT3｜Evaluator Separation
+
+同一 Objective 可以：
+
+```text
+replace Measurement
+replace Evaluator
+```
+
+而不修改 ReferenceTaskSpec 的语义目标。
+
+---
+
+# 143. FT4｜Open Set
+
+taxonomy 外 fault 不会被强制写成：
+
+```text
+R6 0.99
+```
+
+---
+
+# 144. FT5｜Unidentifiable
+
+两个 competing cause 在当前证据下不可区分时：
+
+```text
+UNIDENTIFIABLE
+```
+
+是合法 output。
+
+---
+
+# 145. FT6｜Observability Degradation
+
+删除 relevant trace：
+
+```text
+accuracy ↓
+```
+
+时，system 至少能够记录：
+
+```text
+observability change
+```
+
+并允许 belief/action 产生对应变化。
+
+具体 calibration performance 属 Research Test，不属于 conformance。
+
+---
+
+# 146. FT7｜Probe Loop
+
+真实实现：
+
+$$
+REQUEST\_EVIDENCE
+\rightarrow
+Probe
+\rightarrow
+Evidence
+\rightarrow
+Rediagnose
+$$
+
+而不是 mock enum。
+
+---
+
+# 147. FT8｜Diagnosis Mediation
+
+能执行：
+
+```text
+same evidence
+same repair engine
+different diagnosis condition
+```
+
+的 matched experiment。
+
+---
+
+# 148. FT9｜No-Fault Case
+
+系统可以输出：
+
+```text
+NO_CHANGE
+```
+
+且没有强制产生 Candidate。
+
+---
+
+# 149. FT10｜Sandbox Isolation
+
+Intervention 不得原地修改：
+
+```text
+base_snapshot
+```
+
+---
+
+# Part XXXVI｜Security & Governance
+
+# 150. Least Privilege
+
+任何 ActionPolicy 输出都必须经过：
+
+$$
+EffectivePermission
+$$
+
+hard guard。
+
+Learned policy 未来也不能绕过。
+
+---
+
+# 151. Human Gate
+
+对于：
+
+```text
+HIGH
+CRITICAL
+```
+
+risk：
+
+MIC 默认不得 autonomous production intervention。
+
+可以：
+
+```text
+diagnose
+probe in sandbox
+recommend intervention
+```
+
+但 deployment 属独立治理。
+
+---
+
+# 152. Tenant isolation
+
+未来多租户：
+
+```text
+tenant-specific evidence
+tenant-specific artifacts
+tenant-specific preference
+```
+
+默认不进入 global knowledge。
+
+---
+
+# 153. Sensitive evidence
+
+Evidence 必须记录：
+
+```text
+sensitivity
+retention
+redaction
+access scope
+```
+
+尤其：
+
+```text
+human feedback
+external records
+proprietary trace
+```
+
+---
+
+# Part XXXVII｜Persistence Architecture
+
+# 154. 最小物理存储建议
+
+MIC 可以只需要三个逻辑 storage：
+
+### Artifact / Snapshot Store
+
+存：
+
+```text
+Artifacts
+Snapshots
+large payload references
+```
+
+### Event / Run Store
+
+存：
+
+```text
+Runs
+Events
+Observability
+```
+
+### Research / Control Store
+
+存：
+
+```text
+Evaluation
+Evidence
+Diagnosis
+Hypotheses
+Probe
+Action
+Intervention
+Validation
+Experiment
+Budget
+```
+
+---
+
+# 155. 不要求微服务
+
+本规范冻结的是：
+
+$$
+LogicalOwnership
+$$
+
+不是：
+
+$$
+MicroserviceTopology
+$$
+
+第一版完全可以：
+
+```text
+one Python service
++ Postgres
++ object storage
+```
+
+实现。
+
+不要因 Master Architecture 提前拆十几个服务。
+
+---
+
+# Part XXXVIII｜Recommended Python Surface
+
+# 156. 技术基线
+
+继续建议：
+
+```text
+Python 3.12+
+Pydantic v2
+typing.Protocol
+JSON / JSONB
+PostgreSQL-compatible relational persistence
+object storage for large payload
+```
+
+其中 PostgreSQL/object storage 是工程建议，不属于 ARSO scientific requirement。
+
+---
+
+# 157. BaseModel policy
+
+例如概念上：
+
+```python
+class ARSOModel(BaseModel):
+    schema_version: str
+    model_config = ConfigDict(extra="forbid")
+```
+
+---
+
+# 158. Immutable domain records
+
+至少建议 immutable：
+
+```text
+ReferenceTaskSpec
+Artifact
+SystemSnapshot
+EvaluationRecord
+EvidenceItem
+DiagnosticBelief
+HypothesisRecord
+ActionDecision
+ExperimentAssignment
+```
+
+修改通过新对象/新版本。
+
+---
+
+# 159. Mutable process records
+
+生命周期记录可以追加状态：
+
+```text
+Run
+ProbeExecution
+InterventionExecution
+ValidationExecution
+BudgetReservation
+```
+
+但建议通过 event/state transition，而不是任意字段覆写。
+
+---
+
+# Part XXXIX｜Research ↔ Engineering Traceability
+
+这是 V2.2.1 必须新增的正式一致性表。
+
+| Research Concept      | Engineering Owner                              |
+| --------------------- | ---------------------------------------------- |
+| Reference Task        | `ReferenceTaskSpec`                            |
+| System capability     | `CapabilityProfile`                            |
+| Configuration version | `SystemSnapshot`                               |
+| Observation           | `RuntimeEvent`                                 |
+| Observability         | `ObservabilityProfile`                         |
+| Objective             | `ObjectiveSpec`                                |
+| Measurement           | `MeasurementSpec`                              |
+| Evaluator             | `EvaluatorBinding`                             |
+| Evaluation result     | `EvaluationRecord`                             |
+| Evidence              | `EvidenceItem / EvidenceBundle`                |
+| Diagnostic belief     | `DiagnosticBelief`                             |
+| Open-set diagnosis    | `DiagnosticBelief + IdentifiabilityAssessment` |
+| Hypothesis            | `HypothesisRecord`                             |
+| Evidence gap          | `IdentifiabilityAssessment`                    |
+| Active evidence       | `ProbePlan / ProbeResult`                      |
+| Selective action      | `ActionDecision`                               |
+| Controlled repair     | `InterventionPlan / Result`                    |
+| Regression protection | `ValidationPlan / VG2`                         |
+| Scientific mediation  | `ExperimentAssignment`                         |
+| Cost fairness         | `BudgetReservation / Ledger`                   |
+
+---
+
+# 160. Traceability rule
+
+以后新增一个 Research Concept：
+
+$$
+C
+$$
+
+必须回答：
+
+> 哪个 Engineering object/protocol 是其 owner？
+
+找不到：
+
+$$
+\boxed{
+EngineeringSpecIncomplete
+}
+$$
+
+反过来，新增 mandatory Core object 必须回答：
+
+> 哪个 Research Claim 或明确 product requirement 需要它？
+
+找不到：
+
+$$
+\boxed{
+ArchitectureInflation
+}
+$$
+
+---
+
+# Part XL｜Design Intelligence Compatibility
+
+这部分很关键，因为下一步就是 DI Blueprint。
+
+V2.2.1 明确规定：
+
+$$
+\boxed{
+DI\ BusinessSemanticObjects
+\neq
+ARSO\ CoreObjects
+}
+$$
+
+---
+
+# 161. DI 可以保留自己的业务链
+
+例如：
+
+$$
+StyleBrief
+\rightarrow
+DesignDecision
+\rightarrow
+DesignRoute
+\rightarrow
+DesignSpec
+\rightarrow
+GenerationPackage
+\rightarrow
+DesignInstance
+$$
+
+ARSO Core 不要求：
+
+```text
+DesignDecision == DecisionIR
+```
+
+---
+
+# 162. MIC 只要求 DI 提供 Adapter
+
+DI 第一阶段映射：
+
+```text
+Design Run
+→ RunRecord
+
+Design lineage
+→ RuntimeEvents
+
+Critic/Human evaluation
+→ EvaluationRecords
+
+available/missing design traces
+→ ObservabilityProfile
+
+failure evidence
+→ EvidenceBundle
+
+diagnostic state
+→ DiagnosticBelief
+
+replay / model swap
+→ Probe
+
+controlled mutation
+→ Intervention
+```
+
+这使 DI 成为 ARSO-native，而无需被 ARSO Core 重写。
+
+---
+
+# 163. DI L3 以后才需要 Semantic mapping
+
+未来若研究：
+
+```text
+cross-executor transfer
+semantic repair
+compiler failure
+```
+
+再显式：
+
+$$
+DesignDecision
+\leftrightarrow
+DecisionIR
+$$
+
+$$
+DesignSpec
+\leftrightarrow
+SemanticArtifact
+$$
+
+$$
+GenerationPackage
+\leftrightarrow
+ExecutionIR
+$$
+
+即可。
+
+---
+
+# Part XLI｜Freeze Boundary
+
+# 164. FROZEN NOW
+
+以下工程原则正式 Freeze：
+
+```text
+ReferenceTaskSpec ≠ MutableSystemState
+
+Data Plane ≠ Diagnostic Control Plane
+
+Artifact immutable/versioned
+SystemSnapshot immutable
+
+Observed ≠ Observable
+
+Objective ≠ Measurement ≠ Evaluator ≠ Evaluation
+
+Evaluation ≠ Evidence
+
+DiagnosticBelief supports multi-label
+
+AMBIGUOUS
+INSUFFICIENT_EVIDENCE
+UNIDENTIFIABLE
+OUT_OF_TAXONOMY
+
+Hypothesis:
+Locus + Mechanism + Scope + Prediction + Falsifier
+
+Probe loop
+
+ActionDecision ≠ SearchPlan
+
+Typed Intervention
+
+Sandbox isolation
+
+VG0–VG3
+
+ExperimentAssignment
+
+Sealed-test firewall
+
+Progressive Adoption L0–L3
+
+Domain Pack ≠ Pattern Pack
+```
+
+---
+
+# 165. MIC FREEZE CANDIDATE
+
+以下接口进入实现验证：
+
+```text
+20-ish MIC data contracts
+13 MIC protocols
+MIC main state machine
+Probe lifecycle
+Intervention lifecycle
+Validation lifecycle
+Experiment lineage
+```
+
+FT1–FT10 通过后：
+
+$$
+FreezeCandidate\rightarrow Frozen
+$$
+
+---
+
+# 166. OPEN IMPLEMENTATION
+
+不冻结：
+
+```text
+Diagnosis model
+Confidence estimator
+Calibration algorithm
+Identifiability algorithm
+Probe selection
+Expected information value estimator
+Action thresholds
+Intervention generator
+Search algorithm
+Behavioral slice discovery
+Signal-quality estimator
+Storage topology
+Distributed queue
+Microservice decomposition
+```
+
+---
+
+# 167. DEFERRED
+
+明确不属于当前 MIC：
+
+```text
+Mandatory TaskIR
+Mandatory DecisionIR
+Mandatory ExecutionIR
+Full Compiler
+
+Full Domain Pack ecosystem
+Pattern Pack resolver
+
+Persistent Adaptive Memory
+Knowledge Promotion
+Meta-Learner
+
+Learned Router
+Population Search as Core
+
+Cross-Executor Transfer
+Cross-Domain Transfer
+
+Automatic Ontology Evolution
+Automatic Grammar Evolution
+
+Production Deployment Controller
+```
+
+---
+
+# Part XLII｜V2.2 → V2.2.1 Migration Decision
+
+| V2.2                      | V2.2.1                         |
+| ------------------------- | ------------------------------ |
+| `TaskContract`            | → `ReferenceTaskSpec`          |
+| `CapabilityProfile`       | KEEP + formalize               |
+| `Artifact`                | KEEP + simplify states         |
+| `ArtifactRef`             | KEEP                           |
+| `TaskIR`                  | L2 OPTIONAL                    |
+| `DecisionIR`              | L2/L3 OPTIONAL                 |
+| `ExecutionIR`             | L2 OPTIONAL                    |
+| `CompilerMappingTrace`    | L2 OPTIONAL                    |
+| `SystemSnapshot`          | KEEP                           |
+| `RuntimeEvent`            | KEEP                           |
+| `ExecutionResult`         | MERGE into RunRecord/view      |
+| `EvaluationRecord`        | KEEP + 3 definition objects    |
+| `EvidenceRecord`          | → EvidenceItem/Bundle          |
+| `AttributionRecord`       | → DiagnosticBelief             |
+| `HypothesisRecord`        | KEEP                           |
+| `BehavioralSlice`         | OPTIONAL helper                |
+| `ProbePlan`               | **PROMOTE TO CORE**            |
+| `Candidate`               | REMOVE FROM MIC                |
+| `InterventionTransaction` | → Plan/Result                  |
+| `ValidationPlan/Result`   | KEEP                           |
+| `BudgetContract`          | → research budget objects      |
+| `DeploymentTransaction`   | DEFER                          |
+| `ScientificClaim`         | Research registry, not runtime |
+| `ExperimentSpec`          | → ExperimentAssignment         |
+| `MemoryBundle`            | DEFER                          |
+| `KnowledgeClaim`          | DEFER                          |
+| `MetaExperience`          | DEFER                          |
+
+---
+
+# Part XLIII｜Final Engineering Formula
+
+ARSO-MIC 第一阶段可以浓缩为：
+
+$$
+\boxed{
+\begin{aligned}
+R_t
+&=
+Exec(\Theta_t,x_t)\\
+\Omega_t
+&=
+Observe(R_t)\\
+Q_t
+&=
+Evaluate(R_t)\\
+E_t
+&=
+BuildEvidence(R_t,Q_t,\Omega_t)\\
+(B_t,H_t,ID_t)
+&=
+Diagnose(E_t,\Omega_t)\\
+a_t
+&=
+ActionPolicy(B_t,ID_t,\Omega_t,Risk,Budget)
+\end{aligned}
+}
+$$
+
+如果：
+
+$$
+a_t=REQUEST\_EVIDENCE
+$$
+
+则：
+
+$$
+Probe_t
+\rightarrow
+E_{t+1}
+\rightarrow
+Diagnose_{t+1}
+$$
+
+如果：
+
+$$
+a_t=INTERVENE
+$$
+
+则：
+
+$$
+\Theta_t
+\xrightarrow{Intervention}
+\Theta'_t
+\xrightarrow{VG0\text{-}VG3}
+Validation
+$$
+
+如果：
+
+$$
+a_t=SEARCH
+$$
+
+才调用：
+
+$$
+SearchPlan
+$$
+
+---
+
+# Part XLIV｜最终 Engineering Definition
+
+> **ARSO Engineering V2.2.1 将第一阶段系统实现定义为一个可以附着在现有黑盒、半黑盒或结构化 AI 系统之上的诊断控制运行时。它通过不可变 Artifact 与 SystemSnapshot 固定执行版本，通过 RuntimeEvent 与 ObservabilityProfile 区分“系统发生了什么”和“优化器能够看到什么”，通过 ObjectiveSpec、MeasurementSpec、EvaluatorBinding 与 EvaluationRecord 分离目标、测量和评价实现，通过 EvidenceBundle、DiagnosticBelief、HypothesisRecord 与 IdentifiabilityAssessment 显式表示当前证据支持的失败解释及其不确定性。系统首先产生 ActionDecision，决定 NO_CHANGE、ABSTAIN、REQUEST_EVIDENCE、REQUEST_HUMAN、INTERVENE、SEARCH 或 STOP，而不把搜索复杂度与控制动作混为一谈。所有 Probe 必须回流形成新 Evidence 并重新诊断；所有 Intervention 必须在 Sandbox Snapshot 上执行，并经过 VG0 Integrity/Safety、VG1 Target Repair、VG2 Protected Regression 与 VG3 Generalization/Replication 验证。Research Experiment 通过 ExperimentAssignment、Information Access 与 Budget 记录支持 Oracle/Predicted/Wrong/None Diagnosis 等严格 matched comparison。完整 TaskIR–DecisionIR–ExecutionIR、Compiler、Domain Pack、Memory、Transfer、Meta-learning 和 Production Deployment 继续作为 ARSO Extended Platform 保留，但不再是 MIC 的强制依赖。**
+
+---
+
+# Engineering V2.2.1 最终状态
+
+| 维度                        | 状态                    |
+| ------------------------- | --------------------- |
+| Research ↔ Engineering 对齐 | **PASS**              |
+| MIC conceptual model      | **FROZEN**            |
+| MIC interface schema      | **FREEZE CANDIDATE**  |
+| FT1–FT10                  | **待原型验证**             |
+| Progressive Adoption      | **正式修复**              |
+| 三层 IR                     | **保留 / L2 Optional**  |
+| Semantic Platform         | **保留 / L3 Optional**  |
+| Router architecture       | **MIC 中取消固定四 Router** |
+| Complexity Ladder         | **正式退出接口**            |
+| Probe                     | **提升为 Core**          |
+| Observability             | **提升为 Core**          |
+| DiagnosticBelief          | **提升为 Core**          |
+| Identifiability           | **提升为 Core**          |
+| ExperimentAssignment      | **提升为 Core**          |
+| Memory / Meta             | **Deferred**          |
+| Deployment automation     | **Deferred**          |
+
+至此，**Research Specification V2.2.1 与 Engineering Specification V2.2.1 已经在概念层面形成闭环**：Research 中每一个第一阶段核心科学对象都有唯一 Engineering Owner，而 Engineering MIC 中没有明显无法追溯到 Scientific Claim 或实验需求的“大模块”。
+
+下一步按照我们前面确定的路线，不应该直接开始写 DI Blueprint，而是先做一个很短但关键的 **`Research ↔ Engineering Cross-Spec Consistency Freeze`**。它主要检查术语、状态机、Claim→Object→Protocol→Experiment 是否一一对应，通常一轮就可以完成。完成后，就可以稳定地进入 **《Design Intelligence × ARSO V2.2.1 Implementation Blueprint》**，不再有“应该按旧 V2.2 还是按 R6 修订版来实现”的歧义。

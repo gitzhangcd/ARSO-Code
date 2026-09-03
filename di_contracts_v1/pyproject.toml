@@ -1,0 +1,10 @@
+[project]
+name = "di-contracts"
+version = "1.0.0rc1"
+description = "Design Intelligence V5.0 Exact V1 contract candidate"
+requires-python = ">=3.12"
+dependencies = ["pydantic>=2.12,<3"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

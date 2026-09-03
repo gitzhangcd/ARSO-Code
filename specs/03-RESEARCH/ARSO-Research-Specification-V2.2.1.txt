@@ -1,0 +1,3029 @@
+可以。下面直接给出修订后的完整研究规范。
+
+这不是对 V2.2 做若干补丁，而是将 **R0–R6 的 Internal Consistency、Claim Extraction、45-paper Prior-art Pressure Test、Novelty Boundary Freeze、Engineering Kill Test、MIC Freeze、Scientific Kill Test** 正式吸收到 Research Specification 中。
+
+原 V2.2 的主体愿景继续保留：面向黑盒、半黑盒和结构化复合 AI 系统，将领域语义、实例决策、工作流、执行器、评价与长期经验解耦，并坚持 `Diagnose First → Intervene Minimally → Validate Explicitly → Learn Conservatively`；同时原规范本身已经明确 `Empirical Claims Open`，并拒绝 universal optimizer、自动因果化 diagnosis、完备 R0–R9 ontology 等过强主张。
+
+---
+
+# ARSO Research Specification V2.2.1
+
+## Scientific-Hardening Edition
+
+### Adaptive Reflective Semantic Optimizer
+
+### 自适应反思式语义优化框架：面向复合 AI 系统的证据边界诊断优化理论
+
+**版本：** ARSO Research Specification V2.2.1
+**日期：** 2026-09-02
+**文档性质：** Research / Scientific Method Specification
+**继承：** ARSO V2.2 Research + Engineering Master Specification
+**状态：** Scientific Core Freeze / Empirical Claims Open
+**工程对应版本：** ARSO Engineering Specification V2.2.1（待生成）
+**第一阶段研究定位：**
+
+$$
+\boxed{
+Optimization\ under\ Diagnostic\ Uncertainty
+}
+$$
+
+**长期平台定位仍为：**
+
+$$
+\boxed{
+Adaptive\ Reflective\ Semantic\ Optimization
+}
+$$
+
+---
+
+# Part I｜Revision Status
+
+## 1. V2.2.1 为什么需要存在
+
+ARSO V2.2 已经形成相对完整的研究与工程体系，包括：
+
+$$
+(K,\mathcal F,\mathcal T)
+$$
+
+三层 IR、Artifact / Snapshot、Data Plane / Control Plane、Structured Evaluation、Evidence、Attribution、Hypothesis、Probe、Typed Intervention、Adaptive Router、Memory、Domain Pack、Validation 与跨域研究等。
+
+R0–R6 审查确认：
+
+> **ARSO 的长期架构方向总体成立，但第一阶段科学问题和第一阶段实现范围必须明显收缩。**
+
+问题不是缺少模块，而是：
+
+$$
+\boxed{
+ArchitectureBreadth
+>
+ScientificEvidence
+}
+$$
+
+V2.2.1 因此执行四项修订：
+
+1. **把第一科学问题从“大一统 optimizer”收缩到 Diagnostic Uncertainty；**
+2. **严格区分已有机制、ARSO 新 Claim 和长期研究假设；**
+3. **将核心 Claim 变成明确可否证实验；**
+4. **把完整 Semantic/Memory/Transfer 架构与第一阶段科学验证解耦。**
+
+---
+
+# 2. V2.2.1 不是什么
+
+V2.2.1 **不是 V2.3**。
+
+它不意味着 ARSO 已经获得新的实验结果，也不意味着 R3 中识别出的 novelty candidate 已经成立。
+
+因此继续冻结：
+
+$$
+\boxed{
+EmpiricalClaims=OPEN
+}
+$$
+
+本版所做的是：
+
+$$
+\boxed{
+ScientificClaimHardening
+}
+$$
+
+而不是：
+
+$$
+\boxed{
+ScientificClaimConfirmation
+}
+$$
+
+---
+
+# Part II｜ARSO Scientific Core
+
+# 3. 第一阶段正式定义
+
+ARSO V2.2.1 的 Scientific Core 定义为：
+
+> **ARSO 是一种面向复合 AI 系统的证据边界诊断优化框架。它显式表示系统能够观察什么、当前证据支持哪些失败假设、现有证据是否足以区分竞争性原因，并利用这一 epistemic state 决定继续获取证据、拒绝修改，还是执行受控干预。**
+
+形式化主链：
+
+$$
+\boxed{
+Observability
+\rightarrow
+Evidence
+\rightarrow
+DiagnosticBelief
+\rightarrow
+Identifiability
+\rightarrow
+Action
+\rightarrow
+Intervention
+\rightarrow
+Validation
+}
+$$
+
+第一阶段不再把：
+
+$$
+SearchComplexity
+$$
+
+放在核心链的中心位置。
+
+---
+
+# 4. ARSO 长期定义继续保留
+
+V2.2 的扩展语义问题模型继续存在：
+
+$$
+\boxed{
+\mathbb P=(K,\mathcal F,\mathcal T)
+}
+$$
+
+其中：
+
+$$
+K=(O,S,R,G,D,E_v)
+$$
+
+描述 Domain Semantic Model；
+
+$$
+\mathcal F
+$$
+
+描述 Functional Operator Graph；
+
+$$
+\mathcal T=
+(
+\Gamma,
+V,
+\Omega,
+\mathcal H_{int},
+\rho,
+\Sigma,
+\Phi,
+C
+)
+$$
+
+描述 Solution Geometry、Evaluation Regime、Observability、Interaction Horizon、Representation Contract、Stochasticity、Risk 与 Cost。该组合式任务建模是 V2.2 的核心继承内容。
+
+但 V2.2.1 增加一个重要边界：
+
+$$
+\boxed{
+ExtendedSemanticProblemModel
+\neq
+MinimumScientificRequirement
+}
+$$
+
+换句话说：
+
+> 一个系统不需要先完成完整 Ontology、Semantic IR、Compiler 和 Domain Pack，才能被 ARSO 研究。
+
+---
+
+# Part III｜Reference Truth 与 Mutable System
+
+# 5. Reference Task 不得被优化器偷偷修改
+
+V2.2.1 正式区分：
+
+$$
+\boxed{
+\mathcal T^{ref}
+\neq
+\widehat{\mathcal T}_t
+}
+$$
+
+其中：
+
+* \(\mathcal T^{ref}\)：实验或任务的 **Reference Task Contract**；
+* \(\widehat{\mathcal T}_t\)：系统内部当前对任务的建模或理解。
+
+Reference Task 包含需要保护的：
+
+```text
+Goal
+Hard Constraints
+Evaluation Objectives
+Data Partition
+Risk Boundary
+Allowed Intervention Boundary
+```
+
+普通优化不得通过修改这些定义让自身看起来“性能提高”。
+
+因此：
+
+$$
+ObjectiveDrift
+$$
+
+本身可以是 failure locus，但：
+
+$$
+ReferenceObjective
+$$
+
+不能在同一优化事务中被普通 optimizer 自由改写。
+
+---
+
+# 6. Extended System State
+
+长期 ARSO 可以继续使用：
+
+$$
+\Theta_t^{ext}
+=
+(
+K_t,
+z_t,
+\tau_t,
+\mathcal A_t,
+\kappa_t,
+Exec_t,
+M_t
+)
+$$
+
+其中：
+
+* \(K_t\)：内部语义模型；
+* \(z_t\)：实例级语义决策；
+* \(\tau_t\)：工作流拓扑；
+* \(\mathcal A_t\)：系统资产；
+* \(\kappa_t\)：Compiler / lowering；
+* \(Exec_t\)：执行器；
+* \(M_t\)：长期经验。
+
+但第一阶段研究允许直接抽象为：
+
+$$
+\boxed{
+\Theta_t=\text{当前可被观察和干预的系统状态}
+}
+$$
+
+不要求所有系统都显式拥有 \(K,z,\tau,\kappa\)。
+
+---
+
+# Part IV｜Epistemic Model
+
+# 7. Observation ≠ Observability
+
+V2.2 已经明确：
+
+$$
+Observation
+\neq
+Measurement
+\neq
+Evidence
+\neq
+Attribution
+\neq
+CausalSupport
+$$
+
+这一认识论分离继续作为硬原则。
+
+V2.2.1 进一步增加：
+
+$$
+\boxed{
+Observed
+\neq
+Observable
+}
+$$
+
+没有观察到某事件，并不意味着该事件没有发生。
+
+例如：
+
+```text
+No compiler trace
+```
+
+至少可能表示：
+
+```text
+Compiler did not run
+Trace was not instrumented
+Trace was dropped
+Trace was redacted
+Trace is unsupported
+```
+
+因此 Observability 必须是结构化条件，而不能仅用：
+
+```text
+FULL / PARTIAL / MINIMAL
+```
+
+表示。
+
+---
+
+# 8. Observability
+
+记：
+
+$$
+\Omega_t
+$$
+
+为当前诊断过程可获得的结构化可观察条件。
+
+它至少概念上包含：
+
+```text
+available channels
+missing channels
+reliability
+resolution
+sampling
+freshness
+missingness reason
+locus relevance
+```
+
+V2.2 中：
+
+$$
+Confidence(R_i)\le Observability(R_i)
+$$
+
+这样的标量公式不再冻结为形式不变量。
+
+V2.2.1 改为一个**可检验的校准要求**：
+
+> 当与真实 root cause 相关的信息被系统性移除时，一个校准良好的诊断系统不应在 attribution accuracy 明显下降的同时维持不合理的高 confidence。
+
+即测试：
+
+$$
+RelevantObservability\downarrow
+$$
+
+是否导致：
+
+$$
+DiagnosticUncertainty\uparrow
+$$
+
+以及合理情况下：
+
+$$
+Probe/Abstain\uparrow
+$$
+
+---
+
+# 9. Evaluation
+
+继续冻结：
+
+$$
+\boxed{
+Objective
+\neq
+Measurement
+\neq
+Evaluator
+}
+$$
+
+原 V2.2 已经提出该原则并要求 Structured Evaluation：
+
+$$
+Q(r)=[q_1,\ldots,q_m]
+$$
+
+而聚合：
+
+$$
+S=f(Q)
+$$
+
+只应作为 selection view，不应替代 diagnosis 所需的完整评价向量。
+
+V2.2.1 在 Research 层要求每项实验能够明确区分：
+
+1. **Objective**：什么叫好；
+2. **Measurement**：如何测；
+3. **Evaluator**：由谁/哪个实现测；
+4. **Observation**：本次实际测到了什么。
+
+这尤其服务：
+
+$$
+R8=Evaluator
+$$
+
+类型故障。
+
+---
+
+# 10. Evidence
+
+Evidence 定义为：
+
+> **在明确 provenance、scope 和 observability 条件下，可以改变某个失败假设支持程度的信息。**
+
+V2.2.1 不再把 OUTCOME、HUMAN、CONTRASTIVE、COUNTERFACTUAL 等视为同一个单轴枚举。
+
+研究上使用：
+
+$$
+\boxed{
+Evidence=
+Source
+\times
+Content
+\times
+Relation
+\times
+Acquisition
+}
+$$
+
+例如：
+
+### Source
+
+```text
+Runtime
+Evaluator
+Human
+External
+Simulation
+```
+
+### Content
+
+```text
+Outcome
+Constraint
+Process
+Local State
+Behavior Pattern
+```
+
+### Relation
+
+```text
+Direct
+Contrastive
+Counterfactual
+Historical
+Interventional
+```
+
+### Acquisition
+
+```text
+Passive
+Replay
+Probe
+Adjudication
+```
+
+因此一条 Evidence 可以同时是：
+
+```text
+Human
++
+Process
++
+Contrastive
++
+Adjudicated
+```
+
+---
+
+# 11. Diagnostic Belief
+
+V2.2.1 将：
+
+$$
+AttributionRecord
+$$
+
+提升为更完整的科学对象：
+
+$$
+\boxed{
+B_t=DiagnosticBelief(E_t,\Omega_t)
+}
+$$
+
+它表示：
+
+> 根据当前证据和可观察条件，系统对竞争性 failure explanations 的当前信念。
+
+对于 R0–R9：
+
+$$
+b_i
+=
+P(R_i=1\mid E_t,\Omega_t)
+$$
+
+可作为 conceptual notation。
+
+注意：
+
+$$
+\sum_i b_i
+\neq1
+$$
+
+因为 compound failure 允许多个 locus 同时成立。
+
+例如：
+
+$$
+P(R_3=1)=0.71
+$$
+
+和：
+
+$$
+P(R_6=1)=0.65
+$$
+
+可以同时成立。
+
+该概率记号**不要求实现必须采用 Bayesian model**。
+
+---
+
+# 12. R0–R9 的地位
+
+继续保留 Seed Taxonomy：
+
+```text
+R0 Objective
+R1 Data / Context
+R2 Semantic Model
+R3 Decision
+R4 Route / Topology
+R5 Specification
+R6 Compiler
+R7 Executor
+R8 Evaluator
+R9 Environment
+```
+
+但继续冻结：
+
+$$
+\boxed{
+R0-R9\neq UniversalFailureOntology
+}
+$$
+
+原 V2.2 已经明确这一非目标。
+
+V2.2.1 更进一步：
+
+> Seed Taxonomy 必须允许被真实数据击穿。
+
+---
+
+# 13. Unknown 不再是一种简单分类
+
+正式区分：
+
+### `AMBIGUOUS`
+
+多个已知 explanation 都得到相近支持。
+
+### `INSUFFICIENT_EVIDENCE`
+
+原则上可能区分，但当前证据不够。
+
+### `UNIDENTIFIABLE`
+
+在当前 observability/capability 条件下，即使继续收集相同类型信息，也无法可靠区分。
+
+### `OUT_OF_TAXONOMY`
+
+现有 failure vocabulary 无法覆盖观察到的机制。
+
+因此：
+
+$$
+\boxed{
+Unknown
+\neq
+11^{th}\ Softmax\ Class
+}
+$$
+
+---
+
+# 14. Identifiability
+
+定义：
+
+$$
+ID_t
+=
+Identifiability(B_t,E_t,\Omega_t)
+$$
+
+回答：
+
+> 当前 Evidence 是否足以区分对 repair 决策有影响的 competing hypotheses？
+
+研究状态至少包括：
+
+```text
+IDENTIFIED
+AMBIGUOUS
+INSUFFICIENT_EVIDENCE
+UNIDENTIFIABLE
+OUT_OF_TAXONOMY
+```
+
+这是 V2.2.1 新 Scientific Core 的中心概念之一。
+
+---
+
+# 15. Hypothesis
+
+V2.2 中已有的形式继续 Freeze：
+
+$$
+\boxed{
+h=
+(
+Locus,
+Mechanism,
+Scope,
+Prediction,
+Falsifier
+)
+}
+$$
+
+
+
+合法 Hypothesis 必须回答：
+
+```text
+哪里可能错？
+以什么机制错？
+在哪些 case 范围成立？
+如果为真还应该观察到什么？
+什么实验结果会削弱或否定它？
+```
+
+因此：
+
+> “Prompt 不够好。”
+
+不是合法科学 Hypothesis。
+
+---
+
+# 16. Attribution ≠ Causality
+
+继续冻结：
+
+$$
+\boxed{
+EvidenceConditionedAttribution
+\neq
+CausalAttribution
+}
+$$
+
+未进行受控干预前，只能称：
+
+```text
+suspected cause
+supported hypothesis
+evidence-conditioned attribution
+```
+
+不能写：
+
+```text
+confirmed root cause
+```
+
+Causal Support 仍可沿用：
+
+```text
+NONE
+ASSOCIATIONAL
+CONTRASTIVE
+INTERVENTIONAL_WEAK
+INTERVENTIONAL_STRONG
+REPLICATED
+```
+
+原 V2.2 已经将这一边界作为重要 epistemic constraint。
+
+---
+
+# Part V｜Epistemic Action
+
+# 17. Action 首先回答“该不该动”
+
+V2.2.1 正式移除原 C0–C5 Complexity Ladder 作为 Research Core abstraction。
+
+旧结构将：
+
+```text
+NO-OP
+REQUEST_EVIDENCE
+Local Repair
+Single Lineage
+Population Search
+Meta Search
+```
+
+放在同一 ordinal axis 中，混合了：
+
+* 控制决策；
+* intervention 类型；
+* search topology。
+
+V2.2.1 改为：
+
+$$
+\boxed{
+ActionDecision
+\neq
+SearchComplexity
+}
+$$
+
+---
+
+# 18. Action Space
+
+核心动作集合：
+
+$$
+\boxed{
+a_t\in
+\{
+NO\_CHANGE,
+ABSTAIN,
+REQUEST\_EVIDENCE,
+REQUEST\_HUMAN,
+INTERVENE,
+SEARCH,
+STOP
+\}
+}
+$$
+
+其中：
+
+### NO_CHANGE
+
+有足够证据认为当前系统不应修改。
+
+### ABSTAIN
+
+当前不能支持可靠 modification decision。
+
+### REQUEST_EVIDENCE
+
+当前 gap 原理上可以通过额外证据减小。
+
+### REQUEST_HUMAN
+
+需要更高权限或当前自动系统无法提供的信息。
+
+### INTERVENE
+
+已有充分 actionable evidence，可执行受控修改。
+
+### SEARCH
+
+确定需要优化，但没有足够强的单一确定性修改方案。
+
+### STOP
+
+预算、风险或预定义停止条件触发。
+
+---
+
+# 19. Probe
+
+Probe 的目标不是：
+
+> 多花调用次数。
+
+而是：
+
+$$
+\boxed{
+ReduceDecisionRelevantUncertainty
+}
+$$
+
+Probe 应尽可能明确：
+
+```text
+target hypothesis
+variable changed
+variables held fixed
+predicted observation
+falsifier
+cost
+risk
+```
+
+支持的研究形式可包括：
+
+```text
+Repeat
+Trace Enrichment
+Counterfactual Replacement
+Freeze-and-Change
+Evaluator Cross-check
+Cross-Executor Replay
+Human Adjudication
+```
+
+这些机制继承 V2.2，但其具体 selection algorithm 保持 Open。
+
+---
+
+# 20. Intervention
+
+继续保留：
+
+$$
+\boxed{
+TypedIntervention
+}
+$$
+
+合法 Intervention 至少描述：
+
+```text
+Target
+Operation
+Constraints
+Preserve
+Expected Effect
+Validation
+```
+
+第一阶段原则：
+
+$$
+\boxed{
+DoNotChangeMoreThanTheEvidenceSupports
+}
+$$
+
+但：
+
+$$
+MinimumIntervention
+$$
+
+不等于永远只改一个变量。
+
+允许：
+
+$$
+MinimumSufficientCoupledSet
+$$
+
+---
+
+# Part VI｜Scientific Claim Boundary
+
+# 21. 第一阶段 S-tier Claims
+
+V2.2.1 只把以下四项作为第一阶段必须由 ARSO 自己承担科学责任的核心 Claim。
+
+---
+
+## SC1｜Open-Set Diagnostic Validity
+
+### Claim
+
+当真实 fault 不属于现有 taxonomy，或者证据不足以支持 closed-set attribution 时：
+
+$$
+\boxed{
+OpenSetDiagnosticPolicy
+}
+$$
+
+应比：
+
+$$
+ForcedClosedSetAttribution
+$$
+
+产生更少的不受支持归因。
+
+### 必须证明
+
+不是：
+
+> 模型会说 UNKNOWN。
+
+而是：
+
+> 在匹配 failure severity、trace length、final score 等潜在 shortcut 后，系统仍能区分 known / unknown / insufficient-evidence cases。
+
+---
+
+# 22. SC2｜Observability-Calibrated Diagnosis
+
+### Claim
+
+诊断置信度应对**与真实 root cause 有关的 observability**敏感。
+
+核心关系：
+
+$$
+\boxed{
+RelevantObservability\downarrow
+\Rightarrow
+DiagnosticUncertainty\uparrow
+}
+$$
+
+而不是简单：
+
+$$
+AnyMissingData\Rightarrow Confidence\downarrow
+$$
+
+这意味着：
+
+> 删除无关 token/cost log 不应像删除 Compiler mapping 一样影响 R6 diagnosis。
+
+---
+
+# 23. SC3｜Diagnosis → Repair Mediation
+
+这是 V2.2.1 第一阶段最重要的机制 Claim。
+
+### Claim
+
+控制 Evidence、Teacher、Budget、Mutation Space 和 Repair Operator 后：
+
+$$
+\boxed{
+DiagnosisCorrectness
+\rightarrow
+RepairPrecision
+}
+$$
+
+具体要求比较：
+
+$$
+D_{oracle}
+$$
+
+$$
+D_{predicted}
+$$
+
+$$
+D_{wrong}
+$$
+
+$$
+D_{none}
+$$
+
+$$
+D_{implicit}
+$$
+
+如果显式正确 diagnosis 没有提供任何 repair value，则 `Diagnose First` 只能被保留为 audit/debugging principle，而不能作为 optimization mechanism claim。
+
+---
+
+# 24. SC4｜Uncertainty-Conditioned Selective Action
+
+SC4 不声称 `NO_CHANGE` 本身是新思想。
+
+真正 Claim：
+
+$$
+\boxed{
+DiagnosticUncertainty
+\rightarrow
+Probe/Abstain/Intervene
+}
+$$
+
+能够在相同：
+
+$$
+Coverage
+$$
+
+和：
+
+$$
+Cost
+$$
+
+下比简单 always-repair、random abstention 或 confidence-threshold policy 获得更好的：
+
+$$
+Repair
+-
+Risk
+-
+Cost
+$$
+
+trade-off。
+
+---
+
+# 25. A-tier Extension Claims
+
+只有 SC1–SC4 得到基本支持后，才升级为主要投入。
+
+## EX1｜Cross-Artifact Minimum Sufficient Intervention
+
+研究：
+
+$$
+\boxed{
+CorrectLocus
+\rightarrow
+SmallerSaferRepair
+}
+$$
+
+其新颖边界不在 minimum edit，而在 heterogeneous system artifacts，例如：
+
+```text
+Instruction
+Retrieval
+Route
+Tool Config
+Compiler
+Executor
+Evaluator
+```
+
+---
+
+## EX2｜Epistemic-State-Conditioned Complexity
+
+不是：
+
+$$
+SearchProgress\rightarrow SearchStrategy
+$$
+
+而是：
+
+$$
+\boxed{
+DiagnosticBelief
++
+Identifiability
++
+Observability
+\rightarrow
+Whether/HowMuchToSearch
+}
+$$
+
+需要与：
+
+* fixed single-lineage；
+* generic adaptive search；
+* search-progress router；
+
+直接比较。
+
+---
+
+# 26. Original C0–C7 Compatibility Map
+
+为了保持与 V2.2 Claim Registry 的连续性：
+
+| V2.2 Claim                        | V2.2.1 处理                          |
+| --------------------------------- | ---------------------------------- |
+| **C0 Core Sufficiency**           | Long-term / Deferred               |
+| **C1 Evidence Advantage**         | 机制基础，多数作为 imported prior mechanism |
+| **C2 Diagnosis Validity**         | 重构为 SC1 + SC2                      |
+| **C3 Intervention Advantage**     | 重构为 SC3 + EX1                      |
+| **C4 Adaptive Complexity**        | generic form 降级；保留 SC4 + EX2       |
+| **C5 Curated Memory**             | Deferred；未来研究 governed knowledge   |
+| **C6 Cross-Executor Transfer**    | Deferred                           |
+| **C7 Cross-Domain Meta Transfer** | Deferred / highest-risk            |
+
+原 V2.2 已经把这些 C0–C7 定义为需要科学验证的核心 Claim，而不是既成事实；V2.2.1 进一步对其进行了 novelty 和 falsifiability 收缩。
+
+---
+
+# Part VII｜Imported Mechanisms
+
+# 27. 不再作为第一篇独立创新的机制
+
+R3 文献压力测试后，以下能力可合法使用，但第一篇 ARSO 不把其“存在”作为主要原创贡献：
+
+```text
+Structured Evaluation
+Runtime Trace
+Behavioral Slice
+Contrastive Evidence
+Root-Cause Hypothesis Generation
+Generic Diagnosis-Guided Repair
+Controlled Fault Injection
+Single-Lineage Search
+Population / Pareto Search
+Adaptive Operator Selection
+Memory Curation
+Compiler / IR Abstraction
+```
+
+科学贡献必须发生在它们之间尚未被建立的桥梁上：
+
+$$
+\boxed{
+Evidence
+\rightarrow
+CalibratedDiagnosis
+}
+$$
+
+$$
+\boxed{
+DiagnosisCorrectness
+\rightarrow
+RepairOutcome
+}
+$$
+
+$$
+\boxed{
+Uncertainty
+\rightarrow
+SelectiveAction
+}
+$$
+
+---
+
+# Part VIII｜Retired Scientific Assumptions
+
+# 28. OSR 公式退出 Freeze
+
+V2.2 曾提出概念指标：
+
+$$
+OSR=
+\frac{
+Var_C[E(R|C)]
+}{
+E_C[Var(R|C)]
+}
+$$
+
+并已明确它不是被证明的通用理论判据。
+
+V2.2.1 进一步决定：
+
+$$
+\boxed{
+OSRFormula=OPEN/RETIRED\ FROM\ FREEZE
+}
+$$
+
+保留的是：
+
+$$
+\boxed{
+AssessSignalQualityBeforeExpensiveOptimization
+}
+$$
+
+具体 estimator 可以比较：
+
+```text
+between-candidate variance
+within-candidate variance
+ranking stability
+repeat consistency
+information gain
+expected value of information
+```
+
+---
+
+# 29. Generic Adaptive Search 退出 Novelty
+
+继续保留原则：
+
+$$
+\boxed{
+ComplexityMustBeEarned
+}
+$$
+
+但不再声称：
+
+> 根据 state 自动改变 search strategy
+
+本身构成 ARSO 的科学创新。
+
+---
+
+# 30. Memory Curation 退出第一阶段 Novelty
+
+第一阶段只需要：
+
+$$
+ExperimentHistory
+$$
+
+而不是：
+
+$$
+AdaptiveLongTermMemory
+$$
+
+未来真正值得研究的是：
+
+$$
+\boxed{
+EvidenceGovernedKnowledgePromotion
+}
+$$
+
+包括 provenance、scope、counterevidence、causal-support、compatibility、quarantine 和 revalidation。
+
+---
+
+# Part IX｜Research Questions
+
+# 31. RQ1｜Diagnostic Identifiability
+
+> 在不同 fault 结构与 observability 条件下，复合 AI 系统的 root cause 在多大程度上可识别？
+
+重点不是：
+
+$$
+Top1Accuracy
+$$
+
+单一指标，而是：
+
+```text
+identified
+ambiguous
+insufficient evidence
+unidentifiable
+out of taxonomy
+```
+
+的合理区分。
+
+---
+
+# 32. RQ2｜Diagnostic Calibration
+
+> 当有效证据下降、taxonomy 不完备或 competing explanations 无法区分时，系统是否能够正确降低诊断确定性并选择请求证据或 abstain？
+
+---
+
+# 33. RQ3｜Diagnosis–Repair Causal Link
+
+> 在控制 Teacher、Evidence、Budget、Repair Operator 和 Mutation Space 后，正确 diagnosis 是否因果性提高 repair precision，并减少 wrong-locus repair 与 regression？
+
+---
+
+# 34. RQ4｜Selective Intervention
+
+> 根据 diagnostic uncertainty 选择 Probe / Abstain / Intervene，是否比强制 reflective optimization 获得更好的 risk–coverage–cost trade-off？
+
+---
+
+# Part X｜Scientific Validation Program
+
+# 35. 实验顺序必须按 Kill Value 排序
+
+正式冻结：
+
+$$
+\boxed{
+E0\rightarrow E1\rightarrow E2\rightarrow E3
+\rightarrow E4\rightarrow E5\rightarrow E6\rightarrow E7
+}
+$$
+
+而不是首先构建完整 optimizer。
+
+---
+
+# 36. E0｜Oracle Diagnosis Value Experiment
+
+这是整个 ARSO 项目的第一个科学 Gate。
+
+在 DiagnosisEngine 尚不存在时，人工提供：
+
+```text
+Oracle Diagnosis
+Wrong Diagnosis
+No Diagnosis
+Implicit Diagnosis
+```
+
+控制：
+
+```text
+same evidence
+same teacher
+same token budget
+same mutation space
+same repair operator
+same evaluator
+```
+
+测：
+
+$$
+RepairSuccess
+$$
+
+$$
+Regression
+$$
+
+$$
+FalseRepair
+$$
+
+$$
+EditSize
+$$
+
+$$
+Cost
+$$
+
+### 关键问题
+
+$$
+\boxed{
+DoesPerfectDiagnosisHelpRepair?
+}
+$$
+
+如果：
+
+$$
+Repair(D_{oracle})
+\approx
+Repair(D_{none})
+$$
+
+则必须重新审查 Diagnosis-first optimizer 主线。
+
+---
+
+# 37. E1｜Diagnosis Mediation
+
+在真实 DiagnosisEngine 存在以后：
+
+$$
+D_{oracle}
+,\;
+D_{predicted}
+,\;
+D_{wrong}
+,\;
+D_{none}
+,\;
+D_{implicit}
+$$
+
+随机化比较。
+
+第一 Primary Endpoint：
+
+$$
+\boxed{
+\Delta RepairPrecision
+\mid
+DiagnosisCondition
+}
+$$
+
+这是 SC3 的核心实验。
+
+---
+
+# 38. E2｜Observability Degradation
+
+对同一个 root cause 有控制地删除不同 observation channels。
+
+例如：
+
+```text
+Full trace
+Remove irrelevant trace
+Remove retrieval trace
+Remove compiler trace
+Output only
+```
+
+但避免直接告诉模型：
+
+```text
+COMPILER TRACE REMOVED
+```
+
+以排除 missingness cue shortcut。
+
+关注：
+
+$$
+Accuracy
+$$
+
+与：
+
+$$
+Calibration
+$$
+
+是否共同合理变化。
+
+---
+
+# 39. E3｜Open-Set Diagnosis
+
+至少包含：
+
+```text
+Known single fault
+Compound known fault
+Novel mechanism at known locus
+Out-of-taxonomy fault
+Ambiguous fault
+Insufficient-evidence fault
+```
+
+Unknown 与 Known 必须尽可能匹配：
+
+```text
+severity
+trajectory length
+score
+token count
+failure frequency
+```
+
+防止异常程度 shortcut。
+
+---
+
+# 40. E4｜Selective Action
+
+比较：
+
+```text
+Always Repair
+Random Abstain
+Scalar Score Threshold
+Confidence Threshold
+Generic Uncertainty Baseline
+ARSO Epistemic Policy
+Oracle Policy
+```
+
+必须做：
+
+$$
+\boxed{
+CoverageMatchedComparison
+}
+$$
+
+否则“少改所以少错”不能算智能增益。
+
+---
+
+# 41. E5｜Targeted Probe
+
+比较：
+
+```text
+Targeted Probe
+Random Additional Rollout
+More Reflection Tokens
+Random Counterfactual
+```
+
+必须：
+
+$$
+CostMatched
+$$
+
+关注：
+
+$$
+DiagnosticGain/Cost
+$$
+
+和：
+
+$$
+RepairGain/Cost
+$$
+
+而不是单纯最终性能。
+
+---
+
+# 42. E6｜Cross-Artifact Minimum Repair
+
+第一阶段不要同时开放十几个 locus。
+
+推荐每个系统先选择约 3 个可验证层级，例如：
+
+### RAG
+
+```text
+Retrieval
+Synthesis
+Evaluator
+```
+
+### Agent
+
+```text
+Planning / Instruction
+Tool Route
+Execution
+```
+
+### Code
+
+```text
+Specification
+Generation
+Test / Evaluator
+```
+
+构造：
+
+$$
+PhenotypicallySimilarFailures
+$$
+
+即 final symptom 相似而真实 locus 不同。
+
+---
+
+# 43. E7｜Epistemic Adaptive Search
+
+只有 E0–E6 提供足够支持后才做。
+
+比较：
+
+```text
+Fixed single-lineage
+Fixed branch/population
+Search-progress router
+Epistemic-state router
+Oracle strategy
+```
+
+必须 matched budget。
+
+若 epistemic state 没有提供额外 value，则不建设复杂 Meta-Router。
+
+---
+
+# Part XI｜ARSO-FaultBench V2.2.1
+
+# 44. Benchmark 目标
+
+V2.2 已经提出 ARSO-FaultBench，并要求 known fault、compound fault、evidence ablation、baseline fairness、held-out firewall 等。
+
+V2.2.1 将 Benchmark 目标从：
+
+> “给 attribution 一个 GT。”
+
+升级成：
+
+> **验证 root-cause identifiability、open-set behavior、diagnosis–repair mediation 和 selective action。**
+
+---
+
+# 45. Fault Classes
+
+必须覆盖：
+
+### F1｜Single Clean Fault
+
+一个主要故障 locus。
+
+### F2｜Compound Fault
+
+两个或多个真实原因同时存在。
+
+### F3｜Propagating Fault
+
+上游 root cause 产生多个下游症状。
+
+### F4｜Confounded Fault
+
+多个不同 root cause 可以产生近似相同观察。
+
+### F5｜Unknown Fault
+
+机制或 locus 超出现有 taxonomy。
+
+### F6｜No-Fault Case
+
+系统其实没有值得修的故障。
+
+用于检测：
+
+$$
+FalsePositiveOptimization
+$$
+
+### F7｜Partial-Observability Fault
+
+关键 root-cause evidence 被有控制地隐藏。
+
+### F8｜Evaluator Fault
+
+Operational evaluator 被腐化，但 independent audit truth 保持稳定。
+
+---
+
+# 46. Ground-Truth 等级
+
+不能因为“我们注入了一个 fault”就自动认为它是唯一 causal GT。
+
+建议：
+
+### GT-A｜Strong
+
+已知 intervention + counterfactual/controlled validation 支持。
+
+### GT-B｜Moderate
+
+专家 consensus + independent evidence 支持。
+
+### GT-C｜Ambiguous
+
+存在无法解决的 competing causal explanation。
+
+GT-C：
+
+$$
+\boxed{
+不得进入 Primary Attribution Accuracy
+}
+$$
+
+但可以进入：
+
+$$
+Identifiability/Abstention
+$$
+
+测试。
+
+---
+
+# Part XII｜Metrics
+
+# 47. Diagnosis Metrics
+
+至少包括：
+
+```text
+Locus Precision / Recall / F1
+Multi-label F1
+Hypothesis ranking
+Known-class accuracy
+Unknown detection
+False known attribution
+False unknown
+Selective risk
+Coverage
+```
+
+---
+
+# 48. Calibration Metrics
+
+允许：
+
+```text
+Brier Score
+Expected Calibration Error
+Risk-Coverage Curve
+Selective Accuracy
+```
+
+但不冻结单一 calibration metric 为“正确答案”。
+
+重点是：
+
+$$
+Confidence
+$$
+
+是否反映：
+
+$$
+ActualDiagnosticReliability
+$$
+
+---
+
+# 49. Repair Metrics
+
+至少：
+
+$$
+TargetRepairSuccess
+$$
+
+$$
+FalseRepairRate
+$$
+
+$$
+RegressionRate
+$$
+
+$$
+ProtectedSliceRegression
+$$
+
+$$
+EditSize
+$$
+
+$$
+WrongLocusEditRate
+$$
+
+$$
+Cost
+$$
+
+---
+
+# 50. Probe Metrics
+
+至少：
+
+$$
+InformationGain/Cost
+$$
+
+$$
+AttributionGain/Cost
+$$
+
+$$
+RepairGain/Cost
+$$
+
+$$
+ProbeFailureRate
+$$
+
+---
+
+# 51. End-to-End Metrics
+
+最终 Task Quality 必须报告，但：
+
+$$
+\boxed{
+EndTaskGain
+\not\Rightarrow
+MechanismValidity
+}
+$$
+
+V2.2 原本已经明确区分不同 validation levels，V2.2.1 将这一原则进一步强化。
+
+---
+
+# Part XIII｜Scientific Validation Levels
+
+# 52. SL0｜Conformance
+
+验证：
+
+> 实现是否符合 Research/Engineering Contract？
+
+不证明方法有效。
+
+---
+
+# 53. SL1｜Mechanism
+
+直接测试：
+
+```text
+Evidence → Diagnosis
+Observability → Calibration
+Diagnosis → Repair
+Uncertainty → Action
+```
+
+第一篇论文的核心必须来自 SL1。
+
+---
+
+# 54. SL2｜End-to-End
+
+测试：
+
+$$
+ARSOSystem
+$$
+
+相对于 end-to-end baselines 的总体表现。
+
+SL2 不能替代 SL1。
+
+---
+
+# 55. SL3｜Generalization
+
+测试：
+
+```text
+task-family holdout
+executor holdout
+distribution holdout
+domain holdout
+temporal holdout
+```
+
+以及未来：
+
+```text
+cross-executor
+cross-domain
+meta-transfer
+```
+
+只有完成对应实验，才能升级 Transfer Claim。
+
+---
+
+# Part XIV｜Fairness & Leakage
+
+# 56. 核心公平性约束
+
+比较方法时至少控制：
+
+```text
+Student
+Teacher
+Evaluator
+Initial State
+Information Access
+Token Budget
+Rollout Budget
+Tool Budget
+Search Space
+Data Split
+Seeds
+```
+
+V2.2 已经明确提出 Same Search Space、Native Capability、Teacher × Search fairness、Budget fairness 与 Held-out Firewall；这些原则完整保留。
+
+---
+
+# 57. 两种公平比较必须同时存在
+
+## Same Search Space
+
+所有方法被限制在相同可修改对象内。
+
+回答：
+
+> 在同样 action space 下谁更有效？
+
+## Native Capability
+
+允许每种方法使用其原生机制。
+
+回答：
+
+> 作为完整系统谁更强？
+
+二者不能混成一个结果。
+
+---
+
+# 58. Information Fairness
+
+这是 V2.2.1 特别强化的一点。
+
+如果 ARSO 能看到：
+
+```text
+full runtime trace
+module labels
+counterfactual result
+```
+
+而 baseline 只能看到：
+
+```text
+final score
+```
+
+就不能直接把性能差归因于：
+
+$$
+DiagnosisAlgorithm
+$$
+
+必须拆开：
+
+$$
+InformationAdvantage
+$$
+
+和：
+
+$$
+ReasoningAdvantage
+$$
+
+---
+
+# 59. Sealed-Test Firewall
+
+SEALED TEST 不允许进入：
+
+```text
+Evidence construction for optimization
+Diagnosis training
+Hypothesis generation
+Probe selection
+Intervention generation
+Router learning
+Memory
+Meta-learning
+```
+
+只允许用于最终 evaluation。
+
+---
+
+# 60. Evaluator Independence
+
+研究中必须区分：
+
+$$
+E_{operational}
+$$
+
+与：
+
+$$
+E_{audit}
+$$
+
+前者属于待研究系统的一部分；
+
+后者用于判断真正 benchmark outcome。
+
+尤其测试 R8 Evaluator fault 时：
+
+$$
+E_{operational}
+$$
+
+可以被人为腐化，
+
+但：
+
+$$
+E_{audit}
+$$
+
+不能同时变化。
+
+---
+
+# Part XV｜Scientific Kill Gates
+
+# 61. Gate A｜Diagnosis 是否有真实干预价值
+
+必须先检验：
+
+$$
+\boxed{
+Repair(OracleDiagnosis)
+>
+Repair(NoDiagnosis)
+}
+$$
+
+最好同时观察：
+
+$$
+Regression(Oracle)
+<
+Regression(Wrong)
+$$
+
+若不成立：
+
+> **停止 Diagnosis-first optimizer headline claim。**
+
+ARSO 仍可继续作为：
+
+```text
+Observability
+Debugger
+Audit
+Governance
+```
+
+框架。
+
+---
+
+# 62. Gate B｜系统是否知道自己不知道
+
+在：
+
+```text
+unknown
+ambiguous
+partial observability
+```
+
+条件下必须获得可用：
+
+$$
+Risk-Coverage
+$$
+
+与 calibration。
+
+若失败：
+
+> 不声称 Evidence-Bounded Diagnostic Control。
+
+---
+
+# 63. Gate C｜Epistemic Policy 是否超过简单阈值
+
+Matched coverage/cost 下：
+
+$$
+EpistemicPolicy
+>
+SimpleConfidenceThreshold
+$$
+
+若不能成立：
+
+> 使用简单 rule-based threshold，不建设复杂 ActionPolicy。
+
+---
+
+# Part XVI｜Domain Strategy
+
+# 64. 第一阶段机制验证域
+
+建议：
+
+$$
+\boxed{
+Code+RAG+Agent
+}
+$$
+
+原因不是它们代表全部 ARSO，而是：
+
+### Code
+
+具有：
+
+```text
+compiler
+tests
+runtime
+machine-verifiable outcome
+```
+
+### RAG
+
+具有相对清晰：
+
+```text
+retrieval
+synthesis
+evaluation
+```
+
+信用分配结构。
+
+### Agent
+
+提供：
+
+```text
+long horizon
+trajectory
+tool use
+multiple failure loci
+```
+
+压力测试。
+
+---
+
+# 65. Design Intelligence 的研究地位
+
+Design Intelligence 继续作为 ARSO 的重要：
+
+$$
+\boxed{
+ReferenceApplication
++
+ExternalValidityStressTest
+}
+$$
+
+它特别覆盖：
+
+$$
+SetValued
++
+Multimodal
++
+Preference
++
+Generative
+$$
+
+任务几何。
+
+但第一阶段最关键：
+
+$$
+DiagnosisCorrectness
+\rightarrow
+RepairOutcome
+$$
+
+的 causal proof 不建议主要依赖 Design Intelligence，因为 Design 的最终 outcome 往往需要 preference/VLM/human evaluator。
+
+这不是降低 DI 地位，而是将：
+
+$$
+ScientificCausalProof
+$$
+
+与：
+
+$$
+RealWorldApplicationValidation
+$$
+
+正式分开。
+
+---
+
+# 66. Reverse 与 Forward Design 必须区分
+
+在 Design Intelligence 等 Reconstruction 场景：
+
+$$
+Reference
+\rightarrow
+SemanticAnalysis
+\rightarrow
+Decision
+\rightarrow
+Spec
+\rightarrow
+Reconstruction
+$$
+
+可以评价 fidelity。
+
+但不能声称唯一恢复：
+
+> 历史设计师真实思考链。
+
+Forward Design：
+
+$$
+Brief
+\rightarrow
+Decision
+\rightarrow
+Route
+\rightarrow
+Spec
+\rightarrow
+Design
+$$
+
+属于：
+
+$$
+FeasibleSet
+$$
+
+问题：
+
+$$
+|\mathcal A(Brief)|>1
+$$
+
+因此不能以单一参考实例作为唯一 GT。
+
+这一限制与原 V2.2 对 Reverse Reconstruction 非唯一性的非目标一致。
+
+---
+
+# Part XVII｜Long-Term ARSO Research Program
+
+# 67. C0｜Core Sufficiency
+
+长期研究：
+
+> 一个稳定 Core 是否能支持 heterogeneous task geometry？
+
+需要：
+
+```text
+cross-domain conformance
+composition holdout
+unseen operator composition
+```
+
+当前：
+
+$$
+\boxed{
+OPEN
+}
+$$
+
+---
+
+# 68. Semantic Representation
+
+长期研究：
+
+$$
+SemanticState
+$$
+
+是否相对于：
+
+$$
+PromptOnlyState
+$$
+
+具有：
+
+```text
+repair precision
+constraint retention
+transfer
+auditability
+```
+
+优势。
+
+V2.2.1 不预设：
+
+$$
+SemanticIR>Prompt
+$$
+
+---
+
+# 69. Memory Governance
+
+未来研究从：
+
+$$
+CuratedMemory
+$$
+
+升级为：
+
+$$
+\boxed{
+EvidenceGovernedKnowledge
+}
+$$
+
+重点：
+
+```text
+provenance
+scope
+maturity
+counterevidence
+causal support
+compatibility
+quarantine
+revalidation
+```
+
+---
+
+# 70. Cross-Executor Transfer
+
+未来 Claim：
+
+$$
+\boxed{
+SemanticState+Recompile
+>
+RawArtifactTransfer
+}
+$$
+
+必须至少比较：
+
+```text
+raw prompt transfer
+target rewrite
+semantic recompile
+full reoptimization
+```
+
+当前：
+
+$$
+\boxed{
+DEFERRED
+}
+$$
+
+---
+
+# 71. Cross-Domain Meta Transfer
+
+未来研究：
+
+$$
+Experience_{source\ domain}
+\rightarrow
+OptimizationBenefit_{unseen\ target}
+$$
+
+必须进行真正：
+
+$$
+DomainHoldout
+$$
+
+而不能仅证明两个领域都使用了相同 operator name。
+
+当前：
+
+$$
+\boxed{
+DEFERRED/HIGHEST\ RISK
+}
+$$
+
+---
+
+# Part XVIII｜Scientific Claim Registry
+
+# 72. Claim 状态必须版本化
+
+每一 Scientific Claim 至少具有：
+
+```text
+claim_id
+statement
+scope
+novelty_status
+evidence_status
+experiment_refs
+supporting_results
+counterevidence
+limitations
+last_reviewed
+```
+
+Evidence Status：
+
+```text
+HYPOTHESIS
+PARTIALLY_SUPPORTED
+SUPPORTED_IN_SCOPE
+CHALLENGED
+FALSIFIED
+DEFERRED
+```
+
+不能：
+
+```text
+Specification says so
+→ SUPPORTED
+```
+
+---
+
+# 73. Claim–Evidence–Experiment Matrix V0
+
+| Claim                         | Evidence needed                       | Main experiment | Current status      |
+| ----------------------------- | ------------------------------------- | --------------- | ------------------- |
+| SC1 Open-set diagnosis        | matched known/unknown failures        | E3              | HYPOTHESIS          |
+| SC2 Observability calibration | controlled relevant trace masking     | E2              | HYPOTHESIS          |
+| SC3 Diagnosis→Repair          | randomized diagnosis condition        | E0/E1           | HYPOTHESIS          |
+| SC4 Selective action          | coverage/cost matched action policies | E4              | HYPOTHESIS          |
+| EX1 Cross-artifact repair     | oracle/predicted locus repair         | E6              | DEFERRED UNTIL CORE |
+| EX2 Epistemic search          | epistemic vs search-state routing     | E7              | DEFERRED UNTIL CORE |
+| Governed memory               | polluted/history/curated controls     | Future          | DEFERRED            |
+| Cross-executor transfer       | raw transfer vs semantic recompile    | Future          | DEFERRED            |
+| Cross-domain meta             | domain holdout                        | Future          | DEFERRED            |
+
+---
+
+# Part XIX｜Research vs Engineering Boundary
+
+# 74. Research Specification 冻结什么
+
+Research 层冻结：
+
+```text
+Scientific problem
+Concept definitions
+Epistemic separation
+Claim boundary
+Falsification logic
+Evaluation requirements
+Experimental fairness
+Scientific validation levels
+Go / No-Go criteria
+```
+
+Research 层**不冻结**：
+
+```text
+Python classes
+database choice
+microservice layout
+diagnosis model architecture
+threshold values
+router algorithm
+storage engine
+queue system
+```
+
+这些属于 Engineering Specification。
+
+---
+
+# 75. 每个 Research Concept 必须拥有 Engineering Owner
+
+下一版 Engineering Specification 必须能建立：
+
+| Research Concept      | Required Engineering Owner  |
+| --------------------- | --------------------------- |
+| Reference Task        | `ReferenceTaskSpec`         |
+| Observability         | `ObservabilityProfile`      |
+| Objective             | `ObjectiveSpec`             |
+| Measurement           | `MeasurementSpec`           |
+| Evaluator             | `EvaluatorBinding`          |
+| Evidence              | `EvidenceItem/Bundle`       |
+| Diagnostic Belief     | `DiagnosticBelief`          |
+| Identifiability       | `IdentifiabilityAssessment` |
+| Probe                 | `ProbePlan/ProbeResult`     |
+| Selective Action      | `ActionDecision`            |
+| Intervention          | `InterventionPlan/Result`   |
+| Scientific comparison | `ExperimentAssignment`      |
+| Validation            | `ValidationPlan/Result`     |
+
+如果一个 Scientific Claim 找不到 Engineering Owner：
+
+$$
+\boxed{
+EngineeringSpecIncomplete
+}
+$$
+
+反之，如果一个 MIC mandatory object 找不到 Scientific/Product requirement：
+
+$$
+\boxed{
+ArchitectureInflation
+}
+$$
+
+---
+
+# Part XX｜Freeze / Open Boundary
+
+# 76. V2.2.1 Research Freeze
+
+以下正式冻结：
+
+### Scientific framing
+
+$$
+\boxed{
+OptimizationUnderDiagnosticUncertainty
+}
+$$
+
+### Epistemic chain
+
+$$
+\boxed{
+Observability
+\rightarrow
+Evidence
+\rightarrow
+DiagnosticBelief
+\rightarrow
+Identifiability
+\rightarrow
+Action
+}
+$$
+
+### Conceptual separations
+
+```text
+Reference Task ≠ Mutable System Model
+
+Observation ≠ Observability
+
+Objective ≠ Measurement ≠ Evaluator
+
+Evaluation ≠ Evidence
+
+Attribution ≠ Causal Attribution
+
+Diagnostic Belief ≠ Forced Classification
+
+ActionDecision ≠ SearchComplexity
+
+Memory ≠ Knowledge
+
+Compatibility ≠ Reuse ≠ Transfer
+```
+
+### Diagnosis semantics
+
+```text
+IDENTIFIED
+AMBIGUOUS
+INSUFFICIENT_EVIDENCE
+UNIDENTIFIABLE
+OUT_OF_TAXONOMY
+```
+
+### Hypothesis contract
+
+$$
+Locus+Mechanism+Scope+Prediction+Falsifier
+$$
+
+### First-stage S-tier Claims
+
+```text
+SC1 Open-set diagnosis
+SC2 Observability calibration
+SC3 Diagnosis→Repair mediation
+SC4 Uncertainty-conditioned action
+```
+
+### Experimental sequence
+
+$$
+E0\rightarrow E7
+$$
+
+### Scientific validation
+
+```text
+SL0
+SL1
+SL2
+SL3
+```
+
+### Fairness and leakage requirements
+
+```text
+matched information
+matched teacher
+matched budget
+matched search space where applicable
+sealed-test firewall
+independent audit evaluator
+```
+
+---
+
+# 77. Implementation Open
+
+以下保持实验开放：
+
+```text
+diagnosis algorithm
+calibration algorithm
+confidence estimator
+identifiability estimator
+probe selector
+expected value of information
+action policy
+intervention generator
+behavioral slice algorithm
+signal-quality estimator
+search algorithm
+population strategy
+threshold policy
+```
+
+---
+
+# 78. Deferred
+
+```text
+Mandatory Semantic IR
+Universal Semantic Representation claim
+Full Compiler architecture
+Automatic ontology induction
+Automatic grammar evolution
+Persistent adaptive memory
+Knowledge promotion algorithm
+Learned Meta-Router
+Cross-executor transfer
+Cross-domain transfer
+Cross-domain meta-learning
+Production deployment optimization
+```
+
+它们仍属于 ARSO 长期 Research Program，而不是被删除。
+
+---
+
+# Part XXI｜Retired from V2.2 Freeze
+
+# 79. 明确退出 Freeze 的内容
+
+以下从 V2.2 的强 Freeze 状态中撤出：
+
+### 1. OSR 固定公式
+
+保留 Signal Quality Problem，不冻结 ratio estimator。
+
+### 2. C0–C5 Complexity Ladder
+
+保留 Complexity-on-demand 原则，不冻结混合 action/search 的 ordinal ladder。
+
+### 3. 四 Router 作为 Scientific Core
+
+Router decomposition 是未来 engineering/algorithm design，不是第一阶段研究定理。
+
+### 4. `Confidence ≤ Observability` 标量不变量
+
+改成 observability degradation 下的 empirical calibration requirement。
+
+### 5. Generic Curated Memory Advantage
+
+Memory curation 已不是第一阶段可防守 novelty；未来转为 governed knowledge promotion。
+
+### 6. Generic Adaptive Search Advantage
+
+不再作为 headline claim。
+
+---
+
+# Part XXII｜First Paper Boundary
+
+# 80. 第一篇论文只允许承担三类主要贡献
+
+## Contribution 1｜Problem Formulation
+
+提出：
+
+$$
+\boxed{
+DiagnosticUncertainty
+}
+$$
+
+作为 reflective optimization 中被忽视的控制问题：
+
+> 系统不仅需要判断为什么失败，还需要知道当前证据是否足以支持这个判断。
+
+---
+
+## Contribution 2｜Evidence-Bounded Diagnostic Control
+
+提出：
+
+$$
+\boxed{
+Evidence+\Observability
+\rightarrow
+DiagnosticBelief
+\rightarrow
+Identifiability
+\rightarrow
+Probe/Abstain/Intervene
+}
+$$
+
+---
+
+## Contribution 3｜Mechanism-Level Validation
+
+不只比较最终 benchmark score，而直接检验：
+
+$$
+\boxed{
+DiagnosisCorrectness
+\rightarrow
+RepairOutcome
+}
+$$
+
+和：
+
+$$
+\boxed{
+Observability
+\rightarrow
+DiagnosticCalibration
+}
+$$
+
+---
+
+# 81. 第一篇明确不声称
+
+```text
+Runtime trace is novel
+Structured evaluation is novel
+Behavioral slicing is novel
+Contrastive evidence is novel
+Root-cause diagnosis itself is novel
+Diagnosis-guided repair itself is novel
+Fault injection attribution GT is novel
+Adaptive search itself is novel
+Memory curation itself is novel
+Compiler/IR abstraction is novel
+ARSO is universally superior
+R0-R9 is universal
+Semantic representation is always superior
+```
+
+---
+
+# Part XXIII｜Final Research Definition
+
+# 82. ARSO V2.2.1 Scientific Definition
+
+最终定义：
+
+> **ARSO V2.2.1 将复合 AI 系统优化定义为一个在有限可观察性下进行的证据边界诊断控制问题。系统首先从执行、评价与外部信息形成具有 provenance 的 Evidence，对 competing failure mechanisms 建立 Diagnostic Belief，并评估这些假设在当前观测条件下是否可识别。当证据不足时，系统允许继续主动取证、请求人工或拒绝修改；当证据足以支持 actionable diagnosis 时，才执行受控、类型化且尽可能最小充分的 Intervention，并通过独立 Validation 判断 repair 与 regression。ARSO 不将语言模型给出的 explanation 自动视为 causal root cause，也不假设复杂搜索、结构化语义表示、长期记忆或跨域迁移天然有效；这些能力必须分别通过机制实验获得支持。**
+
+其第一阶段核心公式为：
+
+$$
+\boxed{
+(R_t,\Omega_t,Q_t)
+\rightarrow
+E_t
+\rightarrow
+B_t
+\rightarrow
+ID_t
+\rightarrow
+a_t
+}
+$$
+
+其中：
+
+$$
+a_t
+\in
+\{
+NO\_CHANGE,
+ABSTAIN,
+REQUEST\_EVIDENCE,
+REQUEST\_HUMAN,
+INTERVENE,
+SEARCH,
+STOP
+\}
+$$
+
+若：
+
+$$
+a_t=REQUEST\_EVIDENCE
+$$
+
+则：
+
+$$
+Probe
+\rightarrow
+E_{t+1}
+\rightarrow
+B_{t+1}
+$$
+
+若：
+
+$$
+a_t\in\{INTERVENE,SEARCH\}
+$$
+
+则：
+
+$$
+\Theta_t
+\xrightarrow{\Delta_t}
+\Theta'_t
+\xrightarrow{Validation}
+\Theta_{t+1}
+$$
+
+最核心的科学问题最终浓缩为：
+
+$$
+\boxed{
+Does\ correct\ diagnosis\
+causally\ enable\
+safer\ and\ more\ precise\ repair?
+}
+$$
+
+以及：
+
+$$
+\boxed{
+Can\ an\ optimizer\
+know\ when\
+the\ available\ evidence\
+does\ not\ justify\ a\ repair?
+}
+$$
+
+---
+
+# 83. V2.2.1 最终状态
+
+| 项目                                                 | 状态                                      |
+| -------------------------------------------------- | --------------------------------------- |
+| ARSO 长期研究方向                                        | **RETAINED**                            |
+| Diagnostic-Uncertainty Scientific Core             | **FROZEN**                              |
+| SC1–SC4                                            | **HYPOTHESES / EMPIRICALLY OPEN**       |
+| EX1–EX2                                            | **DEFERRED UNTIL CORE SURVIVES**        |
+| \(K,\mathcal F,\mathcal T\) extended problem model | **RETAINED**                            |
+| Semantic IR / Compiler research                    | **RETAINED / DEFERRED FROM FIRST CORE** |
+| Memory / Meta-learning                             | **DEFERRED**                            |
+| Cross-executor transfer                            | **DEFERRED**                            |
+| Cross-domain transfer                              | **DEFERRED**                            |
+| OSR fixed formula                                  | **REMOVED FROM FREEZE**                 |
+| C0–C5 mixed complexity ladder                      | **RETIRED**                             |
+| R0–R9                                              | **SEED TAXONOMY ONLY**                  |
+| First scientific experiment                        | **E0 Oracle Diagnosis Value**           |
+| Overall empirical status                           | **OPEN**                                |
+
+---
+
+# 84. 最终审查结论
+
+**ARSO V2.2.1 Research Specification 可以进入 Scientific Core Freeze。**
+
+这里的 Freeze 只意味着：
+
+> **问题定义、Claim 边界、认识论对象、实验顺序和否证条件已经足够稳定，可以作为后续工程和实验的上游规范。**
+
+它绝不意味着：
+
+$$
+SC1\text{--}SC4
+$$
+
+已经得到证实。
+
+与 V2.2 相比，这一版最重要的改变可以浓缩成：
+
+$$
+\boxed{
+GeneralSemanticOptimizer
+}
+$$
+
+不再作为第一阶段需要直接证明的目标，而是先回答：
+
+$$
+\boxed{
+WhatFailed?
+}
+$$
+
+$$
+\boxed{
+DoWeActuallyKnow?
+}
+$$
+
+$$
+\boxed{
+DoesKnowingHelpRepair?
+}
+$$
+
+$$
+\boxed{
+IfWeDoNotKnow,\ ShouldWeAct?
+}
+$$
+
+只有这些核心问题 survive Scientific Kill Tests 后，ARSO 才有充分理由继续向：
+
+$$
+SemanticOptimization
+\rightarrow
+AdaptiveSearch
+\rightarrow
+Memory
+\rightarrow
+Transfer
+\rightarrow
+MetaLearning
+$$
+
+扩展。
+
+---
+
+这份 **Research Specification V2.2.1** 已经可以作为接下来 Engineering Specification 的唯一上游科学依据。下一份 Engineering 规范最关键的工作，将不是把旧 V2.2 工程章节简单搬回来，而是逐条完成：
+
+$$
+\boxed{
+ResearchConcept
+\leftrightarrow
+EngineeringOwner
+}
+$$
+
+映射，并把 **ARSO-MIC** 与 **Extended Semantic Platform** 正式拆开。

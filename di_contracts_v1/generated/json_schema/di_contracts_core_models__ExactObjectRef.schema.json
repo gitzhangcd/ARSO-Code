@@ -1,0 +1,43 @@
+{
+  "$defs": {
+    "ContentHash": {
+      "title": "ContentHash",
+      "type": "string"
+    },
+    "LogicalId": {
+      "title": "LogicalId",
+      "type": "string"
+    },
+    "ObjectId": {
+      "title": "ObjectId",
+      "type": "string"
+    },
+    "ObjectType": {
+      "title": "ObjectType",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "content_hash": {
+      "$ref": "#/$defs/ContentHash"
+    },
+    "logical_id": {
+      "$ref": "#/$defs/LogicalId"
+    },
+    "object_type": {
+      "$ref": "#/$defs/ObjectType"
+    },
+    "version_id": {
+      "$ref": "#/$defs/ObjectId"
+    }
+  },
+  "required": [
+    "object_type",
+    "logical_id",
+    "version_id",
+    "content_hash"
+  ],
+  "title": "ExactObjectRef",
+  "type": "object"
+}

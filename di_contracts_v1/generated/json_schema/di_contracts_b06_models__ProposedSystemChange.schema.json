@@ -1,0 +1,120 @@
+{
+  "$defs": {
+    "ContentHash": {
+      "title": "ContentHash",
+      "type": "string"
+    },
+    "ExactObjectRef": {
+      "additionalProperties": false,
+      "properties": {
+        "content_hash": {
+          "$ref": "#/$defs/ContentHash"
+        },
+        "logical_id": {
+          "$ref": "#/$defs/LogicalId"
+        },
+        "object_type": {
+          "$ref": "#/$defs/ObjectType"
+        },
+        "version_id": {
+          "$ref": "#/$defs/ObjectId"
+        }
+      },
+      "required": [
+        "object_type",
+        "logical_id",
+        "version_id",
+        "content_hash"
+      ],
+      "title": "ExactObjectRef",
+      "type": "object"
+    },
+    "LogicalId": {
+      "title": "LogicalId",
+      "type": "string"
+    },
+    "ObjectId": {
+      "title": "ObjectId",
+      "type": "string"
+    },
+    "ObjectRef": {
+      "additionalProperties": false,
+      "properties": {
+        "content_hash": {
+          "$ref": "#/$defs/ContentHash"
+        },
+        "object_id": {
+          "$ref": "#/$defs/ObjectId"
+        },
+        "object_type": {
+          "$ref": "#/$defs/ObjectType"
+        }
+      },
+      "required": [
+        "object_type",
+        "object_id",
+        "content_hash"
+      ],
+      "title": "ObjectRef",
+      "type": "object"
+    },
+    "ObjectType": {
+      "title": "ObjectType",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "operation_type": {
+      "title": "Operation Type",
+      "type": "string"
+    },
+    "preserve_refs": {
+      "default": [],
+      "items": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/ExactObjectRef"
+          },
+          {
+            "$ref": "#/$defs/ObjectRef"
+          }
+        ]
+      },
+      "title": "Preserve Refs",
+      "type": "array"
+    },
+    "proposed_after_ref": {
+      "$ref": "#/$defs/ExactObjectRef"
+    },
+    "rationale_ref": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ObjectRef"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "supporting_hypothesis_refs": {
+      "items": {
+        "$ref": "#/$defs/ObjectRef"
+      },
+      "title": "Supporting Hypothesis Refs",
+      "type": "array"
+    },
+    "target_ref": {
+      "$ref": "#/$defs/ExactObjectRef"
+    }
+  },
+  "required": [
+    "target_ref",
+    "proposed_after_ref",
+    "operation_type",
+    "supporting_hypothesis_refs"
+  ],
+  "title": "ProposedSystemChange",
+  "type": "object"
+}

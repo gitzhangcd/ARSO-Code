@@ -1,0 +1,174 @@
+{
+  "$defs": {
+    "ActorId": {
+      "title": "ActorId",
+      "type": "string"
+    },
+    "ActorRef": {
+      "additionalProperties": false,
+      "properties": {
+        "actor_id": {
+          "$ref": "#/$defs/ActorId"
+        },
+        "actor_type": {
+          "$ref": "#/$defs/ActorType"
+        }
+      },
+      "required": [
+        "actor_type",
+        "actor_id"
+      ],
+      "title": "ActorRef",
+      "type": "object"
+    },
+    "ActorType": {
+      "enum": [
+        "USER",
+        "SERVICE",
+        "AGENT",
+        "SYSTEM",
+        "EXTERNAL"
+      ],
+      "title": "ActorType",
+      "type": "string"
+    },
+    "ContentHash": {
+      "title": "ContentHash",
+      "type": "string"
+    },
+    "ObjectId": {
+      "title": "ObjectId",
+      "type": "string"
+    },
+    "ObjectRef": {
+      "additionalProperties": false,
+      "properties": {
+        "content_hash": {
+          "$ref": "#/$defs/ContentHash"
+        },
+        "object_id": {
+          "$ref": "#/$defs/ObjectId"
+        },
+        "object_type": {
+          "$ref": "#/$defs/ObjectType"
+        }
+      },
+      "required": [
+        "object_type",
+        "object_id",
+        "content_hash"
+      ],
+      "title": "ObjectRef",
+      "type": "object"
+    },
+    "ObjectType": {
+      "title": "ObjectType",
+      "type": "string"
+    },
+    "SchemaVersion": {
+      "title": "SchemaVersion",
+      "type": "string"
+    },
+    "TenantId": {
+      "title": "TenantId",
+      "type": "string"
+    },
+    "TenantScope": {
+      "additionalProperties": false,
+      "properties": {
+        "scope_type": {
+          "$ref": "#/$defs/TenantScopeType"
+        },
+        "tenant_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/TenantId"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "scope_type"
+      ],
+      "title": "TenantScope",
+      "type": "object"
+    },
+    "TenantScopeType": {
+      "enum": [
+        "GLOBAL",
+        "TENANT"
+      ],
+      "title": "TenantScopeType",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "actor_ref": {
+      "$ref": "#/$defs/ActorRef"
+    },
+    "command_id": {
+      "$ref": "#/$defs/ObjectId"
+    },
+    "command_type": {
+      "$ref": "#/$defs/ObjectType"
+    },
+    "correlation_id": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ObjectId"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "expected_source_concurrency_version": {
+      "title": "Expected Source Concurrency Version",
+      "type": "integer"
+    },
+    "expected_source_head_state_ref": {
+      "$ref": "#/$defs/ObjectRef"
+    },
+    "fork_from_state_ref": {
+      "$ref": "#/$defs/ObjectRef"
+    },
+    "idempotency_key": {
+      "$ref": "#/$defs/ObjectId"
+    },
+    "requested_at": {
+      "format": "date-time",
+      "title": "Requested At",
+      "type": "string"
+    },
+    "schema_version": {
+      "$ref": "#/$defs/SchemaVersion"
+    },
+    "source_branch_ref": {
+      "$ref": "#/$defs/ObjectRef"
+    },
+    "tenant_scope": {
+      "$ref": "#/$defs/TenantScope"
+    }
+  },
+  "required": [
+    "schema_version",
+    "command_id",
+    "command_type",
+    "tenant_scope",
+    "actor_ref",
+    "requested_at",
+    "idempotency_key",
+    "source_branch_ref",
+    "expected_source_head_state_ref",
+    "expected_source_concurrency_version",
+    "fork_from_state_ref"
+  ],
+  "title": "ForkDesignBranchCommand",
+  "type": "object"
+}

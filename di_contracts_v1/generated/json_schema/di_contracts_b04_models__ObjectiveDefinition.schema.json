@@ -1,0 +1,311 @@
+{
+  "$defs": {
+    "ActorId": {
+      "title": "ActorId",
+      "type": "string"
+    },
+    "ActorRef": {
+      "additionalProperties": false,
+      "properties": {
+        "actor_id": {
+          "$ref": "#/$defs/ActorId"
+        },
+        "actor_type": {
+          "$ref": "#/$defs/ActorType"
+        }
+      },
+      "required": [
+        "actor_type",
+        "actor_id"
+      ],
+      "title": "ActorRef",
+      "type": "object"
+    },
+    "ActorType": {
+      "enum": [
+        "USER",
+        "SERVICE",
+        "AGENT",
+        "SYSTEM",
+        "EXTERNAL"
+      ],
+      "title": "ActorType",
+      "type": "string"
+    },
+    "ContentHash": {
+      "title": "ContentHash",
+      "type": "string"
+    },
+    "ExactObjectRef": {
+      "additionalProperties": false,
+      "properties": {
+        "content_hash": {
+          "$ref": "#/$defs/ContentHash"
+        },
+        "logical_id": {
+          "$ref": "#/$defs/LogicalId"
+        },
+        "object_type": {
+          "$ref": "#/$defs/ObjectType"
+        },
+        "version_id": {
+          "$ref": "#/$defs/ObjectId"
+        }
+      },
+      "required": [
+        "object_type",
+        "logical_id",
+        "version_id",
+        "content_hash"
+      ],
+      "title": "ExactObjectRef",
+      "type": "object"
+    },
+    "FashionEvaluationFamily": {
+      "enum": [
+        "BUSINESS_INTENT",
+        "DESIGN_SEMANTIC_QUALITY",
+        "EXECUTION_FIDELITY",
+        "FASHION_PLAUSIBILITY",
+        "CONTEXTUAL_PREFERENCE"
+      ],
+      "title": "FashionEvaluationFamily",
+      "type": "string"
+    },
+    "JsonValue": {},
+    "LogicalId": {
+      "title": "LogicalId",
+      "type": "string"
+    },
+    "ObjectId": {
+      "title": "ObjectId",
+      "type": "string"
+    },
+    "ObjectRef": {
+      "additionalProperties": false,
+      "properties": {
+        "content_hash": {
+          "$ref": "#/$defs/ContentHash"
+        },
+        "object_id": {
+          "$ref": "#/$defs/ObjectId"
+        },
+        "object_type": {
+          "$ref": "#/$defs/ObjectType"
+        }
+      },
+      "required": [
+        "object_type",
+        "object_id",
+        "content_hash"
+      ],
+      "title": "ObjectRef",
+      "type": "object"
+    },
+    "ObjectType": {
+      "title": "ObjectType",
+      "type": "string"
+    },
+    "ObjectiveDirection": {
+      "enum": [
+        "MAXIMIZE",
+        "MINIMIZE",
+        "TARGET"
+      ],
+      "title": "ObjectiveDirection",
+      "type": "string"
+    },
+    "Provenance": {
+      "additionalProperties": false,
+      "properties": {
+        "command_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ObjectRef"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "external_source_refs": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "External Source Refs",
+          "type": "array"
+        },
+        "run_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ObjectRef"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "source_refs": {
+          "default": [],
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/ExactObjectRef"
+              },
+              {
+                "$ref": "#/$defs/ObjectRef"
+              }
+            ]
+          },
+          "title": "Source Refs",
+          "type": "array"
+        }
+      },
+      "title": "Provenance",
+      "type": "object"
+    },
+    "SchemaVersion": {
+      "title": "SchemaVersion",
+      "type": "string"
+    },
+    "TenantId": {
+      "title": "TenantId",
+      "type": "string"
+    },
+    "TenantScope": {
+      "additionalProperties": false,
+      "properties": {
+        "scope_type": {
+          "$ref": "#/$defs/TenantScopeType"
+        },
+        "tenant_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/TenantId"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "scope_type"
+      ],
+      "title": "TenantScope",
+      "type": "object"
+    },
+    "TenantScopeType": {
+      "enum": [
+        "GLOBAL",
+        "TENANT"
+      ],
+      "title": "TenantScopeType",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "allowed_subject_types": {
+      "items": {
+        "$ref": "#/$defs/ObjectType"
+      },
+      "title": "Allowed Subject Types",
+      "type": "array"
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "created_by": {
+      "$ref": "#/$defs/ActorRef"
+    },
+    "default_direction": {
+      "$ref": "#/$defs/ObjectiveDirection"
+    },
+    "display_name": {
+      "title": "Display Name",
+      "type": "string"
+    },
+    "evaluation_family": {
+      "$ref": "#/$defs/FashionEvaluationFamily"
+    },
+    "expected_target_types": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/ObjectType"
+      },
+      "title": "Expected Target Types",
+      "type": "array"
+    },
+    "extensions": {
+      "additionalProperties": {
+        "$ref": "#/$defs/JsonValue"
+      },
+      "title": "Extensions",
+      "type": "object"
+    },
+    "id": {
+      "$ref": "#/$defs/ObjectId"
+    },
+    "logical_id": {
+      "$ref": "#/$defs/LogicalId"
+    },
+    "object_type": {
+      "$ref": "#/$defs/ObjectType"
+    },
+    "objective_key": {
+      "title": "Objective Key",
+      "type": "string"
+    },
+    "parent_refs": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/ExactObjectRef"
+      },
+      "title": "Parent Refs",
+      "type": "array"
+    },
+    "provenance": {
+      "$ref": "#/$defs/Provenance"
+    },
+    "revision": {
+      "minimum": 1,
+      "title": "Revision",
+      "type": "integer"
+    },
+    "schema_version": {
+      "$ref": "#/$defs/SchemaVersion"
+    },
+    "semantic_definition": {
+      "title": "Semantic Definition",
+      "type": "string"
+    },
+    "tenant_scope": {
+      "$ref": "#/$defs/TenantScope"
+    }
+  },
+  "required": [
+    "schema_version",
+    "id",
+    "object_type",
+    "created_at",
+    "created_by",
+    "tenant_scope",
+    "logical_id",
+    "revision",
+    "objective_key",
+    "display_name",
+    "semantic_definition",
+    "evaluation_family",
+    "default_direction",
+    "allowed_subject_types"
+  ],
+  "title": "ObjectiveDefinition",
+  "type": "object"
+}

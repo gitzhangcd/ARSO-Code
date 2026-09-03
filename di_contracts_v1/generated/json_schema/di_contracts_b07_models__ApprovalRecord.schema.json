@@ -1,0 +1,282 @@
+{
+  "$defs": {
+    "ActorId": {
+      "title": "ActorId",
+      "type": "string"
+    },
+    "ActorRef": {
+      "additionalProperties": false,
+      "properties": {
+        "actor_id": {
+          "$ref": "#/$defs/ActorId"
+        },
+        "actor_type": {
+          "$ref": "#/$defs/ActorType"
+        }
+      },
+      "required": [
+        "actor_type",
+        "actor_id"
+      ],
+      "title": "ActorRef",
+      "type": "object"
+    },
+    "ActorType": {
+      "enum": [
+        "USER",
+        "SERVICE",
+        "AGENT",
+        "SYSTEM",
+        "EXTERNAL"
+      ],
+      "title": "ActorType",
+      "type": "string"
+    },
+    "ApprovalType": {
+      "enum": [
+        "APPROVED",
+        "FINAL_APPROVED"
+      ],
+      "title": "ApprovalType",
+      "type": "string"
+    },
+    "ContentHash": {
+      "title": "ContentHash",
+      "type": "string"
+    },
+    "ExactObjectRef": {
+      "additionalProperties": false,
+      "properties": {
+        "content_hash": {
+          "$ref": "#/$defs/ContentHash"
+        },
+        "logical_id": {
+          "$ref": "#/$defs/LogicalId"
+        },
+        "object_type": {
+          "$ref": "#/$defs/ObjectType"
+        },
+        "version_id": {
+          "$ref": "#/$defs/ObjectId"
+        }
+      },
+      "required": [
+        "object_type",
+        "logical_id",
+        "version_id",
+        "content_hash"
+      ],
+      "title": "ExactObjectRef",
+      "type": "object"
+    },
+    "JsonValue": {},
+    "LogicalId": {
+      "title": "LogicalId",
+      "type": "string"
+    },
+    "ObjectId": {
+      "title": "ObjectId",
+      "type": "string"
+    },
+    "ObjectRef": {
+      "additionalProperties": false,
+      "properties": {
+        "content_hash": {
+          "$ref": "#/$defs/ContentHash"
+        },
+        "object_id": {
+          "$ref": "#/$defs/ObjectId"
+        },
+        "object_type": {
+          "$ref": "#/$defs/ObjectType"
+        }
+      },
+      "required": [
+        "object_type",
+        "object_id",
+        "content_hash"
+      ],
+      "title": "ObjectRef",
+      "type": "object"
+    },
+    "ObjectType": {
+      "title": "ObjectType",
+      "type": "string"
+    },
+    "Provenance": {
+      "additionalProperties": false,
+      "properties": {
+        "command_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ObjectRef"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "external_source_refs": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "External Source Refs",
+          "type": "array"
+        },
+        "run_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ObjectRef"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "source_refs": {
+          "default": [],
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/ExactObjectRef"
+              },
+              {
+                "$ref": "#/$defs/ObjectRef"
+              }
+            ]
+          },
+          "title": "Source Refs",
+          "type": "array"
+        }
+      },
+      "title": "Provenance",
+      "type": "object"
+    },
+    "SchemaVersion": {
+      "title": "SchemaVersion",
+      "type": "string"
+    },
+    "TenantId": {
+      "title": "TenantId",
+      "type": "string"
+    },
+    "TenantScope": {
+      "additionalProperties": false,
+      "properties": {
+        "scope_type": {
+          "$ref": "#/$defs/TenantScopeType"
+        },
+        "tenant_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/TenantId"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "scope_type"
+      ],
+      "title": "TenantScope",
+      "type": "object"
+    },
+    "TenantScopeType": {
+      "enum": [
+        "GLOBAL",
+        "TENANT"
+      ],
+      "title": "TenantScopeType",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "approval_policy_ref": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ExactObjectRef"
+        },
+        {
+          "$ref": "#/$defs/ObjectRef"
+        }
+      ],
+      "title": "Approval Policy Ref"
+    },
+    "approval_type": {
+      "$ref": "#/$defs/ApprovalType"
+    },
+    "approved_state_ref": {
+      "$ref": "#/$defs/ObjectRef"
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "created_by": {
+      "$ref": "#/$defs/ActorRef"
+    },
+    "extensions": {
+      "additionalProperties": {
+        "$ref": "#/$defs/JsonValue"
+      },
+      "title": "Extensions",
+      "type": "object"
+    },
+    "human_decision_ref": {
+      "$ref": "#/$defs/ObjectRef"
+    },
+    "id": {
+      "$ref": "#/$defs/ObjectId"
+    },
+    "lineage_ref": {
+      "$ref": "#/$defs/ObjectRef"
+    },
+    "object_type": {
+      "$ref": "#/$defs/ObjectType"
+    },
+    "provenance": {
+      "$ref": "#/$defs/Provenance"
+    },
+    "review_round_ref": {
+      "$ref": "#/$defs/ObjectRef"
+    },
+    "review_session_ref": {
+      "$ref": "#/$defs/ObjectRef"
+    },
+    "review_snapshot_ref": {
+      "$ref": "#/$defs/ObjectRef"
+    },
+    "schema_version": {
+      "$ref": "#/$defs/SchemaVersion"
+    },
+    "tenant_scope": {
+      "$ref": "#/$defs/TenantScope"
+    }
+  },
+  "required": [
+    "schema_version",
+    "id",
+    "object_type",
+    "created_at",
+    "created_by",
+    "tenant_scope",
+    "lineage_ref",
+    "review_session_ref",
+    "review_round_ref",
+    "review_snapshot_ref",
+    "approved_state_ref",
+    "approval_policy_ref",
+    "approval_type",
+    "human_decision_ref"
+  ],
+  "title": "ApprovalRecord",
+  "type": "object"
+}

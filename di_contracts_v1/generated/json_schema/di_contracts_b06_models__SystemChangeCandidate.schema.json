@@ -1,0 +1,342 @@
+{
+  "$defs": {
+    "ActorId": {
+      "title": "ActorId",
+      "type": "string"
+    },
+    "ActorRef": {
+      "additionalProperties": false,
+      "properties": {
+        "actor_id": {
+          "$ref": "#/$defs/ActorId"
+        },
+        "actor_type": {
+          "$ref": "#/$defs/ActorType"
+        }
+      },
+      "required": [
+        "actor_type",
+        "actor_id"
+      ],
+      "title": "ActorRef",
+      "type": "object"
+    },
+    "ActorType": {
+      "enum": [
+        "USER",
+        "SERVICE",
+        "AGENT",
+        "SYSTEM",
+        "EXTERNAL"
+      ],
+      "title": "ActorType",
+      "type": "string"
+    },
+    "ContentHash": {
+      "title": "ContentHash",
+      "type": "string"
+    },
+    "ExactObjectRef": {
+      "additionalProperties": false,
+      "properties": {
+        "content_hash": {
+          "$ref": "#/$defs/ContentHash"
+        },
+        "logical_id": {
+          "$ref": "#/$defs/LogicalId"
+        },
+        "object_type": {
+          "$ref": "#/$defs/ObjectType"
+        },
+        "version_id": {
+          "$ref": "#/$defs/ObjectId"
+        }
+      },
+      "required": [
+        "object_type",
+        "logical_id",
+        "version_id",
+        "content_hash"
+      ],
+      "title": "ExactObjectRef",
+      "type": "object"
+    },
+    "JsonValue": {},
+    "LogicalId": {
+      "title": "LogicalId",
+      "type": "string"
+    },
+    "ObjectId": {
+      "title": "ObjectId",
+      "type": "string"
+    },
+    "ObjectRef": {
+      "additionalProperties": false,
+      "properties": {
+        "content_hash": {
+          "$ref": "#/$defs/ContentHash"
+        },
+        "object_id": {
+          "$ref": "#/$defs/ObjectId"
+        },
+        "object_type": {
+          "$ref": "#/$defs/ObjectType"
+        }
+      },
+      "required": [
+        "object_type",
+        "object_id",
+        "content_hash"
+      ],
+      "title": "ObjectRef",
+      "type": "object"
+    },
+    "ObjectType": {
+      "title": "ObjectType",
+      "type": "string"
+    },
+    "ProposedSystemChange": {
+      "additionalProperties": false,
+      "properties": {
+        "operation_type": {
+          "title": "Operation Type",
+          "type": "string"
+        },
+        "preserve_refs": {
+          "default": [],
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/ExactObjectRef"
+              },
+              {
+                "$ref": "#/$defs/ObjectRef"
+              }
+            ]
+          },
+          "title": "Preserve Refs",
+          "type": "array"
+        },
+        "proposed_after_ref": {
+          "$ref": "#/$defs/ExactObjectRef"
+        },
+        "rationale_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ObjectRef"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "supporting_hypothesis_refs": {
+          "items": {
+            "$ref": "#/$defs/ObjectRef"
+          },
+          "title": "Supporting Hypothesis Refs",
+          "type": "array"
+        },
+        "target_ref": {
+          "$ref": "#/$defs/ExactObjectRef"
+        }
+      },
+      "required": [
+        "target_ref",
+        "proposed_after_ref",
+        "operation_type",
+        "supporting_hypothesis_refs"
+      ],
+      "title": "ProposedSystemChange",
+      "type": "object"
+    },
+    "Provenance": {
+      "additionalProperties": false,
+      "properties": {
+        "command_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ObjectRef"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "external_source_refs": {
+          "default": [],
+          "items": {
+            "type": "string"
+          },
+          "title": "External Source Refs",
+          "type": "array"
+        },
+        "run_ref": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ObjectRef"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "source_refs": {
+          "default": [],
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/ExactObjectRef"
+              },
+              {
+                "$ref": "#/$defs/ObjectRef"
+              }
+            ]
+          },
+          "title": "Source Refs",
+          "type": "array"
+        }
+      },
+      "title": "Provenance",
+      "type": "object"
+    },
+    "SchemaVersion": {
+      "title": "SchemaVersion",
+      "type": "string"
+    },
+    "TenantId": {
+      "title": "TenantId",
+      "type": "string"
+    },
+    "TenantScope": {
+      "additionalProperties": false,
+      "properties": {
+        "scope_type": {
+          "$ref": "#/$defs/TenantScopeType"
+        },
+        "tenant_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/TenantId"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "scope_type"
+      ],
+      "title": "TenantScope",
+      "type": "object"
+    },
+    "TenantScopeType": {
+      "enum": [
+        "GLOBAL",
+        "TENANT"
+      ],
+      "title": "TenantScopeType",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "action_decision_ref": {
+      "$ref": "#/$defs/ObjectRef"
+    },
+    "base_system_snapshot_ref": {
+      "$ref": "#/$defs/ObjectRef"
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "created_by": {
+      "$ref": "#/$defs/ActorRef"
+    },
+    "diagnostic_belief_refs": {
+      "items": {
+        "$ref": "#/$defs/ObjectRef"
+      },
+      "title": "Diagnostic Belief Refs",
+      "type": "array"
+    },
+    "extensions": {
+      "additionalProperties": {
+        "$ref": "#/$defs/JsonValue"
+      },
+      "title": "Extensions",
+      "type": "object"
+    },
+    "hypothesis_refs": {
+      "items": {
+        "$ref": "#/$defs/ObjectRef"
+      },
+      "title": "Hypothesis Refs",
+      "type": "array"
+    },
+    "id": {
+      "$ref": "#/$defs/ObjectId"
+    },
+    "intervention_risk_ref": {
+      "$ref": "#/$defs/ObjectRef"
+    },
+    "object_type": {
+      "$ref": "#/$defs/ObjectType"
+    },
+    "optimization_lineage_ref": {
+      "$ref": "#/$defs/ObjectRef"
+    },
+    "proposed_changes": {
+      "items": {
+        "$ref": "#/$defs/ProposedSystemChange"
+      },
+      "title": "Proposed Changes",
+      "type": "array"
+    },
+    "provenance": {
+      "$ref": "#/$defs/Provenance"
+    },
+    "schema_version": {
+      "$ref": "#/$defs/SchemaVersion"
+    },
+    "target_loci": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Target Loci",
+      "type": "array"
+    },
+    "tenant_scope": {
+      "$ref": "#/$defs/TenantScope"
+    },
+    "validation_plan_ref": {
+      "$ref": "#/$defs/ObjectRef"
+    }
+  },
+  "required": [
+    "schema_version",
+    "id",
+    "object_type",
+    "created_at",
+    "created_by",
+    "tenant_scope",
+    "optimization_lineage_ref",
+    "base_system_snapshot_ref",
+    "action_decision_ref",
+    "diagnostic_belief_refs",
+    "hypothesis_refs",
+    "target_loci",
+    "proposed_changes",
+    "intervention_risk_ref",
+    "validation_plan_ref"
+  ],
+  "title": "SystemChangeCandidate",
+  "type": "object"
+}

@@ -1,0 +1,2546 @@
+可以。现在正式进入 **《Design Intelligence × ARSO V2.2.1 Implementation Blueprint》**。
+
+这份 Blueprint 的作用不是重新定义 ARSO，也不是重新写一遍 Design Intelligence，而是解决一个非常具体的问题：
+
+$$
+\boxed{
+如何把已经冻结的\ ARSO\ V2.2.1
+真正嵌入\ Design\ Intelligence，
+同时不破坏\ DI\ 自己的产品语义和研发节奏？
+}
+$$
+
+当前可检索的 Design Intelligence Core Document 已经形成 `StyleBrief → DesignContext → DesignDecision → DesignRoute → DesignSpec → GenerationCompiler → GenerationPackage → ImageModel → DesignInstance → Verification → HumanReview` 的生产链，并明确 `DesignSpec ≠ Prompt`、`DesignRoute ≠ Prompt Variation`、`DesignQuality ≠ GenerationFidelity`。 ARSO V2.2 同时已经把 Application、Domain Pack、Pattern Pack、Tenant Overlay、ARSO Core、Executor Adapter 分成不同工程角色。
+
+V2.2.1 后要做的，就是把这两套结构正确“扣”在一起。
+
+---
+
+# Design Intelligence × ARSO V2.2.1 Implementation Blueprint
+
+## V1.0｜Reference Application Edition
+
+**定位：** Design Intelligence 的 ARSO-native 应用实施蓝图
+**上游规范：**
+
+* ARSO Research Specification V2.2.1
+* ARSO Engineering Specification V2.2.1
+* Research ↔ Engineering Cross-Spec Consistency Freeze
+* Design Intelligence Core Specification / D01–D08
+
+**状态：**
+
+$$
+\boxed{
+ResponsibilityBoundary = FreezeCandidate
+}
+$$
+
+$$
+\boxed{
+ProductSemanticContracts = FreezeCandidate
+}
+$$
+
+$$
+\boxed{
+FashionDomainKnowledge = Evolving
+}
+$$
+
+$$
+\boxed{
+ARSOOptimizationAlgorithms = Open
+}
+$$
+
+---
+
+# Part I｜首先冻结最重要的关系
+
+## 1. Design Intelligence 不是 ARSO
+
+正式定义：
+
+$$
+\boxed{
+DesignIntelligence
+=
+Application
++
+FashionDomainIntelligence
++
+DesignExecution
+}
+$$
+
+而：
+
+$$
+\boxed{
+ARSO
+=
+DiagnosticOptimizationInfrastructure
+}
+$$
+
+二者关系：
+
+$$
+\boxed{
+ARSO\ observes,\ diagnoses,\ probes,\ intervenes
+\ on\ DesignIntelligence
+}
+$$
+
+而不是：
+
+$$
+ARSO=DesignReasoningEngine
+$$
+
+---
+
+# 2. 最重要的责任边界
+
+Design Intelligence 负责回答：
+
+> **应该设计什么？**
+
+ARSO 负责回答：
+
+> **当前设计系统哪里可能出了问题？我们是否真的知道？应该继续取证、拒绝修改，还是修改某个系统资产？**
+
+因此：
+
+$$
+\boxed{
+DesignDecision
+\neq
+DiagnosticBelief
+}
+$$
+
+前者是**业务设计决策**。
+
+后者是**对设计系统失败原因的元诊断状态**。
+
+这个边界必须从第一天保持。
+
+---
+
+# Part II｜六层责任模型
+
+建议正式采用：
+
+```text
+┌─────────────────────────────────────────────┐
+│ 1. Design Intelligence Application          │
+│ Design Studio / Workflow / Human Interaction│
+├─────────────────────────────────────────────┤
+│ 2. Fashion Domain Pack                      │
+│ Ontology / Schema / Grammar / Evaluation    │
+├─────────────────────────────────────────────┤
+│ 3. Pattern Packs                            │
+│ Generate-Verify / Retrieval / HITL / Edit   │
+├─────────────────────────────────────────────┤
+│ 4. Tenant Overlay                           │
+│ Brand / Enterprise / Channel / Preference   │
+├─────────────────────────────────────────────┤
+│ 5. ARSO-MIC                                 │
+│ Trace / Evidence / Diagnosis / Probe / Repair│
+├─────────────────────────────────────────────┤
+│ 6. Executor Adapters                        │
+│ LLM / VLM / Image Model / Retrieval / Human │
+└─────────────────────────────────────────────┘
+```
+
+---
+
+# 3. Layer 1｜Design Intelligence Application
+
+这里属于 DI，不属于 ARSO Core：
+
+```text
+Design Studio
+
+StyleBrief
+BriefValidator
+
+DesignContext
+
+DesignDecision
+DesignRoute
+DesignSpec
+
+DesignInstance
+
+HumanReview
+HumanDecision
+
+Design Project
+Collection
+Design Session
+```
+
+核心产品链继续保持：
+
+$$
+\boxed{
+StyleBrief
+\rightarrow
+DesignContext
+\rightarrow
+DesignDecision
+\rightarrow
+DesignRoute
+\rightarrow
+DesignSpec
+\rightarrow
+Generation
+\rightarrow
+Review
+}
+$$
+
+当前 DI 规范本来就是以这条链为核心。
+
+---
+
+# 4. Layer 2｜Fashion Domain Pack
+
+负责：
+
+> **服装设计世界是什么。**
+
+建议内容：
+
+```text
+Fashion Ontology
+Design Schema
+Design Grammar
+Semantic Parameter Space
+
+Fashion Relations
+Design Principles
+Hard Constraints
+Contextual Grammar
+
+Evaluation Semantics
+Fashion Fault Extensions
+Fashion Intervention Operators
+Fashion Validation Suite
+```
+
+当前 DI Semantic Foundation 已覆盖 Category、Silhouette、Proportion、Structure、Technique、Material Behavior、Visual、Color/Pattern、Commercial Semantic 等领域。
+
+---
+
+# 5. Layer 3｜Pattern Packs
+
+不要把所有流程逻辑塞进 Fashion Domain Pack。
+
+第一版至少使用：
+
+### `GenerateVerifyRepairPattern`
+
+```text
+Spec
+→ Generate
+→ Critic
+→ Repair/Edit
+→ Verify
+```
+
+### `HumanInTheLoopPattern`
+
+```text
+Candidate
+→ Human Review
+→ Feedback
+→ Revision
+```
+
+### `ReferenceRetrievalPattern`
+
+如果有历史商品、趋势、品牌资产检索：
+
+```text
+Query
+→ Retrieve
+→ Rank
+→ Context Bind
+```
+
+### `ControlledEditPattern`
+
+```text
+Existing Instance
++
+Keep
++
+Edit
+→ Local Mutation
+```
+
+因此：
+
+$$
+\boxed{
+FashionKnowledge
+\neq
+GenerateVerifyWorkflow
+}
+$$
+
+---
+
+# 6. Layer 4｜Tenant Overlay
+
+Enterprise / Brand-specific 信息全部优先放这里：
+
+```text
+Brand DNA
+Enterprise Preference
+Historical Product Pattern
+
+Customer Preference
+Channel Preference
+
+Commercial Risk Appetite
+Novelty Appetite
+
+Price-band implications
+Trend Response
+
+Approved / Rejected historical designs
+```
+
+严格遵守：
+
+$$
+\boxed{
+EnterprisePreference
+\not\Rightarrow
+FashionUniversalKnowledge
+}
+$$
+
+当前 DI 规范已经强调 Core Knowledge 与 Enterprise Knowledge 必须隔离。
+
+---
+
+# 7. Layer 5｜ARSO-MIC
+
+只负责通用的：
+
+```text
+ReferenceTaskSpec
+SystemSnapshot
+
+RunRecord
+RuntimeEvent
+ObservabilityProfile
+
+ObjectiveSpec
+MeasurementSpec
+EvaluatorBinding
+EvaluationRecord
+
+EvidenceItem
+EvidenceBundle
+
+DiagnosticBelief
+HypothesisRecord
+IdentifiabilityAssessment
+
+ProbePlan
+ProbeResult
+
+ActionDecision
+
+InterventionPlan
+InterventionResult
+
+ValidationPlan
+ValidationResult
+
+ExperimentAssignment
+```
+
+ARSO Core **不应该出现**：
+
+```text
+neckline
+sleeve
+waist
+silhouette
+commercial_role
+trend_expression
+```
+
+这些属于 Fashion Domain。
+
+---
+
+# 8. Layer 6｜Executor Adapter
+
+第一阶段：
+
+```text
+LLM Adapter
+VLM Adapter
+Image Model Adapter
+Reference Retrieval Adapter
+Human Review Adapter
+```
+
+后期可以加入：
+
+```text
+CAD Adapter
+Pattern Generator
+Simulation Adapter
+```
+
+但当前 DI 自己已经明确不承诺精确纸样、CAD、自动打版和工厂制造验证。
+
+---
+
+# Part III｜DI Source-of-Truth Architecture
+
+这是整个 Blueprint 最关键的一部分。
+
+## 9. `StyleBrief` 不是 `ReferenceTaskSpec`
+
+不要直接：
+
+```text
+StyleBrief == ReferenceTaskSpec
+```
+
+正确关系：
+
+$$
+\boxed{
+ReferenceTaskSpec
+=
+Bind(
+StyleBrief,
+EnterprisePolicy,
+EvaluationObjectives,
+Risk,
+Budget
+)
+}
+$$
+
+StyleBrief 是业务对象。
+
+ReferenceTaskSpec 是 ARSO 为一次设计任务建立的**受保护任务合同**。
+
+---
+
+# 10. 一次设计任务的 Source-of-Truth 层级
+
+建议：
+
+```text
+StyleBrief
+    │
+    ├── Enterprise / Brand Policy
+    ├── Hard Constraints
+    ├── Evaluation Objectives
+    └── Resource / Risk Policy
+              │
+              ▼
+       ReferenceTaskSpec
+```
+
+运行时 Design Intelligence 可以产生不同：
+
+```text
+DesignDecision
+DesignRoute
+DesignSpec
+GenerationPackage
+```
+
+但普通 optimizer 不允许通过修改：
+
+```text
+StyleBrief MUST
+hard constraints
+evaluation goal
+```
+
+让结果“看起来变好”。
+
+---
+
+# Part IV｜业务语义链
+
+# 11. StyleBrief
+
+继续作为：
+
+> 为什么这个商品应该存在。
+
+建议保持当前主要语义：
+
+```text
+identity
+commercial_role
+customer
+channel
+season
+occasion
+
+trend_translation
+design_goal
+
+primary_focus
+secondary_focus
+
+commerciality
+novelty
+wearability
+
+must
+prefer
+avoid
+
+references
+```
+
+---
+
+# 12. DesignContext
+
+由：
+
+$$
+StyleBrief
++
+TenantOverlay
++
+FashionDomainKnowledge
++
+TrendContext
++
+References
++
+RelevantCases
+$$
+
+形成。
+
+但 Context 中每项必须保留来源：
+
+```text
+source
+version
+tenant_scope
+confidence
+validity
+```
+
+避免：
+
+> 企业偏好、趋势判断和普适设计规则最后混成一段 prompt。
+
+---
+
+# 13. DesignDecision
+
+正式定义为：
+
+$$
+\boxed{
+DesignDecision
+=
+ResourceAllocationAcrossDesignDimensions
+}
+$$
+
+回答：
+
+> 设计能量应该放在哪里？
+
+包括：
+
+```text
+silhouette_strategy
+proportion_strategy
+
+primary_focus
+secondary_focus
+
+structural_strategy
+material_strategy
+color_strategy
+
+trend_translation_strategy
+novelty_strategy
+commercial_strategy
+restraint_strategy
+
+must_preserve
+avoid
+```
+
+---
+
+# 14. DesignRoute
+
+正式保留：
+
+$$
+\boxed{
+Route=DesignHypothesis
+}
+$$
+
+不是 prompt variation。
+
+例如：
+
+```text
+Goal:
+强调腰部
+
+Route A:
+结构线 + 局部塑形
+
+Route B:
+抽褶 + 局部体量
+
+Route C:
+视觉腰线 + 比例重新分配
+```
+
+Route Diversity 应测：
+
+```text
+mechanism
+structure
+proportion
+volume
+visual focus
+material expression
+```
+
+---
+
+# 15. DesignSpec
+
+这是整个 DI 最重要的稳定业务资产。
+
+$$
+\boxed{
+DesignSpec
+\neq
+Prompt
+}
+$$
+
+当前 ARSO/DI 资料也明确把 Design Spec 与模型执行 prompt 分开，Compiler 再转换为 Prompt、References、Keep/Edit Constraints 等。
+
+建议继续保持：
+
+```text
+Identity
+
+Silhouette
+Proportion
+
+Shoulder
+Neckline
+Sleeve
+Bodice
+Waist
+Hip
+Hem
+
+Structural Detail
+Material Behavior
+Color
+Pattern
+
+Visual Hierarchy
+Design Focus
+Complexity
+
+Commerciality
+Novelty
+Trend Expression
+
+Must Keep
+Editable
+Avoid
+
+Garment Plausibility
+```
+
+---
+
+# Part V｜Execution Boundary
+
+# 16. GenerationCompiler
+
+正式职责：
+
+$$
+\boxed{
+DesignSpec
+\rightarrow
+ExecutorSpecificGenerationPackage
+}
+$$
+
+Compiler 不能重新决定：
+
+```text
+设计焦点是什么
+廓形是什么
+创新度是多少
+主要结构策略是什么
+```
+
+这些已经属于 DesignDecision/DesignSpec。
+
+如果 Compiler 改变这些内容：
+
+$$
+\boxed{
+CompilerSemanticDrift
+}
+$$
+
+---
+
+# 17. GenerationPackage
+
+可以包含：
+
+```text
+core_prompt
+
+references
+
+keep_constraints
+edit_constraints
+negative_constraints
+
+visual_lock
+region_mask
+
+camera
+view
+styling_context
+
+generation_mode
+
+model
+parameters
+```
+
+GenerationPackage 是：
+
+$$
+\boxed{
+ExecutionArtifact
+}
+$$
+
+而不是 Design Truth。
+
+---
+
+# 18. Model Gateway
+
+DI 当前规范已经提出统一 Model Gateway，而不是业务模块直接绑具体模型，并记录 provider、model、version、parameters、cost、latency、input/output hash。
+
+继续保留：
+
+```text
+reason()
+analyze_image()
+retrieve_reference()
+
+generate_image()
+edit_image()
+compare_images()
+
+evaluate_design()
+```
+
+ARSO 通过 Adapter 观察这些调用。
+
+---
+
+# Part VI｜一次 DI Run 的 SystemSnapshot
+
+# 19. Snapshot 应绑定什么
+
+一次生成至少冻结：
+
+```text
+StyleBrief version
+
+Fashion Ontology version
+Design Schema version
+Grammar version
+
+Tenant Overlay version
+
+Decision Policy version
+Route Policy version
+
+DesignSpec version
+
+Compiler version
+Compiler Template version
+
+Reference Bundle version
+
+Image Model
+Model version
+Model parameters
+
+Critic version
+
+ObjectiveSpec versions
+MeasurementSpec versions
+EvaluatorBinding versions
+```
+
+即：
+
+$$
+\boxed{
+DesignResult
+=
+f(Snapshot,Input,Randomness)
+}
+$$
+
+---
+
+# 20. DesignLineage 与 ARSO Lineage 分开但相连
+
+### Design Lineage
+
+回答：
+
+> 这个设计从哪个设计演化来的？
+
+```text
+Brief
+→ Decision
+→ Route
+→ Spec
+→ Instance
+→ Edit
+→ Approved Design
+```
+
+### Optimization Lineage
+
+回答：
+
+> 系统为什么修改了某个设计能力资产？
+
+```text
+Failure
+→ Evidence
+→ Diagnosis
+→ Probe
+→ Intervention
+→ Validation
+```
+
+不要合成一个巨大的 lineage graph。
+
+两者通过：
+
+```text
+run_id
+snapshot_id
+design_instance_id
+```
+
+连接。
+
+---
+
+# Part VII｜DI Observability
+
+# 21. 第一版必须观察的 channel
+
+建议至少：
+
+| Channel                | 为什么重要                      |
+| ---------------------- | -------------------------- |
+| Brief validation       | R0/R1                      |
+| Context assembly       | 判断 context fault           |
+| Decision generation    | 判断 design reasoning        |
+| Route generation       | 判断 exploration             |
+| Spec construction      | 判断 specification           |
+| Compiler mapping       | 判断 semantic loss           |
+| Reference selection    | 判断 reference contamination |
+| Image request/response | executor                   |
+| Critic evaluation      | evaluator                  |
+| Human review           | independent evidence       |
+| Controlled edit        | intervention               |
+| Cost / latency         | operational                |
+
+---
+
+# 22. 不要只存 Raw Prompt
+
+至少记录：
+
+```text
+expected_semantics
+compiled_semantics
+observed_result
+```
+
+例如：
+
+```text
+DesignSpec:
+waist.mechanism = localized gathering
+
+GenerationPackage:
+prompt says localized gathering at waist
+
+Generated Image:
+gathering absent
+```
+
+这样才能判断：
+
+$$
+Spec\ correct
+$$
+
+$$
+Compiler\ correct
+$$
+
+而：
+
+$$
+Executor\ failed
+$$
+
+---
+
+# Part VIII｜Evaluation Architecture
+
+这是 DI 与 ARSO 真正结合的第一入口。
+
+# 23. 不允许只有一个 Design Score
+
+当前 DI Benchmark 设计本身就主张使用 Evaluation Vector，而不是简单 `Design Score = 91`。
+
+建议正式定义：
+
+$$
+Q(D)=
+(
+B_f,
+D_q,
+R_q,
+S_q,
+G_f,
+P,
+C_f,
+N,
+T,
+U
+)
+$$
+
+分别可以表示：
+
+```text
+Brief Fidelity
+Design Decision Quality
+Route Quality
+Spec Quality
+Generation Fidelity
+Garment Plausibility
+
+Commercial Fit
+Novelty Fit
+Trend Expression
+
+Uncertainty
+```
+
+---
+
+# 24. 必须拆 Design Quality 与 Generation Fidelity
+
+例如：
+
+### Scenario A
+
+DesignSpec 正确：
+
+```text
+asymmetric waist gathering
+```
+
+Image model 没生成。
+
+这是：
+
+$$
+GenerationFidelityFailure
+$$
+
+不是：
+
+$$
+DesignReasoningFailure
+$$
+
+### Scenario B
+
+Image model 完整执行 Spec，
+
+但 Spec 本身违反 Brief。
+
+这是：
+
+$$
+DesignLogicFailure
+$$
+
+而不是 executor failure。
+
+这个分离也是现有 DI 的核心原则。
+
+---
+
+# 25. 推荐 ObjectiveSpec
+
+第一版至少：
+
+```text
+O1 Brief Fidelity
+
+O2 Design Logic Quality
+
+O3 Route Distinctiveness
+
+O4 Spec Internal Consistency
+
+O5 Generation Fidelity
+
+O6 Garment Plausibility
+
+O7 Commercial Fit
+
+O8 Controlled-Edit Compliance
+
+O9 Protected-Attribute Preservation
+```
+
+`Novelty`、`TrendFit` 可以按具体 StyleBrief 激活，不能默认：
+
+$$
+HigherNovelty=Better
+$$
+
+---
+
+# 26. Evaluator 层
+
+每个 Objective 可以有不同 evaluator：
+
+```text
+Deterministic Constraint Checker
+
+VLM Critic
+
+Reference Comparator
+
+Rule Engine
+
+Human Designer
+
+Merchandiser
+
+Enterprise Reviewer
+```
+
+其中最终研究 audit 不应只依赖与 operational critic 完全相同的模型。
+
+---
+
+# Part IX｜DI Failure Model
+
+# 27. 不新建独立于 ARSO 的另一套 Attribution Framework
+
+原 DI V3.1 有：
+
+```text
+ADSI
+FailureAttribution
+```
+
+
+
+V2.2.1 后建议重构：
+
+$$
+\boxed{
+ADSI
+\rightarrow
+FashionEvidenceBundle/View
+}
+$$
+
+$$
+\boxed{
+FailureAttribution
+\rightarrow
+DiagnosticBelief\ View
+}
+$$
+
+不要再有两个平行诊断系统。
+
+---
+
+# 28. DI 第一版 Failure Locus
+
+建议：
+
+```text
+D0 BRIEF / OBJECTIVE
+
+D1 CONTEXT
+
+D2 DESIGN_DECISION
+
+D3 DESIGN_ROUTE
+
+D4 DESIGN_SPEC
+
+D5 COMPILER / GENERATION_PACKAGE
+
+D6 REFERENCE
+
+D7 IMAGE_EXECUTOR
+
+D8 EVALUATOR
+
+D9 ENVIRONMENT / EXTERNAL
+```
+
+并映射到 ARSO Seed Taxonomy：
+
+| DI                  | ARSO |
+| ------------------- | ---- |
+| D0 Brief/Objective  | R0   |
+| D1 Context          | R1   |
+| D2 Decision         | R3   |
+| D3 Route            | R4   |
+| D4 Spec             | R5   |
+| D5 Compiler         | R6   |
+| D7 Image Model      | R7   |
+| D8 Critic/Evaluator | R8   |
+| D9 Environment      | R9   |
+
+Fashion Ontology / Grammar 本身的系统性错误：
+
+$$
+D_{semantic}\rightarrow R2
+$$
+
+---
+
+# 29. Reference Fault 值得单独扩展
+
+Reference 在 Design Intelligence 中非常重要，但 ARSO R0–R9 没必要因此增加新的全局 R 类别。
+
+正确做法：
+
+```text
+R1 DATA_CONTEXT
+  └── fashion.reference.selection
+
+R6 COMPILER
+  └── fashion.reference.binding
+```
+
+视错误发生阶段区分。
+
+这体现：
+
+$$
+\boxed{
+DomainExtension
+\neq
+CoreTaxonomyExpansion
+}
+$$
+
+---
+
+# Part X｜DiagnosticBelief for DI
+
+# 30. 失败时不要输出单一“原因”
+
+例如：
+
+```text
+D4 Design Spec              0.72
+D5 Compiler                 0.65
+D7 Image Executor           0.41
+```
+
+可以同时成立。
+
+同时输出：
+
+```text
+status:
+  AMBIGUOUS
+
+missing_evidence:
+  cross-model replay
+
+competing_hypotheses:
+  H1 Spec underspecified
+  H2 compiler lost local-region constraint
+
+recommended_probe:
+  expert-spec + same compiler replay
+```
+
+这才真正符合 V2.2.1。
+
+---
+
+# Part XI｜DI Probe Library
+
+这会成为 ARSO 在 DI 中最有价值的一层。
+
+## 31. Probe P1｜Repeat Generation
+
+保持：
+
+```text
+Same Spec
+Same Compiler
+Same Model
+```
+
+只改变随机性。
+
+目的：
+
+> 判断失败是不是随机执行波动。
+
+---
+
+# 32. Probe P2｜Cross-Model Replay
+
+保持：
+
+```text
+Same DesignSpec
+```
+
+使用：
+
+```text
+Model A
+Model B
+Model C
+```
+
+如果：
+
+$$
+A=Fail,\quad B,C=Pass
+$$
+
+则 ImageModel/Adapter hypothesis 获得支持。
+
+---
+
+# 33. Probe P3｜Oracle / Expert Spec Replacement
+
+保持：
+
+```text
+Compiler
+Model
+Reference
+```
+
+不变，
+
+只替换：
+
+```text
+Predicted DesignSpec
+→ Expert DesignSpec
+```
+
+若性能显著恢复：
+
+$$
+SpecFailure\uparrow
+$$
+
+---
+
+# 34. Probe P4｜Compiler Bypass
+
+用人工构造高质量 GenerationPackage。
+
+如果：
+
+```text
+Manual Package PASS
+Automatic Compiler FAIL
+```
+
+则：
+
+$$
+CompilerFailure\uparrow
+$$
+
+---
+
+# 35. Probe P5｜Reference Removal
+
+比较：
+
+```text
+Spec + Reference
+```
+
+与：
+
+```text
+Spec only
+```
+
+可发现：
+
+```text
+reference dominance
+reference contamination
+style hijacking
+```
+
+---
+
+# 36. Probe P6｜Evaluator Cross-Check
+
+同一 DesignInstance：
+
+```text
+Critic A
+Critic B
+Human
+```
+
+如果 VLM Critic 说失败而专家 consistently 认为满足：
+
+$$
+EvaluatorFault\uparrow
+$$
+
+---
+
+# 37. Probe P7｜Freeze-and-Change
+
+例如怀疑 waist：
+
+```text
+Freeze:
+silhouette
+shoulder
+sleeve
+material
+color
+
+Change:
+waist mechanism
+```
+
+观察变化是否与 hypothesis prediction 一致。
+
+这是 DI 中非常自然的 causal probe。
+
+---
+
+# Part XII｜Controlled Intervention
+
+# 38. Intervention 目标分层
+
+第一阶段建议只开放：
+
+### Low-risk
+
+```text
+Generation Prompt
+Negative Constraint
+Reference Binding
+Compiler Template
+Model Parameters
+```
+
+### Medium-risk
+
+```text
+Route Policy
+Design Decision Prompt/Policy
+Spec Constructor
+Critic Prompt
+Retrieval Policy
+```
+
+### High-risk
+
+```text
+Validated Design Grammar
+Ontology
+Core Schema
+Global Evaluation Semantics
+```
+
+High-risk 默认：
+
+$$
+\boxed{
+Human/ArchitectureGate
+}
+$$
+
+---
+
+# 39. 设计实例 Edit 与系统 Intervention 必须分开
+
+用户说：
+
+> “把这个袖子再短一点。”
+
+这是：
+
+$$
+\boxed{
+DesignEdit
+}
+$$
+
+不是：
+
+$$
+ARSOSystemIntervention
+$$
+
+只有发现：
+
+> “系统在很多 case 上都错误生成袖长”
+
+并修改：
+
+```text
+Spec constructor
+Compiler
+Grammar
+```
+
+才是：
+
+$$
+\boxed{
+SystemIntervention
+}
+$$
+
+这条边界非常重要。
+
+---
+
+# Part XIII｜Validation
+
+# 40. VG0｜Integrity / Safety
+
+DI 中包括：
+
+```text
+Schema valid
+Artifact versions resolved
+
+No forbidden mutation
+Tenant policy respected
+
+Prompt/reference export policy respected
+```
+
+---
+
+# 41. VG1｜Target Repair
+
+例如目标：
+
+> “模型持续遗漏腰部局部抽褶。”
+
+修改后：
+
+$$
+WaistFidelity\uparrow
+$$
+
+---
+
+# 42. VG2｜Protected Regression
+
+同时检查：
+
+```text
+silhouette unchanged
+neckline unchanged
+sleeve unchanged
+commerciality not degraded
+reference compliance not degraded
+```
+
+特别适合 DI。
+
+因为产品真正害怕的是：
+
+> 修好了腰部，把整个设计改坏了。
+
+---
+
+# 43. VG3｜Replication / Generalization
+
+至少：
+
+```text
+multiple seeds
+multiple cases
+different reference images
+different category-compatible cases
+```
+
+如果只在一张图上有效：
+
+$$
+NotPromotable
+$$
+
+---
+
+# Part XIV｜Reverse 与 Forward 两种 Benchmark World
+
+# 44. Reverse Benchmark
+
+现有 ARSO/DI 已经明确 Reverse 的目标是获得**可重现的充分链条**，而不是证明恢复原设计师真实心理过程。
+
+正式链：
+
+$$
+GTImage
+\rightarrow
+ObservedFeatures
+\rightarrow
+SemanticDecomposition
+\rightarrow
+Decision
+\rightarrow
+Route
+\rightarrow
+Spec
+\rightarrow
+Reconstruction
+$$
+
+主要测试：
+
+```text
+Ontology Coverage
+Observation Accuracy
+
+Spec Sufficiency
+Compiler Fidelity
+Executor Fidelity
+
+Keep/Edit behavior
+```
+
+---
+
+# 45. Forward Benchmark
+
+$$
+Brief
+\rightarrow
+Decision
+\rightarrow
+Route
+\rightarrow
+Spec
+\rightarrow
+Instances
+$$
+
+属于：
+
+$$
+\boxed{
+FeasibleSet
+}
+$$
+
+不要求唯一结果。
+
+主要测试：
+
+```text
+Brief Satisfaction
+Hard Constraints
+
+Design Logic
+Route Diversity
+
+Commercial Fit
+
+Controlled Novelty
+Human Preference
+
+Editability
+```
+
+---
+
+# 46. 两个 Benchmark 绝不能混成一个分数
+
+Reverse 的：
+
+$$
+Similarity
+$$
+
+不能成为 Forward Design 的主要目标。
+
+否则系统最终会学成：
+
+> 更会复制已有设计，
+
+而不是：
+
+> 更会产生满足 Brief 的新设计。
+
+---
+
+# Part XV｜知识演进策略
+
+# 47. 第一版只记录，不自动晋升
+
+继续保存：
+
+```text
+Case
+Success
+Failure
+
+Human Feedback
+Probe Result
+
+Intervention
+Validation
+```
+
+但这些首先只是：
+
+$$
+\boxed{
+ExperimentHistory
+}
+$$
+
+不要立即称为：
+
+$$
+StableFashionKnowledge
+$$
+
+---
+
+# 48. Fashion Knowledge 生命周期
+
+未来可以：
+
+```text
+Observation
+↓
+Candidate Lesson
+↓
+Candidate Rule
+↓
+Multi-case Validation
+↓
+Expert Review
+↓
+Validated Grammar / Policy
+```
+
+Ontology / Schema 更严格：
+
+```text
+Evidence
+↓
+Proposal
+↓
+Architecture Review
+↓
+Versioned Migration
+```
+
+---
+
+# 49. HumanDecision 必须从第一天记录
+
+现有 Fashion Platform 资料已经明确指出 View、Like、Shortlist、Reject、Edit、Select 等行为值得记录，同时警告 `Like ≠ Commercial Outcome`。
+
+所以至少区分：
+
+$$
+PreferenceSignal
+$$
+
+$$
+SelectionDecision
+$$
+
+$$
+CommercialOutcome
+$$
+
+不要混为一个“reward”。
+
+---
+
+# Part XVI｜核心对象 Revision
+
+原 DI V3.1 有 18 个对象。
+
+在 ARSO V2.2.1 下建议重新归属：
+
+| 原 DI Object         | 新状态                                           |
+| ------------------- | --------------------------------------------- |
+| StyleBrief          | **KEEP｜Application**                          |
+| DesignContext       | **KEEP｜Application**                          |
+| DesignDecision      | **KEEP｜Application**                          |
+| DesignRoute         | **KEEP｜Application**                          |
+| DesignSpec          | **KEEP｜Domain/Application Artifact**          |
+| GenerationPackage   | **KEEP｜Execution Artifact**                   |
+| DesignInstance      | **KEEP**                                      |
+| DesignState         | **KEEP if product requires**                  |
+| DesignLineage       | **KEEP**                                      |
+| HumanDecision       | **KEEP**                                      |
+| RawExecutionTrace   | **MERGE VIEW → ARSO RuntimeEvent**            |
+| EvaluationTrace     | **MERGE VIEW → EvaluationRecord**             |
+| ADSI                | **REFACTOR → Fashion Evidence View**          |
+| FailureAttribution  | **REFACTOR → DiagnosticBelief View**          |
+| SystemCandidate     | **DEFER / replace with Intervention Sandbox** |
+| OptimizationLineage | **ARSO Lineage View**                         |
+| LearningProposal    | **DEFER knowledge phase**                     |
+| KnowledgeItem       | **DEFER governed promotion**                  |
+
+这会明显减少重复建模。
+
+---
+
+# Part XVII｜Service Boundary
+
+第一版不要按每个对象拆微服务。
+
+推荐逻辑服务：
+
+```text
+Design Application
+│
+├── Brief / Context
+├── Design Reasoning
+├── Design Spec
+├── Generation
+└── Review
+
+Fashion Semantic Service
+│
+├── Ontology
+├── Grammar
+└── Tenant Overlay
+
+Model Gateway
+│
+├── LLM
+├── VLM
+└── Image Model
+
+Evaluation Service
+
+ARSO Adapter
+│
+├── Trace
+├── Evidence
+├── Diagnosis
+├── Probe
+└── Intervention
+
+Experiment / Benchmark Service
+```
+
+物理上第一版完全可以：
+
+$$
+\boxed{
+ModularMonolith
+}
+$$
+
+而不是微服务矩阵。
+
+---
+
+# Part XVIII｜关键 Adapter
+
+# 50. `DesignOptimizationAdapter`
+
+它应该成为 DI 与 ARSO-MIC 的正式边界。
+
+输入：
+
+```text
+Design Run
+Design Snapshot
+Evaluation
+Human Feedback
+```
+
+输出给 ARSO：
+
+```text
+RunRecord
+RuntimeEvents
+ObservabilityProfile
+
+EvaluationRecords
+
+EvidenceBundle
+```
+
+ARSO 返回：
+
+```text
+DiagnosticBelief
+IdentifiabilityAssessment
+ActionDecision
+
+optional ProbePlan
+optional InterventionPlan
+```
+
+---
+
+# 51. ARSO 不直接写业务数据库
+
+例如 ARSO 返回：
+
+```text
+INTERVENE:
+target = fashion.generation.compiler
+operation = PATCH
+```
+
+真正修改必须经过：
+
+```text
+DesignOptimizationAdapter
+→ Permission
+→ Sandbox
+→ Compiler Service
+```
+
+这能避免通用 optimizer 越权修改业务系统。
+
+---
+
+# Part XIX｜研发阶段重新排列
+
+原 DI 规划是 P0 Production、P1 Experimental Infrastructure、P2 Diagnostics、P3 Optimization Runtime、P4 Knowledge Evolution。
+
+总体方向正确，但结合 ARSO V2.2.1 后建议调整成下面五阶段。
+
+---
+
+# 52. DI-P0｜Semantic Golden Path
+
+目标：
+
+$$
+\boxed{
+Brief\rightarrow ApprovedDesign
+}
+$$
+
+必须完成：
+
+```text
+StyleBrief
+BriefValidator
+
+DesignContext
+
+DesignDecision
+3–5 meaningful DesignRoutes
+
+DesignSpec
+
+GenerationCompiler
+one primary Image Model
+
+DesignInstance
+Basic Critic
+Human Review
+```
+
+同时建立：
+
+```text
+version
+snapshot
+lineage
+```
+
+### Gate D0
+
+四个业务合同：
+
+```text
+StyleBrief
+DesignDecision
+DesignRoute
+DesignSpec
+```
+
+稳定。
+
+---
+
+# 53. DI-P1｜Observable & Measurable
+
+加入：
+
+```text
+RuntimeEvent
+SystemSnapshot
+ObservabilityProfile
+
+ObjectiveSpec
+MeasurementSpec
+EvaluatorBinding
+EvaluationRecord
+
+Benchmark Runner
+Regression Set
+```
+
+### Gate D1
+
+任意一个设计实例都能回答：
+
+> 谁生成的、用什么版本、根据什么 Spec、如何被评价。
+
+---
+
+# 54. DI-P2｜Diagnosable
+
+加入：
+
+```text
+EvidenceBundle
+DiagnosticBelief
+HypothesisRecord
+IdentifiabilityAssessment
+
+Counterfactual Replay
+Cross-model Replay
+Evaluator Cross-check
+```
+
+### Gate D2
+
+失败不能只输出：
+
+> “设计不好。”
+
+而必须输出：
+
+```text
+suspected loci
+supporting evidence
+competing hypotheses
+
+missing evidence
+identifiability
+
+recommended probe
+```
+
+---
+
+# 55. DI-P3｜Intervenable
+
+加入：
+
+```text
+ActionDecision
+ProbePlan
+ProbeOperator
+
+InterventionPlan
+Sandbox Snapshot
+
+VG0–VG3
+Regression
+```
+
+### Gate D3
+
+必须证明至少一类：
+
+$$
+CorrectLocusRepair
+<
+WholeSystemRewrite
+$$
+
+在 regression 上更安全。
+
+注意这里的 `<` 指 modification/regression cost 更低，而非 score 更低。
+
+---
+
+# 56. DI-P4｜Adaptive / Learning
+
+最后才考虑：
+
+```text
+SearchPlan
+Multiple intervention candidates
+
+Grammar proposal
+Knowledge promotion
+
+Enterprise adaptation
+
+Cross-model semantic transfer
+```
+
+前提：
+
+$$
+P0-P3\ stable
+$$
+
+---
+
+# Part XX｜并行研发 Workstreams
+
+为了实际组织团队，我建议不要只按阶段串行，而拆成四个 Workstream。
+
+| Workstream                         | 主要任务                                             |
+| ---------------------------------- | ------------------------------------------------ |
+| **WS-A Product**                   | Studio、Brief、Decision、Route、Spec、Review          |
+| **WS-B Fashion Semantics**         | Ontology、Schema、Grammar、Parameter Space          |
+| **WS-C Evaluation Infrastructure** | Snapshot、Trace、Benchmark、Critic、Lineage          |
+| **WS-D ARSO Control**              | Evidence、Diagnosis、Probe、Intervention、Validation |
+
+节奏：
+
+$$
+WS_A+WS_B+WS_C
+$$
+
+从 Day 1 并行。
+
+而：
+
+$$
+WS_D
+$$
+
+先做 Adapter 和 instrumentation，诊断算法在真实数据开始积累之后逐渐加入。
+
+---
+
+# Part XXI｜第一个 90 天行动拆解
+
+建议第一轮不要做完整 ARSO optimization。
+
+## Sprint 1｜Contract Freeze
+
+完成：
+
+```text
+StyleBrief v0.1
+DesignDecision v0.1
+DesignRoute v0.1
+DesignSpec v0.1
+
+ReferenceTaskBinding
+```
+
+同时完成 20–30 个专家标注案例。
+
+---
+
+## Sprint 2｜Golden Path
+
+实现：
+
+$$
+Brief
+\rightarrow
+Decision
+\rightarrow
+Route
+\rightarrow
+Spec
+\rightarrow
+Image
+$$
+
+只绑定一个主图像 Executor。
+
+---
+
+## Sprint 3｜Version + Trace
+
+加入：
+
+```text
+Artifact version
+SystemSnapshot
+
+RunRecord
+RuntimeEvent
+
+DesignLineage
+```
+
+从这一阶段开始，**禁止任何无法追溯版本的正式 benchmark run**。
+
+---
+
+## Sprint 4｜Evaluation
+
+建立：
+
+```text
+ObjectiveSpec
+MeasurementSpec
+EvaluatorBinding
+
+Brief Fidelity
+Spec Fidelity
+Generation Fidelity
+Plausibility
+Controlled Edit
+```
+
+以及专家 audit protocol。
+
+---
+
+## Sprint 5｜Benchmark
+
+建立两个 benchmark 子集：
+
+```text
+Reverse Reconstruction
+Forward Brief Satisfaction
+```
+
+先追求：
+
+$$
+ProblemCoverage
+$$
+
+而不是大数量。
+
+---
+
+## Sprint 6｜Diagnostic Prototype
+
+从真实失败建立：
+
+```text
+EvidenceBundle
+DI Failure Loci
+
+DiagnosticBelief
+Hypothesis
+```
+
+先 rule-based / strong LLM prototype。
+
+不要训练专门模型。
+
+---
+
+# Part XXII｜第一批 ARSO × DI Kill Tests
+
+DI 不是 ARSO 第一篇的主 causal benchmark，但自身仍然应该做应用 Kill Tests。
+
+| Test      | 问题                                                |
+| --------- | ------------------------------------------------- |
+| **DI-K1** | Expert Spec 是否比 bad Spec 显著改善生成？                  |
+| **DI-K2** | 相同 Spec 跨模型是否表现明显不同？                              |
+| **DI-K3** | Compiler bypass 能否隔离 compiler failure？            |
+| **DI-K4** | Reference removal 能否发现 reference dominance？       |
+| **DI-K5** | Critic 与 Human 是否在关键维度校准？                         |
+| **DI-K6** | Correct-locus edit 是否比 full rewrite 少 regression？ |
+| **DI-K7** | Locked attributes 是否真的保持？                         |
+| **DI-K8** | 无明确 diagnosis 时 abstain/probe 是否优于乱改？             |
+
+这些测试非常适合作为 DI 自身的 engineering/scientific validation。
+
+---
+
+# Part XXIII｜第一批 Benchmark Casebook
+
+不要先做 10,000 张图。
+
+建议第一版：
+
+$$
+\boxed{
+50\text{–}100\ HighQualityCases
+}
+$$
+
+分层：
+
+```text
+20–30 Reverse Reconstruction
+20–30 Forward Brief
+10–20 Controlled Edit
+10–20 Diagnostic Fault Cases
+```
+
+每个 case 的 annotation value 要远高于规模。
+
+至少包括：
+
+```text
+Observable Truth
+Expert Interpretation
+Allowed Alternatives
+Forbidden Deviations
+
+Uncertainty
+
+Target Brief
+Acceptable Decision Range
+Route Mechanism
+
+Spec
+
+Evaluation Rubric
+```
+
+现有 DI Benchmark 也已经明确 GT 不应被视为唯一设计答案，而应同时包含 Observable Truth、Expert Interpretation、Allowed Alternatives、Forbidden Deviation 和 Uncertainty。
+
+---
+
+# Part XXIV｜现在明确不做什么
+
+第一阶段 Blueprint 明确 **不要求**：
+
+```text
+automatic ontology induction
+
+automatic grammar promotion
+
+learned ARSO meta-router
+
+population optimization
+
+persistent global design memory
+
+cross-enterprise knowledge transfer
+
+cross-domain transfer
+
+full CAD integration
+
+automatic pattern making
+
+production manufacturability proof
+
+sales-reward end-to-end learning
+```
+
+这些不是无价值。
+
+只是都满足：
+
+$$
+\boxed{
+NotYetJustified
+}
+$$
+
+---
+
+# Part XXV｜最终系统图
+
+最终建议把 DI × ARSO 理解为两个互相连接但可以独立运行的闭环。
+
+```text
+                    ┌───────────────────────────────┐
+                    │    DESIGN PRODUCTION LOOP     │
+                    │                               │
+ StyleBrief ───────►│ Context                       │
+                    │   ↓                           │
+                    │ Decision                      │
+                    │   ↓                           │
+                    │ Routes                        │
+                    │   ↓                           │
+                    │ DesignSpec                    │
+                    │   ↓                           │
+                    │ Compiler                      │
+                    │   ↓                           │
+                    │ GenerationPackage             │
+                    │   ↓                           │
+                    │ Image Model                   │
+                    │   ↓                           │
+                    │ DesignInstance                │
+                    │   ↓                           │
+                    │ Critic + Human                │
+                    └─────────────┬─────────────────┘
+                                  │
+                     Trace / Evaluation / Snapshot
+                                  │
+                                  ▼
+              ┌─────────────────────────────────────┐
+              │       ARSO DIAGNOSTIC LOOP          │
+              │                                     │
+              │ Observability                       │
+              │      ↓                              │
+              │ Evidence                            │
+              │      ↓                              │
+              │ DiagnosticBelief                    │
+              │      ↓                              │
+              │ Identifiability                     │
+              │      ↓                              │
+              │ ActionDecision                      │
+              │  ↙       ↓        ↘                │
+              │Probe    Abstain   Intervene          │
+              │ ↓                   ↓               │
+              │Evidence          Sandbox             │
+              │ ↓                   ↓               │
+              │Diagnose          VG0–VG3             │
+              └─────────────────────────────────────┘
+```
+
+最关键的是：
+
+$$
+\boxed{
+ProductionLoop
+\ can\ run\
+without\
+OptimizationLoop
+}
+$$
+
+而 ARSO：
+
+$$
+\boxed{
+cannot\ silently\ rewrite\
+ProductionTruth
+}
+$$
+
+---
+
+# Part XXVI｜Blueprint Freeze Decision
+
+到这里建议正式冻结以下边界。
+
+### **FROZEN**
+
+```text
+DI Application ≠ ARSO Core
+
+StyleBrief ≠ ReferenceTaskSpec
+
+DesignDecision ≠ DiagnosticBelief
+
+DesignSpec ≠ Prompt
+
+DesignRoute ≠ Prompt Variation
+
+GenerationPackage = Executor Artifact
+
+Design Quality ≠ Generation Fidelity
+
+Design Edit ≠ System Intervention
+
+DesignLineage ≠ OptimizationLineage
+
+Tenant Knowledge ≠ Fashion Stable Knowledge
+
+Fashion Domain Pack ≠ Pattern Pack
+
+ADSI → Evidence View
+
+FailureAttribution → DiagnosticBelief View
+```
+
+### **FREEZE CANDIDATE**
+
+```text
+StyleBrief schema
+DesignDecision schema
+DesignRoute schema
+DesignSpec schema
+
+DI Failure Loci
+
+DI Observability channels
+
+Evaluation Objectives
+
+DesignOptimizationAdapter
+
+P0–P3 Gate definitions
+```
+
+### **OPEN**
+
+```text
+reasoning prompt
+route generator
+critic model
+
+diagnosis model
+probe selection
+action thresholds
+
+compiler implementation
+image executor
+
+evaluation weights
+```
+
+### **DEFERRED**
+
+```text
+automatic knowledge evolution
+meta-learning
+cross-domain transfer
+production autonomous self-modification
+```
+
+---
+
+# 最终实施判断
+
+这套 Blueprint 最大的变化并不是给 Design Intelligence 增加了 ARSO 模块，而是**把已有 DI 里面原本容易混合的三种东西拆开了**：
+
+$$
+\boxed{
+DesignSemantics
+}
+$$
+
+负责：
+
+> 设计本身应该是什么。
+
+$$
+\boxed{
+Execution
+}
+$$
+
+负责：
+
+> 怎样把设计交给具体模型实现。
+
+$$
+\boxed{
+ARSOControl
+}
+$$
+
+负责：
+
+> 当系统没有达到预期时，我们有什么证据、能不能判断原因，以及应该在哪里采取什么动作。
+
+因此下一阶段研发不应该以：
+
+> “完成 ARSO 在 DI 中的全部能力”
+
+作为里程碑。
+
+真正正确的里程碑是：
+
+$$
+\boxed{
+P0:\ Designable
+}
+$$
+
+$$
+\boxed{
+P1:\ Observable+Measurable
+}
+$$
+
+$$
+\boxed{
+P2:\ Diagnosable
+}
+$$
+
+$$
+\boxed{
+P3:\ SafelyIntervenable
+}
+$$
+
+然后才是：
+
+$$
+\boxed{
+P4:\ AdaptivelyLearnable
+}
+$$
+
+这与 ARSO V2.2.1 的收敛方向完全一致，同时不会牺牲 Design Intelligence 作为真实产品的独立发展。
+
+**接下来最值得立即落实的是 Blueprint 的第一个下游规范：`DI-B01｜StyleBrief → DesignDecision → DesignRoute → DesignSpec Core Data Contract V1.0`。** 它是整个 DI 产品层最关键的 Source-of-Truth；一旦 B01 冻结，Generation Compiler、Evaluation、Trace、ARSO Adapter 都可以围绕它并行开发。

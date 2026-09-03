@@ -1,0 +1,38 @@
+{
+  "$defs": {
+    "TenantId": {
+      "title": "TenantId",
+      "type": "string"
+    },
+    "TenantScopeType": {
+      "enum": [
+        "GLOBAL",
+        "TENANT"
+      ],
+      "title": "TenantScopeType",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "scope_type": {
+      "$ref": "#/$defs/TenantScopeType"
+    },
+    "tenant_id": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/TenantId"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    }
+  },
+  "required": [
+    "scope_type"
+  ],
+  "title": "TenantScope",
+  "type": "object"
+}

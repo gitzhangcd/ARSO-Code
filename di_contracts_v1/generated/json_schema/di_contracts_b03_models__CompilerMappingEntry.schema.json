@@ -1,0 +1,105 @@
+{
+  "$defs": {
+    "ContentHash": {
+      "title": "ContentHash",
+      "type": "string"
+    },
+    "ExactObjectRef": {
+      "additionalProperties": false,
+      "properties": {
+        "content_hash": {
+          "$ref": "#/$defs/ContentHash"
+        },
+        "logical_id": {
+          "$ref": "#/$defs/LogicalId"
+        },
+        "object_type": {
+          "$ref": "#/$defs/ObjectType"
+        },
+        "version_id": {
+          "$ref": "#/$defs/ObjectId"
+        }
+      },
+      "required": [
+        "object_type",
+        "logical_id",
+        "version_id",
+        "content_hash"
+      ],
+      "title": "ExactObjectRef",
+      "type": "object"
+    },
+    "LogicalId": {
+      "title": "LogicalId",
+      "type": "string"
+    },
+    "MappingDisposition": {
+      "enum": [
+        "TEXT_EXPLICIT",
+        "REFERENCE_BOUND",
+        "REGION_BOUND",
+        "PARAMETER_BOUND",
+        "CONSTRAINT_BOUND",
+        "IMPLICITLY_SATISFIED",
+        "APPROXIMATED",
+        "NOT_APPLICABLE",
+        "DROPPED_UNSUPPORTED",
+        "DROPPED_BY_POLICY"
+      ],
+      "title": "MappingDisposition",
+      "type": "string"
+    },
+    "ObjectId": {
+      "title": "ObjectId",
+      "type": "string"
+    },
+    "ObjectType": {
+      "title": "ObjectType",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "approximation_note": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Approximation Note"
+    },
+    "disposition": {
+      "$ref": "#/$defs/MappingDisposition"
+    },
+    "drop_reason": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Drop Reason"
+    },
+    "semantic_path": {
+      "title": "Semantic Path",
+      "type": "string"
+    },
+    "source_semantic_ref": {
+      "$ref": "#/$defs/ExactObjectRef"
+    }
+  },
+  "required": [
+    "semantic_path",
+    "source_semantic_ref",
+    "disposition"
+  ],
+  "title": "CompilerMappingEntry",
+  "type": "object"
+}

@@ -1,0 +1,3354 @@
+可以。现在正式进入统一收敛版本。
+
+# Design Intelligence V5.0 Application Specification
+
+## ARSO V2.2.1 Reference Application Edition
+
+### AI-Native Fashion Design Intelligence：从业务语义、设计决策到视觉实例、诊断优化与企业知识演化的完整应用规范
+
+这份文档不再把 DI-B01–B08 机械拼接，而是按照刚完成的 **Cross-Spec Consistency Freeze** 重新统一对象、版本、血缘和反馈闭环。
+
+其中有两条上游约束尤其重要：
+
+1. ARSO 将 Design / Fashion 视为 **multimodal + set-valued + preference-sensitive** 的代表性 Domain，并明确当前能声称的是 `Representational Compatibility`，不能因为框架能表达 Design Intelligence 就声称已经证明跨域优化能力。
+2. B08 已正式要求 `History ≠ Memory ≠ Knowledge`，并规定 B08 只能提出和治理知识变化；Fashion Ontology / Grammar 的最终 version ownership 仍在 B02，系统资产修改仍需经过 Diagnosis / Intervention。
+
+因此这份 V5.0 的核心不是“一个更复杂的生图系统”，而是建立：
+
+$$
+\boxed{
+BusinessIntent
+\rightarrow
+DesignSemantics
+\rightarrow
+ExecutableDesign
+\rightarrow
+VisualEvidence
+\rightarrow
+Diagnosis
+\rightarrow
+ControlledImprovement
+\rightarrow
+GovernedLearning
+}
+$$
+
+---
+
+# Part I｜Document Status
+
+**Document ID**
+
+```text
+DI-V5-AS
+```
+
+**正式名称**
+
+> Design Intelligence V5.0 Application Specification｜ARSO V2.2.1 Reference Application Edition
+
+**Version**
+
+```text
+5.0
+```
+
+**Date**
+
+```text
+2026-09-03
+```
+
+**Upstream**
+
+```text
+ARSO V2.2.1
+DI-B01 V1.0
+DI-B02 V1.0
+DI-B03 V1.0
+DI-B04 V1.0
+DI-B05 V1.0
+DI-B06 V1.0
+DI-B07 V1.0
+DI-B08 V1.0
+DI-B01–B08 Cross-Spec Consistency Freeze
+```
+
+**Status**
+
+```text
+Application Architecture: FROZEN
+Cross-Spec Ownership: FROZEN
+Core Concept Model: FROZEN
+V1 Exact Schemas: FREEZE CANDIDATE
+Algorithms / Models / Thresholds: OPEN
+Empirical Claims: OPEN
+```
+
+---
+
+# Part II｜V5.0 的正式定义
+
+Design Intelligence V5.0 定义为：
+
+> **一个以 StyleBrief 为业务—设计协议、以结构化 DesignDecision / DesignRoute / DesignSpec 为设计语义状态、以 Fashion Ontology / Design Grammar / Semantic Parameter Space 为领域知识基础，通过 Generation Compiler 将设计意图 lowering 为不同视觉执行器可执行输入，并通过结构化评价、证据约束诊断、受控系统干预、人机协作 Design Runtime 和受治理的长期知识演化闭环，持续生产、验证、修正和积累服装设计智能的 ARSO Reference Application。**
+
+它不是：
+
+```text
+Prompt Generator
+Image Generator
+AI Drawing Tool
+Reference Image Copier
+Style Transfer Product
+LLM Wrapper
+```
+
+它真正管理的是：
+
+$$
+\boxed{
+Design\ Decision\ State
+}
+$$
+
+以及：
+
+$$
+\boxed{
+Design\ System\ Improvement
+}
+$$
+
+---
+
+# Part III｜为什么叫 Design Intelligence
+
+传统生成流程通常是：
+
+$$
+Prompt
+\rightarrow
+Image
+$$
+
+DI V5.0 则要求：
+
+$$
+\boxed{
+StyleBrief
+\rightarrow
+DesignDecision
+\rightarrow
+DesignRoute
+\rightarrow
+DesignSpec
+\rightarrow
+Generation
+\rightarrow
+Verification
+}
+$$
+
+其本质区别在于：
+
+> Prompt 不再承担“全部设计思想”。
+
+Prompt 只是：
+
+$$
+\boxed{
+ExecutionArtifact
+}
+$$
+
+而真正稳定、可积累、可编辑和可验证的资产是：
+
+```text
+Brief
+Decision
+Route
+Spec
+Ontology
+Grammar
+Parameter Space
+```
+
+这与 ARSO 的基本原则一致：实例级 semantic decision 与具体 executor lowering 必须解耦。ARSO 上游规范也明确要求 `DecisionIR ≠ Prompt`，并把 Compiler / Executor 分离。
+
+---
+
+# Part IV｜Design Intelligence 的任务几何
+
+这是理解 DI 与普通 benchmark 最大差异的地方。
+
+Design Intelligence 通常不是：
+
+$$
+x\rightarrow y^*
+$$
+
+其中只有唯一正确答案。
+
+而更接近：
+
+$$
+\boxed{
+\mathcal D(B)
+=
+\{
+d:
+d\models B
+\}
+}
+$$
+
+其中：
+
+* \(B\)：StyleBrief；
+* \(d\)：一个设计实例；
+* \(\mathcal D(B)\)：满足 Brief 的可接受设计集合。
+
+因此它主要属于：
+
+```text
+Set-Valued
++
+Constraint
++
+Preference
++
+Mixed Evaluation
+```
+
+而不是纯粹 Point Target。
+
+这也是为什么：
+
+$$
+\boxed{
+Different
+\neq
+Wrong
+}
+$$
+
+以及：
+
+$$
+\boxed{
+SimilarToReference
+\neq
+GoodDesign
+}
+$$
+
+---
+
+# Part V｜Reverse 与 Forward 两种工作模式
+
+## 1. Reverse Design Intelligence
+
+存在参考 Ground Truth / Target：
+
+$$
+Reference
+\rightarrow
+ObservedFeatures
+\rightarrow
+Spec
+\rightarrow
+Route
+\rightarrow
+Decision
+\rightarrow
+Brief
+$$
+
+再执行：
+
+$$
+Spec
+\rightarrow
+Generation
+\rightarrow
+Comparison
+$$
+
+主要目标：
+
+```text
+semantic reconstruction
+representation completeness
+compiler fidelity
+generation fidelity
+```
+
+---
+
+## 2. Forward Design Intelligence
+
+没有唯一 GT：
+
+$$
+Trend
+\rightarrow
+Opportunity
+\rightarrow
+Planning
+\rightarrow
+StyleBrief
+\rightarrow
+MultipleValidDesigns
+$$
+
+目标不是：
+
+> 生成“标准答案”。
+
+而是：
+
+$$
+\boxed{
+SatisfyBrief
++
+DesignCoherence
++
+CommercialFit
++
+ControlledNovelty
+}
+$$
+
+---
+
+## 3. 两者不能混淆
+
+Reverse 可以测：
+
+```text
+Target Fidelity
+```
+
+Forward 更重要的是：
+
+```text
+Brief Satisfaction
+Constraint Satisfaction
+Design Quality
+Preference
+Portfolio Diversity
+```
+
+因此不能使用：
+
+> “与 GT 越像越好”
+
+统一评价所有 Design Intelligence 任务。
+
+---
+
+# Part VI｜V5.0 总体架构
+
+整个系统由八个应用能力块组成：
+
+```text
+B01  Business Semantic State
+B02  Fashion Semantic Foundation
+B03  Generation Execution
+B04  Structured Evaluation
+B05  Evidence-Bounded Diagnosis
+B06  Controlled Optimization
+B07  Collaborative Design Runtime
+B08  Governed Enterprise Learning
+```
+
+总体数据流：
+
+```text
+Trend / Opportunity / Planning
+             │
+             ▼
+         STYLE BRIEF
+             │
+             ▼
+      DESIGN DECISION
+             │
+             ▼
+        DESIGN ROUTES
+             │
+             ▼
+         DESIGN SPEC
+             │
+             ▼
+   GENERATION COMPILER
+             │
+             ▼
+    GENERATION PACKAGE
+             │
+             ▼
+        EXECUTOR(S)
+             │
+             ▼
+      DESIGN INSTANCE
+             │
+             ▼
+ STRUCTURED EVALUATION
+             │
+             ▼
+          EVIDENCE
+             │
+             ▼
+         DIAGNOSIS
+             │
+       ┌─────┴─────┐
+       │           │
+   DESIGN ISSUE  SYSTEM ISSUE
+       │           │
+       ▼           ▼
+     B07          B06
+   Design Edit   Intervention
+       │           │
+       └─────┬─────┘
+             ▼
+          HISTORY
+             │
+             ▼
+            B08
+       MEMORY / KNOWLEDGE
+```
+
+---
+
+# Part VII｜三套运行平面
+
+为了防止 V5.0 以后重新耦合，正式冻结三个 Plane。
+
+## Plane A｜Design Production Plane
+
+负责：
+
+$$
+Brief
+\rightarrow
+Design
+\rightarrow
+Generation
+\rightarrow
+Review
+$$
+
+主要：
+
+```text
+B01
+B02
+B03
+B04
+B07
+```
+
+---
+
+## Plane B｜ARSO Optimization Control Plane
+
+负责：
+
+$$
+Evaluation
+\rightarrow
+Evidence
+\rightarrow
+Diagnosis
+\rightarrow
+Intervention
+\rightarrow
+Validation
+$$
+
+主要：
+
+```text
+B04
+B05
+B06
+```
+
+它不能成为 Production 的单点故障。
+
+即：
+
+$$
+\boxed{
+OptimizerFailure
+\not\Rightarrow
+DesignRuntimeFailure
+}
+$$
+
+这一点继承 ARSO 的 Data Plane / Control Plane 分离。
+
+---
+
+## Plane C｜Knowledge Governance Plane
+
+负责：
+
+$$
+History
+\rightarrow
+Memory
+\rightarrow
+Proposal
+\rightarrow
+Validation
+\rightarrow
+Knowledge
+$$
+
+主要：
+
+```text
+B08
++
+B02 semantic governance
+```
+
+不能：
+
+```text
+history
+→ automatic grammar rewrite
+→ production
+```
+
+---
+
+# Part VIII｜Object Ownership Freeze
+
+这是 V5.0 最核心的跨规范约束。
+
+| Owner   | Canonical Objects                                                                                                             |
+| ------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| **B01** | StyleBrief, DesignContextBinding, DesignDecision, DesignRoute, DesignSpec                                                     |
+| **B02** | FashionOntology, DesignGrammar, SemanticParameterSpace, Applicability                                                         |
+| **B03** | GenerationCompiler, CompilerMappingTrace, GenerationPackage, DesignInstance, ExecutionRecord                                  |
+| **B04** | ObjectiveDefinition, EvaluationContract, MeasurementRecord, EvaluationRecord                                                  |
+| **B05** | EvidenceRecord, EvidenceBundle, DiagnosticBelief, DiagnosticHypothesis, ProbePlan                                             |
+| **B06** | ActionDecision, SystemChangeCandidate, InterventionTransaction, InterventionValidationResult, OptimizationLineage             |
+| **B07** | DesignStateRevision, DesignEdit, ForkRecord, MergeRecord, HumanDecision, ApprovalRecord, DesignLineage                        |
+| **B08** | MemoryItem, PreferenceSignal, BrandDNAProfile, LearningProposal, KnowledgeClaim, KnowledgePromotionDecision, KnowledgeLineage |
+
+正式原则：
+
+$$
+\boxed{
+OneCanonicalObject
+\Rightarrow
+OneOwningContract
+}
+$$
+
+---
+
+# Part IX｜B01：Business Semantic State
+
+B01 回答的是：
+
+> 设计任务到底是什么，以及设计师决定了什么？
+
+核心链：
+
+$$
+\boxed{
+StyleBrief
+\rightarrow
+DesignDecision
+\rightarrow
+DesignRoute
+\rightarrow
+DesignSpec
+}
+$$
+
+---
+
+# 1. StyleBrief
+
+StyleBrief 不是一段 prompt。
+
+它是：
+
+$$
+\boxed{
+Planning\rightarrow Design
+}
+$$
+
+的正式业务协议。
+
+至少应表达：
+
+```text
+Category
+Customer
+Market / Channel
+
+Season / Occasion
+
+Commercial Role
+
+Price / Positioning
+
+Style Intent
+Mood / Aesthetic
+
+Functional Requirements
+
+Design Focus
+
+Must Have
+Must Avoid
+
+Reference Intent
+
+Material Context
+
+Fit / Silhouette Direction
+
+Novelty Expectation
+
+Hard / Soft Constraints
+```
+
+---
+
+# 2. Must / Prefer / Explore
+
+所有要求不得压成一个权重。
+
+正式分：
+
+```text
+MUST
+PREFER
+EXPLORE
+AVOID
+FORBID
+```
+
+其中：
+
+$$
+MUST
+$$
+
+属于约束。
+
+而：
+
+$$
+PREFER
+$$
+
+属于偏好。
+
+因此：
+
+$$
+\boxed{
+Constraint
+\neq
+Preference
+}
+$$
+
+---
+
+# 3. DesignDecision
+
+DesignDecision 回答：
+
+> 为满足 Brief，这个设计要把有限的设计资源放在哪里？
+
+例如：
+
+```text
+Primary Focus
+Secondary Focus
+
+Visual Hierarchy
+
+Silhouette Strategy
+
+Volume Distribution
+
+Construction Emphasis
+
+Surface Complexity
+
+Material Expression
+
+Novelty Allocation
+
+Commercial Risk Allocation
+```
+
+它不是：
+
+```text
+Detailed Garment Description
+```
+
+而是：
+
+$$
+\boxed{
+DesignStrategy
+}
+$$
+
+---
+
+# 4. DesignRoute
+
+Route 是：
+
+> 在同一个 DesignDecision 下，一条机制上可区分的实现路径。
+
+例如同一个 Brief：
+
+```text
+Romantic summer mini dress
+primary focus = waist
+```
+
+可以产生：
+
+### Route A
+
+```text
+gathered waist
++
+soft sleeve
++
+clean skirt
+```
+
+### Route B
+
+```text
+corset-informed waist
++
+minimal sleeve
++
+panelled skirt
+```
+
+### Route C
+
+```text
+smocked waist
++
+flutter sleeve
++
+layered hem
+```
+
+所以：
+
+$$
+\boxed{
+Route
+\neq
+RandomVariant
+}
+$$
+
+---
+
+# 5. DesignSpec
+
+DesignSpec 是：
+
+> 某个被选 Route 下，具有权威性的结构化设计意图。
+
+正式取消：
+
+> DesignSpec = Fashion Truth
+
+这种过强措辞。
+
+正确关系：
+
+$$
+\boxed{
+DesignSpec
+=
+AuthoritativeStructuredIntent
+}
+$$
+
+而不是：
+
+$$
+GlobalGroundTruth
+$$
+
+---
+
+# Part X｜B02：Fashion Semantic Foundation
+
+B02 回答：
+
+> 系统用什么语言理解和表达服装设计？
+
+定义：
+
+$$
+\boxed{
+FashionSemanticFoundation
+=
+Ontology
++
+Schema
++
+Relations
++
+Grammar
++
+ParameterSpace
+}
+$$
+
+---
+
+# 6. Fashion Ontology
+
+Ontology 描述：
+
+> 有哪些设计概念？
+
+例如：
+
+```text
+Garment Category
+
+Body Region
+
+Component
+
+Silhouette
+
+Length
+
+Volume
+
+Fit
+
+Construction
+
+Opening
+
+Fastening
+
+Edge Treatment
+
+Seam
+
+Gathering
+
+Pleat
+
+Drape
+
+Ruffle
+
+Layer
+
+Material
+
+Surface
+
+Pattern
+
+Color
+
+Visual Focus
+
+Design Mechanism
+```
+
+---
+
+# 7. Relation
+
+Ontology 不能只是词表。
+
+需要关系：
+
+```text
+PART_OF
+LOCATED_AT
+
+CONNECTED_TO
+
+MODIFIES
+
+REQUIRES
+
+CONFLICTS_WITH
+
+COMPATIBLE_WITH
+
+REALIZES
+
+EXPRESSES
+
+CONTROLS
+```
+
+---
+
+# 8. Design Grammar
+
+Grammar 回答：
+
+> 哪些概念组合在什么条件下合理？
+
+但 Grammar 不应被误解为：
+
+> 固定“好设计规则”。
+
+规则至少应允许：
+
+```text
+Hard Constraint
+Soft Constraint
+Preference
+Applicability Condition
+Exception
+Conflict
+Evidence
+```
+
+---
+
+# 9. Semantic Parameter Space
+
+从：
+
+```text
+loose / tight
+simple / complex
+soft / structured
+```
+
+这种模糊词，升级成：
+
+$$
+\boxed{
+TypedSemanticParameter
+}
+$$
+
+例如：
+
+```yaml
+sleeve_volume:
+  type: ordinal
+  range:
+    - minimal
+    - low
+    - medium
+    - high
+    - extreme
+
+  body_region: upper_arm
+  interactions:
+    - silhouette
+    - shoulder_structure
+    - material_behavior
+```
+
+---
+
+# Part XI｜B03：Generation Compiler
+
+B03 解决最关键的执行解耦：
+
+$$
+\boxed{
+DesignSpec
+\neq
+Prompt
+}
+$$
+
+完整链：
+
+$$
+DesignSpec
+\rightarrow
+Compiler
+\rightarrow
+GenerationPackage
+\rightarrow
+Executor
+\rightarrow
+DesignInstance
+$$
+
+---
+
+# 10. Generation Compiler
+
+Compiler 的职责不是“把 JSON 拼成一句中文”。
+
+它必须完成：
+
+```text
+Semantic Selection
+
+Information Ordering
+
+Constraint Lowering
+
+Reference Binding
+
+Keep/Edit Mapping
+
+Region Binding
+
+Executor Capability Adaptation
+
+Prompt Compilation
+
+Parameter Compilation
+
+Output Contract Compilation
+```
+
+---
+
+# 11. GenerationPackage
+
+正式定义：
+
+$$
+\boxed{
+GenerationPackage
+=
+Prompt
++
+References
++
+Constraints
++
+Parameters
++
+OutputContract
+}
+$$
+
+可以包含：
+
+```text
+Text Prompt
+Negative / Avoid Constraints
+
+Image Reference
+
+Structure Reference
+
+Garment Reference
+
+Edit Mask / Region
+
+Keep Constraints
+
+Change Constraints
+
+Model Parameters
+
+Resolution
+
+Aspect Ratio
+```
+
+---
+
+# 12. 多 Executor
+
+同一个：
+
+```text
+DesignSpec:v8
+```
+
+可以：
+
+$$
+\kappa_{GPTImage}
+$$
+
+编译成一种 Package；
+
+也可以：
+
+$$
+\kappa_{NanoBanana}
+$$
+
+编译成另一种 Package。
+
+从而测试：
+
+$$
+\boxed{
+SemanticIntentTransfer
+}
+$$
+
+而不是要求：
+
+> 同一个 Prompt 跨模型直接复用。
+
+---
+
+# 13. CompilerMappingTrace
+
+这是 DI 中非常重要的可诊断资产。
+
+必须记录：
+
+```text
+Spec Field
+→ Selected?
+→ How represented?
+→ Prompt location?
+→ Reference binding?
+→ Constraint form?
+→ Dropped?
+→ Why?
+```
+
+否则当输出 Waist 错误时，无法区分：
+
+```text
+Spec wrong
+vs
+Compiler dropped information
+vs
+Image model ignored information
+```
+
+---
+
+# Part XII｜B04：Structured Evaluation
+
+B04 不允许只有：
+
+```text
+score = 0.82
+```
+
+正式评价关系：
+
+$$
+\boxed{
+Objective
+\neq
+Measurement
+\neq
+Evaluator
+}
+$$
+
+---
+
+# 14. 两个最重要的 Objective
+
+必须始终分开：
+
+$$
+\boxed{
+DesignQuality
+\neq
+GenerationFidelity
+}
+$$
+
+### Design Quality
+
+> 这个设计想法是否好？
+
+### Generation Fidelity
+
+> 图像是否忠实实现 DesignSpec？
+
+---
+
+# 15. 为什么必须分开
+
+可能：
+
+```text
+Bad Spec
++
+Perfect Generation
+```
+
+即：
+
+```text
+Fidelity = High
+Quality = Low
+```
+
+也可能：
+
+```text
+Excellent Spec
++
+Poor Image Model Execution
+```
+
+即：
+
+```text
+Design Intent Quality = High
+Fidelity = Low
+```
+
+如果混在一起，B05 无法正确诊断。
+
+---
+
+# 16. Evaluation Dimensions
+
+V5.0 推荐核心维度：
+
+```text
+Brief Fidelity
+
+Constraint Satisfaction
+
+Semantic Consistency
+
+Design Coherence
+
+Visual Hierarchy
+
+Category Validity
+
+Construction Plausibility
+
+Material Plausibility
+
+Commercial Fit
+
+Brand Fit
+
+Novelty
+
+Generation Fidelity
+
+Reference Intent Fidelity
+
+Region Fidelity
+
+Artifact / Image Quality
+```
+
+但不是所有任务都必须使用全部维度。
+
+---
+
+# 17. EvaluationRecord
+
+必须至少绑定：
+
+```text
+subject
+objective
+expected
+observed
+
+measurements
+
+system_snapshot
+
+executor
+compiler
+
+evaluation contract
+evaluator version
+
+uncertainty
+
+provenance
+```
+
+因此将来：
+
+> “为什么这张图当时被判失败？”
+
+能够完整重建。
+
+---
+
+# Part XIII｜B05：Evidence-Bounded Diagnosis
+
+B05 不回答：
+
+> Critic 觉得哪里不好？
+
+而回答：
+
+> 在当前可观察证据下，我们有多大理由怀疑哪一个环节出了问题？
+
+正式链：
+
+$$
+\boxed{
+Evaluation
+\rightarrow
+Evidence
+\rightarrow
+DiagnosticBelief
+\rightarrow
+Hypothesis
+\rightarrow
+Probe
+}
+$$
+
+---
+
+# 18. DI Failure Loci
+
+可以映射 ARSO R0–R9，但 DI 应提供领域扩展：
+
+```text
+Brief / Objective
+
+Context / Reference
+
+Fashion Semantic Model
+
+DesignDecision
+
+DesignRoute
+
+DesignSpec
+
+Compiler
+
+Executor
+
+Evaluator
+
+Environment / Runtime
+```
+
+---
+
+# 19. DiagnosticBelief
+
+不应输出：
+
+> Root cause = Compiler。
+
+而应允许：
+
+```text
+Compiler        0.48
+DesignSpec      0.27
+Executor        0.19
+Unknown         0.06
+```
+
+这里只表示：
+
+$$
+EvidenceConditionedBelief
+$$
+
+不是严格统计 posterior，也不是因果真理。
+
+---
+
+# 20. DiagnosticHypothesis
+
+每个 hypothesis 必须至少包含：
+
+```text
+Locus
+
+Mechanism
+
+Scope
+
+Expected Observation
+
+Predicted Effect
+
+Falsifier
+
+Required Probe
+```
+
+例如：
+
+> 当前 Waist detail 的视觉缺失并非 DesignSpec 缺失，而可能由 compiler 将 localized gathering 降格为 generic waist emphasis 导致。
+
+然后才设计 Probe。
+
+---
+
+# 21. Probe
+
+例如：
+
+```text
+Freeze Spec
++
+replace Compiler
+```
+
+或：
+
+```text
+Freeze Compiler
++
+replace Executor
+```
+
+从而主动区分相邻解释。
+
+所以：
+
+$$
+\boxed{
+ProbeAsks
+}
+$$
+
+而：
+
+$$
+\boxed{
+InterventionChanges
+}
+$$
+
+---
+
+# Part XIV｜B06：Controlled Optimization
+
+B06 只处理：
+
+$$
+\boxed{
+SystemChange
+}
+$$
+
+而不是普通设计修改。
+
+正式区分：
+
+$$
+DesignEdit
+\neq
+GenerationMutation
+\neq
+SystemIntervention
+$$
+
+---
+
+# 22. SystemChangeCandidate
+
+一个 Candidate 表示：
+
+$$
+\Delta\Theta
+$$
+
+例如：
+
+```text
+Compiler v5 → v6
+
+Prompt Template v9 → v10
+
+Grammar rule G17 v2 → v3
+
+Evaluator Rubric v4 → v5
+
+Route policy v7 → v8
+```
+
+不能仅称：
+
+```text
+Candidate
+```
+
+防止与 Design Candidate 混淆。
+
+---
+
+# 23. Typed Intervention
+
+必须描述：
+
+```text
+Target
+
+Operation
+
+Reason
+
+Preserve
+
+Expected Effect
+
+Risk
+
+Validation Plan
+
+Rollback
+```
+
+优先：
+
+$$
+\boxed{
+MinimumSufficientIntervention
+}
+$$
+
+而不是：
+
+> 一失败就重新生成整套系统。
+
+---
+
+# 24. Validation
+
+至少检查：
+
+```text
+Target Repair
+
+Protected Cases
+
+Regression
+
+Generalization
+
+Cost
+
+Risk
+```
+
+Target case 变好并不够。
+
+---
+
+# 25. Intervention ≠ Deployment
+
+必须继承 ARSO：
+
+$$
+\boxed{
+InterventionTransaction
+\neq
+DeploymentTransaction
+}
+$$
+
+ARSO 已明确把 Candidate、Intervention、Deployment 三个 lifecycle 分离。
+
+所以：
+
+```text
+Candidate validated
+```
+
+仅意味着：
+
+```text
+Eligible for Promotion
+```
+
+不是：
+
+```text
+Production
+```
+
+---
+
+# Part XV｜B07：Collaborative Design Runtime
+
+现实服装设计不会是：
+
+```text
+AI generates
+→ user accepts
+```
+
+而是：
+
+$$
+\boxed{
+Generate
+\rightarrow
+Review
+\rightarrow
+Edit
+\rightarrow
+Compare
+\rightarrow
+Fork
+\rightarrow
+Merge
+\rightarrow
+Approve
+}
+$$
+
+---
+
+# 26. DesignStateRevision
+
+Cross-Spec Freeze 后正式定义：
+
+$$
+\boxed{
+DesignStateRevision
+=
+RuntimeEnvelope
+}
+$$
+
+它引用：
+
+```text
+Brief
+Decision
+Route
+Spec
+Selected Instances
+Review State
+Parent Revision
+```
+
+但不复制 DesignSpec。
+
+---
+
+# 27. 人类修改
+
+例如用户修改：
+
+```text
+Sleeve volume
+```
+
+正确流程：
+
+```text
+DesignEdit
+↓
+B01 creates DesignSpec v14
+↓
+B07 creates DesignStateRevision 38
+```
+
+不是：
+
+```text
+UPDATE DesignState.sleeve_volume
+```
+
+---
+
+# 28. Fork
+
+Fork 表示：
+
+> 从同一个设计状态探索另一设计方向。
+
+例如：
+
+```text
+Route B
+├─ B1 clean sleeve
+└─ B2 statement sleeve
+```
+
+---
+
+# 29. Merge
+
+B07 管理：
+
+```text
+branch provenance
+merge request
+conflict
+human review
+```
+
+但语义 merge 最终必须由：
+
+```text
+B01 contract
++
+B02 semantic constraints
+```
+
+形成新的 DesignSpec Revision。
+
+因此：
+
+$$
+\boxed{
+CollaborationOwnership
+\neq
+SemanticOwnership
+}
+$$
+
+---
+
+# 30. HumanDecision
+
+核心类型：
+
+```text
+VIEW
+
+SHORTLIST
+
+PREFER
+
+REJECT
+
+REQUEST_EDIT
+
+APPROVE
+
+FINAL_APPROVE
+```
+
+这些是：
+
+$$
+WorkflowSignals
+$$
+
+而不是天然：
+
+$$
+QualityLabels
+$$
+
+---
+
+# Part XVI｜B08：Governed Enterprise Learning
+
+B08 的出发点不是：
+
+> 把所有历史扔进向量数据库。
+
+而是：
+
+$$
+\boxed{
+History
+\rightarrow
+Memory
+\rightarrow
+KnowledgeCandidate
+\rightarrow
+Evidence
+\rightarrow
+Governance
+\rightarrow
+ValidatedKnowledge
+}
+$$
+
+B08 当前规范已经明确要求 `StoreHistory ≠ LearnFromHistory ≠ PromoteToKnowledge`。
+
+---
+
+# 31. 五层成熟度
+
+```text
+L0 Raw History
+
+L1 Case Memory
+
+L2 Pattern / Preference Memory
+
+L3 Validated Enterprise Knowledge
+
+L4 Validated Fashion Knowledge
+```
+
+越往上：
+
+$$
+\boxed{
+EvidenceRequirement\uparrow
+}
+$$
+
+---
+
+# 32. Memory 四个正交轴
+
+$$
+\boxed{
+Memory
+=
+Type
+\times
+Scope
+\times
+Maturity
+\times
+Retention
+}
+$$
+
+这直接继承 B08 已冻结原则。
+
+---
+
+# 33. Preference ≠ Quality ≠ Outcome
+
+这是 V5.0 全系统级 invariant：
+
+$$
+\boxed{
+Click
+\neq
+Preference
+\neq
+Approval
+\neq
+DesignQuality
+\neq
+CommercialOutcome
+}
+$$
+
+---
+
+# 34. Brand DNA
+
+正式定义为：
+
+$$
+\boxed{
+BrandDNA
+=
+StablePreference
++
+SemanticRange
++
+Constraint
++
+HistoricalEvidence
+}
+$$
+
+而不是：
+
+```text
+embedding of old bestsellers
+```
+
+否则长期会发生：
+
+$$
+HistoricalStyleCollapse
+$$
+
+---
+
+# 35. LearningProposal
+
+所有自动学习都先产生：
+
+```text
+LearningProposal
+```
+
+LLM 可以：
+
+$$
+Propose
+$$
+
+但不能：
+
+$$
+DeclareTruth
+$$
+
+---
+
+# 36. KnowledgeClaim
+
+必须是可验证的。
+
+例如：
+
+> Brand A 的 Core Dress，在 Waist 为 primary focus 时，第二高复杂度 visual focus 通常降低审批概率。
+
+至少比：
+
+> Brand A 喜欢简洁。
+
+更具有：
+
+```text
+scope
+condition
+prediction
+exception
+falsifier
+```
+
+---
+
+# Part XVII｜Knowledge Promotion
+
+Promotion Ladder：
+
+$$
+\boxed{
+RAW
+\rightarrow
+CANDIDATE
+\rightarrow
+PROVISIONAL
+\rightarrow
+VALIDATED
+\rightarrow
+STABLE
+}
+$$
+
+但这是：
+
+$$
+\boxed{
+EpistemicMaturity
+}
+$$
+
+不是 Deployment 状态。
+
+---
+
+# 37. Stable ≠ Production
+
+正式冻结：
+
+$$
+\boxed{
+KnowledgeMaturity
+\neq
+ArtifactDeploymentStatus
+}
+$$
+
+即使：
+
+```text
+Grammar Rule G21
+maturity = STABLE
+```
+
+也不意味着：
+
+```text
+production = active
+```
+
+还必须：
+
+```text
+B02 creates new Grammar version
+↓
+Validation
+↓
+Snapshot activation
+```
+
+因此：
+
+$$
+\boxed{
+KnowledgePromotion
+\neq
+ProductionActivation
+}
+$$
+
+---
+
+# 38. KG0–KG4
+
+知识晋升：
+
+```text
+KG0 Provenance Integrity
+
+KG1 Evidence Sufficiency
+
+KG2 Counterevidence + Regression
+
+KG3 Scope Validation
+
+KG4 Governance Approval
+```
+
+尤其：
+
+$$
+\boxed{
+BroaderScope
+\Rightarrow
+StrongerEvidence
+}
+$$
+
+---
+
+# Part XVIII｜Semantic Knowledge Ownership
+
+这是 B02 / B08 最关键的边界。
+
+B08 可以：
+
+```text
+Propose Ontology Term
+Propose Grammar Change
+Propose Applicability Change
+```
+
+但：
+
+$$
+\boxed{
+B08\ proposes
+}
+$$
+
+$$
+\boxed{
+B02\ owns\ FashionSemanticTruth
+}
+$$
+
+因此：
+
+```text
+B08
+↓
+KnowledgeProposal
+↓
+Promotion
+↓
+B02 Semantic Change Request
+↓
+Ontology / Grammar New Version
+```
+
+不能由 B08 在原 Grammar 上直接 UPDATE。
+
+---
+
+# Part XIX｜Evaluator Firewall
+
+B08 不得直接学习并修改 B04 evaluator。
+
+否则可能：
+
+```text
+knowledge candidate
+↓
+changes evaluator
+↓
+new evaluator favors knowledge candidate
+↓
+candidate promoted
+```
+
+形成：
+
+$$
+\boxed{
+SelfConfirmingEvaluationLoop
+}
+$$
+
+正确路径：
+
+```text
+EvaluatorExperience
+↓
+LearningProposal
+↓
+B05 Diagnosis
+↓
+B06 Intervention
+↓
+B04 Candidate Evaluator Version
+↓
+Independent Validation
+```
+
+---
+
+# Part XX｜四条 Lineage
+
+V5.0 正式冻结四条长期血缘。
+
+## Business Lineage
+
+$$
+Project
+\rightarrow
+Collection
+\rightarrow
+Style
+$$
+
+---
+
+## Design Lineage
+
+$$
+Brief
+\rightarrow
+Decision
+\rightarrow
+Route
+\rightarrow
+Spec
+\rightarrow
+DesignStateRevision
+\rightarrow
+HumanDecision
+$$
+
+Owner：
+
+```text
+B07
+```
+
+注意：B07 只拥有 Lineage，不拥有 B01 对象。
+
+---
+
+## Optimization Lineage
+
+$$
+Evaluation
+\rightarrow
+Evidence
+\rightarrow
+Diagnosis
+\rightarrow
+Hypothesis
+\rightarrow
+Candidate
+\rightarrow
+Intervention
+\rightarrow
+Validation
+$$
+
+Owner：
+
+```text
+B06
+```
+
+---
+
+## Knowledge Lineage
+
+$$
+History
+\rightarrow
+Pattern
+\rightarrow
+Proposal
+\rightarrow
+Evidence
+\rightarrow
+Promotion
+\rightarrow
+KnowledgeVersion
+$$
+
+Owner：
+
+```text
+B08
+```
+
+---
+
+# 39. Execution 不新建第五条 Lineage
+
+Execution：
+
+$$
+Compiler
+\rightarrow
+Package
+\rightarrow
+Executor
+\rightarrow
+Output
+$$
+
+属于：
+
+$$
+\boxed{
+RuntimeTrace
+}
+$$
+
+而不是长期语义 Lineage。
+
+---
+
+# Part XXI｜Version Model
+
+所有长期可演进对象：
+
+$$
+\boxed{
+ImmutableRevision
+}
+$$
+
+统一引用：
+
+```yaml
+VersionedRef:
+  object_type:
+  logical_id:
+  version_id:
+```
+
+---
+
+# 40. 禁止运行时读取未记录的 latest
+
+例如：
+
+```text
+DesignSpec:v12
+```
+
+运行中不得：
+
+```text
+get latest grammar
+```
+
+必须先解析：
+
+$$
+SystemSnapshot
+$$
+
+整个 Run 固定。
+
+这继承 ARSO 的 immutable snapshot 原则。
+
+---
+
+# Part XXII｜Snapshot Architecture
+
+最终三类 Snapshot。
+
+## SystemSnapshot
+
+ARSO Core 所有。
+
+回答：
+
+> 这次执行到底用了什么系统？
+
+例如：
+
+```text
+model
+compiler
+workflow
+evaluator
+prompt template
+knowledge_snapshot
+generation parameters
+```
+
+---
+
+## KnowledgeSnapshot
+
+B08 所有。
+
+回答：
+
+> 当时允许系统使用什么知识？
+
+例如：
+
+```text
+Ontology v8
+Grammar v12
+BrandDNA v6
+Tenant policies
+Collection knowledge
+```
+
+---
+
+## DesignReviewSnapshot
+
+B07 所有。
+
+回答：
+
+> 人做决定时实际看到的是什么？
+
+只需绑定：
+
+```text
+design_state_ref
+visible_instance_refs
+evaluation_refs
+system_snapshot_ref
+```
+
+不要再次复制 ontology / grammar 版本。
+
+---
+
+# Part XXIII｜Reference System Priority
+
+设计决策有多个知识来源时，不能简单“谁 Stable 谁优先”。
+
+正式优先级建议：
+
+```text
+1 Hard safety / semantic constraint
+
+2 Explicit StyleBrief MUST
+
+3 Enterprise hard policy
+
+4 Approved DesignDecision
+
+5 Explicit Reference Intent
+
+6 Enterprise / Brand Preference
+
+7 General Design Grammar
+
+8 Case Memory
+```
+
+所以：
+
+$$
+StableGeneralGrammar
+$$
+
+也不能覆盖：
+
+$$
+ExplicitBriefMUST
+$$
+
+---
+
+# Part XXIV｜Reference Asset Contract
+
+Reference 不能只有：
+
+```text
+image_url
+```
+
+必须声明它的用途。
+
+例如：
+
+```text
+SILHOUETTE_REFERENCE
+
+DETAIL_REFERENCE
+
+MATERIAL_REFERENCE
+
+COLOR_REFERENCE
+
+STRUCTURE_REFERENCE
+
+MOOD_REFERENCE
+
+KEEP_REFERENCE
+
+EDIT_REFERENCE
+```
+
+以及：
+
+```text
+use_as_constraint
+use_as_inspiration
+do_not_copy
+region
+strength
+```
+
+---
+
+# 41. Reference ≠ Design Intent
+
+某张图可能只是：
+
+> 袖口参考。
+
+不能由模型自行扩展成：
+
+> 整件服装都要像它。
+
+因此：
+
+$$
+\boxed{
+ReferenceIntentMustBeExplicit
+}
+$$
+
+---
+
+# Part XXV｜Controlled Design Mutation
+
+正常设计迭代应支持：
+
+```text
+Keep
+Editable
+Change
+Forbidden Change
+```
+
+例如：
+
+```yaml
+keep:
+  - silhouette
+  - neckline
+  - skirt_length
+
+change:
+  waist:
+    mechanism: asymmetric gathering
+
+editable:
+  - sleeve_volume
+  - surface_detail
+
+forbid:
+  - change_category
+```
+
+---
+
+# 42. 局部编辑不是系统优化
+
+正式再次冻结：
+
+$$
+DesignMutation
+\neq
+ARSOIntervention
+$$
+
+Design Mutation 改：
+
+```text
+Design
+```
+
+System Intervention 改：
+
+```text
+Design System
+```
+
+---
+
+# Part XXVI｜四个系统闭环
+
+V5.0 到这里形成四套不同闭环。
+
+## Loop A｜Design Production
+
+$$
+Brief
+\rightarrow
+Decision
+\rightarrow
+Route
+\rightarrow
+Spec
+\rightarrow
+Generate
+\rightarrow
+Review
+$$
+
+---
+
+## Loop B｜Human Collaboration
+
+$$
+Review
+\rightarrow
+Edit
+\rightarrow
+Fork
+\rightarrow
+Compare
+\rightarrow
+Merge
+\rightarrow
+Approve
+$$
+
+---
+
+## Loop C｜ARSO Optimization
+
+$$
+Evaluate
+\rightarrow
+Diagnose
+\rightarrow
+Probe
+\rightarrow
+Intervene
+\rightarrow
+Validate
+$$
+
+---
+
+## Loop D｜Knowledge Evolution
+
+$$
+History
+\rightarrow
+Pattern
+\rightarrow
+Proposal
+\rightarrow
+Validation
+\rightarrow
+Promotion
+$$
+
+核心约束：
+
+$$
+\boxed{
+CoupledButNotCollapsed
+}
+$$
+
+B08 原规范也已经将这四个闭环明确分开。
+
+---
+
+# Part XXVII｜Unified Core Object Chain
+
+V5.0 的 canonical 主链正式冻结为：
+
+$$
+\boxed{
+\begin{aligned}
+FashionSemanticFoundation_v
+&\rightarrow StyleBrief_v\\
+&\rightarrow DesignDecision_v\\
+&\rightarrow DesignRoute_v\\
+&\rightarrow DesignSpec_v\\
+&\rightarrow GenerationCompiler_v\\
+&\rightarrow GenerationPackage\\
+&\rightarrow DesignInstance\\
+&\rightarrow EvaluationRecord\\
+&\rightarrow EvidenceBundle\\
+&\rightarrow DiagnosticBelief\\
+&\rightarrow DiagnosticHypothesis\\
+&\rightarrow ActionDecision\\
+&\rightarrow InterventionTransaction\\
+&\rightarrow ValidationResult\\
+&\rightarrow History\\
+&\rightarrow Memory\\
+&\rightarrow LearningProposal\\
+&\rightarrow KnowledgeClaim\\
+&\rightarrow PromotionEvidencePack\\
+&\rightarrow KnowledgePromotionDecision\\
+&\rightarrow NewVersion
+\end{aligned}
+}
+$$
+
+所有反馈回路都必须：
+
+$$
+\boxed{
+CrossVersionBoundary
+}
+$$
+
+禁止 in-place self-modification。
+
+---
+
+# Part XXVIII｜Canonical Terminology Freeze
+
+下面这些名称进入 V5.0 正式词典：
+
+| Canonical Term          | 定义                     |
+| ----------------------- | ---------------------- |
+| StyleBrief              | 商品—设计任务协议              |
+| DesignDecision          | 设计资源和策略分配              |
+| DesignRoute             | 机制上可区分的设计实现路径          |
+| DesignSpec              | 某 Route 下权威结构化设计意图     |
+| DesignStateRevision     | 人机设计协作运行时状态            |
+| DesignInstance          | 一个执行产生的视觉设计实例          |
+| GenerationPackage       | executor-specific 执行输入 |
+| EvaluationRecord        | 对显式目标的结构化评价            |
+| EvidenceRecord          | 带 provenance 的诊断/知识证据  |
+| DiagnosticBelief        | 当前故障位置和机制的不确定判断        |
+| DiagnosticHypothesis    | 可证伪的局部故障解释             |
+| SystemChangeCandidate   | 待验证的系统差分               |
+| InterventionTransaction | 实验性受控系统修改              |
+| HumanDecision           | 人类工作流行为                |
+| MemoryItem              | 可检索历史经验                |
+| KnowledgeClaim          | 可验证、可复用的跨 case 主张      |
+| KnowledgeSnapshot       | 当前允许使用的知识集合            |
+| SystemSnapshot          | 某次运行完整系统状态             |
+
+---
+
+# Part XXIX｜Deprecated Naming
+
+以下名称不再作为 canonical top-level object：
+
+```text
+EvaluationTrace
+ADSI
+FailureAttribution
+SystemCandidate
+```
+
+处理：
+
+```text
+EvaluationTrace
+→ EvaluationRecord view
+
+ADSI
+→ Diagnostic UX projection
+
+FailureAttribution
+→ DiagnosticBelief attribution component
+
+SystemCandidate
+→ SystemChangeCandidate
+```
+
+---
+
+# Part XXX｜V5.0 与 ARSO 的接口映射
+
+| DI V5.0                    | ARSO Core                                      |
+| -------------------------- | ---------------------------------------------- |
+| StyleBrief                 | domain-specific Task Contract / TaskIR binding |
+| DesignDecision             | domain semantic decision                       |
+| DesignRoute                | decision / workflow strategy artifact          |
+| DesignSpec                 | semantic design artifact                       |
+| Fashion Ontology / Grammar | \(K\) Domain Semantic Model                    |
+| Generation Compiler        | \(\kappa\) Compiler                            |
+| GenerationPackage          | ExecutionIR specialization                     |
+| DesignInstance             | Execution Result / Artifact                    |
+| EvaluationRecord           | Structured Evaluation                          |
+| EvidenceBundle             | Evidence                                       |
+| DiagnosticBelief           | Attribution / Diagnosis                        |
+| DiagnosticHypothesis       | Falsifiable Hypothesis                         |
+| SystemChangeCandidate      | Candidate                                      |
+| InterventionTransaction    | Typed Intervention                             |
+| Knowledge / Memory         | Curated Memory / Domain Knowledge              |
+| Executor Adapter           | ARSO Executor Adapter                          |
+
+这样 DI 是：
+
+$$
+\boxed{
+ARSO\ ReferenceApplication
+}
+$$
+
+而不是：
+
+> 把 ARSO Core fork 成 Fashion-specific framework。
+
+---
+
+# Part XXXI｜Domain Pack Definition
+
+Design Intelligence 应以：
+
+```text
+Fashion Domain Pack
+```
+
+接入 ARSO。
+
+至少提供：
+
+```text
+Fashion Schemas
+
+Fashion Ontology
+
+Design Grammar
+
+Semantic Parameter Space
+
+Design Artifact Types
+
+Fashion Objectives
+
+Evaluation Plugins
+
+Evidence Providers
+
+Failure Extensions
+
+Diagnosis Priors
+
+Intervention Operators
+
+Generation Compiler Plugins
+
+Validation Suites
+
+Memory / Knowledge Policies
+```
+
+这与 ARSO 对 Domain Pack 的正式能力要求一致。
+
+---
+
+# Part XXXII｜Pattern Packs
+
+DI 不应把所有 workflow 写进 Fashion Domain Pack。
+
+可以复用：
+
+```text
+Generate-Verify-Repair Pattern
+
+Human-in-the-loop Pattern
+
+Branch-Compare-Select Pattern
+
+Simulation Pattern
+
+Agent Pattern
+```
+
+因此：
+
+$$
+DomainSemantics
+\neq
+WorkflowPattern
+$$
+
+---
+
+# Part XXXIII｜V5.0 Product Architecture
+
+面向真实产品，建议拆成六个用户可见工作区。
+
+## 1. Planning → Brief Workspace
+
+负责：
+
+```text
+Planning Context
+Style Brief
+Constraint Validation
+Reference Intent
+```
+
+---
+
+## 2. Design Intelligence Studio
+
+负责：
+
+```text
+DesignDecision
+
+DesignRoute exploration
+
+DesignSpec editing
+
+Semantic parameter controls
+```
+
+---
+
+## 3. Generation Studio
+
+负责：
+
+```text
+Generate
+Reference binding
+Region edit
+Keep/Edit
+Retry
+Variant
+Cross-executor generation
+```
+
+---
+
+## 4. Design Review
+
+负责：
+
+```text
+Compare
+Evaluation
+Evidence
+Human comments
+Shortlist
+Approve
+Fork
+Merge
+```
+
+---
+
+## 5. System Debugger
+
+内部 / 高级功能：
+
+```text
+Trace
+Evaluation breakdown
+Evidence
+Diagnosis
+Probe
+Intervention
+Validation
+```
+
+本质是 DI 里的 ARSO Workbench。
+
+---
+
+## 6. Enterprise Learning
+
+负责：
+
+```text
+Case Library
+
+Brand DNA
+
+Preferences
+
+Knowledge Proposals
+
+Grammar Governance
+
+Ontology Governance
+
+Knowledge Lineage
+```
+
+---
+
+# Part XXXIV｜最小可实施 V5.0
+
+V5.0 Specification 很完整，但第一版产品不能一次实现全部高级能力。
+
+建议明确四级成熟度。
+
+## DI-M0｜Executable Design Intelligence
+
+实现：
+
+```text
+B01
+B02 minimal
+B03
+B04 basic
+```
+
+即：
+
+$$
+Brief
+\rightarrow
+Spec
+\rightarrow
+Generate
+\rightarrow
+Evaluate
+$$
+
+已经形成有价值产品。
+
+---
+
+## DI-M1｜Collaborative Design Intelligence
+
+增加：
+
+```text
+B07
+```
+
+形成：
+
+```text
+revision
+fork
+compare
+approve
+lineage
+```
+
+---
+
+## DI-M2｜Diagnosable Design Intelligence
+
+增加：
+
+```text
+B05
+B06 basic
+```
+
+形成：
+
+$$
+Generate
+\rightarrow
+Evaluate
+\rightarrow
+Diagnose
+\rightarrow
+ControlledRepair
+$$
+
+这是 ARSO 科研价值最强的阶段。
+
+---
+
+## DI-M3｜Learning Design Intelligence
+
+增加：
+
+```text
+B08
+```
+
+形成：
+
+$$
+EnterpriseExperience
+\rightarrow
+GovernedKnowledge
+$$
+
+---
+
+# Part XXXV｜V1 工程优先级
+
+如果现在立刻开发，我建议顺序固定为：
+
+```text
+P0  Canonical Data Contracts
+
+P1  Brief → Decision → Route → Spec
+
+P2  Ontology / Grammar minimal seed
+
+P3  Generation Compiler + Executor Adapter
+
+P4  Generation + Versioned Runtime Trace
+
+P5  Structured Evaluation
+
+P6  Collaborative Design Runtime
+
+P7  Evidence + Diagnosis
+
+P8  Controlled Intervention
+
+P9  Case Memory
+
+P10 Brand / Enterprise Learning
+
+P11 Semantic Knowledge Promotion
+```
+
+不要先做：
+
+```text
+Learned Meta-Router
+
+Autonomous Ontology Evolution
+
+Large Population Search
+
+Global Fashion Knowledge Graph
+
+Commercial Causal Optimizer
+```
+
+---
+
+# Part XXXVI｜V5.0 最重要的 Acceptance Invariants
+
+统一规范正式建议至少采用以下 20 条 Gate：
+
+1. `StyleBrief ≠ Prompt`
+2. `DesignDecision ≠ DesignSpec`
+3. `DesignRoute ≠ Random Variant`
+4. `DesignSpec ≠ Fashion Truth`
+5. `DesignSpec ≠ GenerationPackage`
+6. `DesignQuality ≠ GenerationFidelity`
+7. `Objective ≠ Evaluator`
+8. `Evaluation ≠ Evidence`
+9. `Evidence ≠ Diagnosis`
+10. `Diagnosis ≠ Causality`
+11. `DesignEdit ≠ SystemIntervention`
+12. `Probe ≠ Intervention`
+13. `HumanApproval ≠ DesignQuality`
+14. `CommercialOutcome ≠ PureDesignReward`
+15. `History ≠ Memory`
+16. `Memory ≠ Knowledge`
+17. `EnterpriseKnowledge ≠ FashionTruth`
+18. `KnowledgePromotion ≠ ProductionActivation`
+19. `InterventionAuthority ≠ ObjectOwnership`
+20. `Every Learning Loop Must Cross Immutable Version Boundary`
+
+若任一被破坏：
+
+$$
+\boxed{
+DI\ V5.0\ Conformance=FAIL
+}
+$$
+
+---
+
+# Part XXXVII｜Research Claims Boundary
+
+Design Intelligence V5.0 当前可以合理声称：
+
+### Architecture Claims
+
+```text
+The architecture can represent
+set-valued multimodal fashion design tasks.
+
+It can separate
+semantic design decisions
+from executor-specific generation.
+
+It supports structured evaluation,
+diagnosis, intervention and lineage.
+
+It provides governed enterprise learning interfaces.
+```
+
+但目前不能声称：
+
+```text
+ARSO automatically produces better fashion designs.
+
+Structured ontology is universally superior.
+
+Diagnosis is causally correct.
+
+Adaptive optimization always beats direct regeneration.
+
+Brand learning improves commercial outcomes.
+
+Cross-model transfer is already proven.
+
+Cross-domain transfer is proven.
+```
+
+ARSO Master Specification 本身也明确把“兼容”“复用”“迁移有效”分开，不允许从架构可表达性直接推出 transfer effectiveness。
+
+---
+
+# Part XXXVIII｜V5.0 的核心科研问题
+
+这套应用以后可以直接成为 ARSO 的主要 Reference Application，并形成几个非常强的研究问题。
+
+### RQ-DI1｜Representation
+
+结构化：
+
+$$
+Brief
+\rightarrow
+Decision
+\rightarrow
+Route
+\rightarrow
+Spec
+$$
+
+相较于直接 prompt，是否更：
+
+```text
+controllable
+editable
+diagnosable
+transferable
+```
+
+---
+
+### RQ-DI2｜Reverse Identifiability
+
+从参考设计是否能够稳定恢复：
+
+```text
+observable structure
+semantic parameters
+DesignSpec
+```
+
+以及哪些部分本质不可识别？
+
+---
+
+### RQ-DI3｜Compiler Attribution
+
+当生成不符合 Spec 时，能否可靠区分：
+
+```text
+Spec Failure
+Compiler Failure
+Executor Failure
+Evaluator Failure
+```
+
+---
+
+### RQ-DI4｜Typed Intervention
+
+Diagnosis-guided intervention 是否比：
+
+```text
+blind retry
+direct prompt rewrite
+full regeneration
+```
+
+降低：
+
+```text
+regression
+cost
+false repair
+```
+
+---
+
+### RQ-DI5｜Knowledge Governance
+
+受治理的：
+
+```text
+Case Memory
+Brand DNA
+Preference Knowledge
+```
+
+是否优于：
+
+```text
+all-history retrieval
+```
+
+同时避免：
+
+```text
+style collapse
+historical copying
+knowledge pollution
+```
+
+---
+
+# Part XXXIX｜Design Intelligence V5.0 最终系统公式
+
+如果整份规范只保留一个公式，我建议使用：
+
+$$
+\boxed{
+\begin{aligned}
+K^{fashion}_v
+&\rightarrow
+B_v
+\rightarrow
+D_v
+\rightarrow
+R_v
+\rightarrow
+S_v\\
+&\rightarrow
+\kappa_{e,v}
+\rightarrow
+P^{gen}
+\rightarrow
+I\\
+&\rightarrow
+Q
+\rightarrow
+E
+\rightarrow
+\delta
+\rightarrow
+h\\
+&\rightarrow
+A
+\rightarrow
+\mathcal I
+\rightarrow
+V\\
+&\rightarrow
+H
+\rightarrow
+M
+\rightarrow
+K_c
+\rightarrow
+G_K
+\rightarrow
+K^{fashion/enterprise}_{v+1}
+\end{aligned}
+}
+$$
+
+其中：
+
+* \(K^{fashion}\)：Fashion Semantic Foundation；
+* \(B\)：StyleBrief；
+* \(D\)：DesignDecision；
+* \(R\)：DesignRoute；
+* \(S\)：DesignSpec；
+* \(\kappa\)：Generation Compiler；
+* \(P^{gen}\)：GenerationPackage；
+* \(I\)：DesignInstance；
+* \(Q\)：Structured Evaluation；
+* \(E\)：Evidence；
+* \(\delta\)：DiagnosticBelief；
+* \(h\)：DiagnosticHypothesis；
+* \(A\)：ActionDecision；
+* \(\mathcal I\)：Intervention；
+* \(V\)：Validation；
+* \(H\)：History；
+* \(M\)：Memory；
+* \(K_c\)：Knowledge Candidate；
+* \(G_K\)：Knowledge Governance。
+
+并且：
+
+$$
+\boxed{
+v+1
+\neq
+in\text{-}place\ mutation\ of\ v
+}
+$$
+
+---
+
+# Part XL｜最终系统定义
+
+> **Design Intelligence V5.0 是 ARSO V2.2.1 在开放式、多模态、集合值服装设计任务上的 Reference Application。它以 StyleBrief 作为商品企划向设计阶段的显式任务合同，通过 DesignDecision 分配设计关注与复杂度，通过多条 DesignRoute 表达满足同一 Brief 的不同设计机制，并由 DesignSpec 形成可版本化、可编辑、与执行器无关的权威设计意图。Fashion Ontology、Design Grammar 与 Semantic Parameter Space 提供稳定领域语言，但企业偏好与全局 Fashion Knowledge 被严格区分。Generation Compiler 将 DesignSpec lowering 为不同图像模型、编辑模型及未来 CAD/Simulation Executor 的 GenerationPackage，并通过 CompilerMappingTrace 保留语义到执行的映射证据。B04 将 Design Quality、Brief Fidelity、Constraint Satisfaction 与 Generation Fidelity 等 Objective 与具体 Evaluator 解耦；B05 根据真实运行 Trace、Measurement 与 Contrastive/Counterfactual Evidence 在可观察性边界内维护 DiagnosticBelief 和可证伪 Hypothesis；B06 仅对被怀疑的系统资产执行最低充分的受控 Intervention，并通过 sandbox、target、regression 和 generalization validation 验证修改。B07 以 immutable DesignStateRevision、Edit、Fork、Merge、HumanDecision 和 DesignLineage 支持真实设计师—AI 协作，而不会夺取 B01 的 semantic ownership。B08 将全部运行结果首先视为 History，只把经过 curation 的内容转为 Memory，并要求任何 Brand Preference、Enterprise Knowledge、Repair Pattern、Ontology 或 Grammar 演化先形成可验证 KnowledgeClaim，经 provenance、counterevidence、scope 和 governance gate 后方可晋升；知识成熟度与 production activation 严格分离。所有长期反馈必须产生新版本而不是原地改写，因此整个系统既能形成 Design Production、Human Collaboration、ARSO Optimization 和 Knowledge Evolution 四个闭环，又不会形成循环对象所有权、自我确认评价或未经证据治理的长期知识污染。**
+
+---
+
+## V5.0 Master Freeze 判定
+
+这次统一以后，我认为 **Design Intelligence 已经不需要继续增加 B09/B10 级别的顶层规范**。
+
+当前可以正式判定：
+
+$$
+\boxed{
+DI\ V5.0
+\ Application\ Architecture
+=
+FROZEN
+}
+$$
+
+而接下来真正应该进入的不是继续写架构，而是 **Engineering Implementation Contract**。最合理的下一步是：
+
+$$
+\boxed{
+DI\text{-}E01
+\;|\;
+Canonical\ Data\ Model
++
+Pydantic\ Schema
++
+Object\ Registry
++
+Version/Reference\ Contract
+}
+$$
+
+先把今天已经冻结的 `StyleBrief → DesignDecision → DesignRoute → DesignSpec → GenerationPackage → Evaluation → Evidence → Diagnosis → Intervention → Knowledge` 变成**真正可编码的 V1 数据模型**。这一步完成以后，Design Intelligence 才从“完整架构规范”真正进入可执行系统。
