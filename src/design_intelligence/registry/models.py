@@ -13,6 +13,8 @@ from design_intelligence.contracts.core import (
     SchemaVersion,
 )
 
+from .validation import validate_persistence_policy
+
 
 class PrimitiveOwner(RootModel[str]):
     """Nominal primitive-owner identity; closed inventory is deferred."""
@@ -54,6 +56,16 @@ class ObjectRegistryEntry(FrozenDIModel):
     review_snapshot_eligible: bool
     system_intervention_target_eligible: bool
     artifact_eligible: bool
+
+    @model_validator(mode="after")
+    def validate_generic_persistence_policy(self) -> "ObjectRegistryEntry":
+        validate_persistence_policy(
+            object_class=self.object_class,
+            historical_ssot=self.historical_ssot,
+            versioned=self.versioned,
+            persistent_ref_kind=self.persistent_ref_kind.value,
+        )
+        return self
 
 
 class ObjectRegistryManifest(FrozenDIModel):
