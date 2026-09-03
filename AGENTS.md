@@ -8,10 +8,21 @@
 
 本项目是 Design Intelligence V5.0 的 ARSO V2.2.1 Reference Application。
 
-这是一个规范驱动的实现项目。Phase 0 规范摄取与仓库一致性审计已经完成并通过人工评审。
-Phase 1 Contract Repository Skeleton 已完成验证并通过用户 Freeze Checkpoint。
-P0 Core nominal types + base classes 已完成自动验证、独立 Freeze Review，并经用户批准后合并到 `main`。
-P1 Exact refs + RFC 8785 canonical hash + registry foundation 已获授权；P1 必须先完成设计/规范消歧，再按 TDD 实现。在 P1 Freeze 前不得进入 P2。
+这是一个规范驱动的实现项目。
+
+```text
+Phase 0: COMPLETE / REVIEWED / APPROVED
+Phase 1: COMPLETE / VERIFIED / FROZEN
+P0: FROZEN
+P1: FROZEN
+P2: NOT AUTHORIZED
+Exact V1: FREEZE CANDIDATE
+```
+
+P0 Core nominal types + base classes 已经冻结并合并。
+P1 Exact refs + RFC 8785 canonical hash + registry foundation 已完成自动验证、独立 Freeze Review，并经用户明确批准冻结。最终决策见 `P1_FREEZE_DECISION.md`。
+
+在 P2 获得独立授权之前，不得实现 B01 exact production models。P2 授权前必须先确认 B01 owner exact contract 的字段级完整性；如仍缺失，必须记录 `SPEC_GAP` 并进入 contract recovery / spec freeze，而不是根据 baseline 或低优先级叙述自行补全。
 
 ## 审计文档语言
 
@@ -22,8 +33,7 @@ P1 Exact refs + RFC 8785 canonical hash + registry foundation 已获授权；P1 
 
 ## 规范权威顺序
 
-修改 canonical contract 之前，必须先阅读 `SPEC_AUTHORITY.md` 以及
-`specs/` 下对应的规范。权威顺序如下：
+修改 canonical contract 之前，必须先阅读 `SPEC_AUTHORITY.md` 以及 `specs/` 下对应的规范。权威顺序如下：
 
 1. `specs/00-CODE-FREEZE/DI_V5_Exact_V1_Schema_API_Contract_Freeze_Specification.md`
 2. `specs/01-AUTHORITY/Design-Intelligence-V5.0-Engineering-Specification-V1.0.txt`
@@ -33,8 +43,7 @@ P1 Exact refs + RFC 8785 canonical hash + registry foundation 已获授权；P1 
 6. `specs/02-UPSTREAM/Design-Intelligence-x-ARSO-V2.2.1-Implementation-Blueprint.txt`
 7. `specs/03-RESEARCH/ARSO-Research-Specification-V2.2.1.txt`
 
-高优先级规范覆盖低优先级规范。不得因为框架惯例、持久化设计、开发便利、
-个人偏好或低优先级文档而修改 `FROZEN` contract。
+高优先级规范覆盖低优先级规范。不得因为框架惯例、持久化设计、开发便利、个人偏好或低优先级文档而修改 `FROZEN` contract。
 
 如果仍存在真实矛盾，必须输出 `SPEC_CONFLICT` 并停止对应实现路径。
 如果缺少精确字段级 contract，必须输出 `SPEC_GAP`，不得自行猜测。
@@ -94,8 +103,7 @@ ExperimentAssignment
 BudgetReservation
 ```
 
-生产 contract 必须通过明确的集成边界导入或适配权威 ARSO type。
-临时 stub 不属于 Exact V1 canonical type。
+生产 contract 必须通过明确的集成边界导入或适配权威 ARSO type。临时 stub 不属于 Exact V1 canonical type。
 
 ## 引用与变更规则
 
@@ -110,10 +118,10 @@ BudgetReservation
 
 ```text
 FROZEN:
-  架构、所有权、边界、标准化后的 F0-F6 语义
+  架构、所有权、边界、标准化后的 F0-F6 语义，以及已经通过人工 Freeze Checkpoint 的阶段 contract
 
 FREEZE CANDIDATE:
-  Exact V1 可执行 schema/API 集合
+  尚未完成全部 Exact V1 发布门禁的可执行 schema/API 集合
 
 OPEN:
   算法、模型、阈值、物理数据库设计、存储与事件总线实现
@@ -128,8 +136,6 @@ DEFERRED:
 ## 测试与范围规则
 
 如果相关 conformance test 尚不存在，则对应 schema 不得视为完成。
-只有 CS-01 至 CS-32、AC-01 至 AC-18 全部通过且不存在未解决的
-`SPEC_CONFLICT`，Exact V1 才能声明为 `FROZEN`。
+只有 CS-01 至 CS-32、AC-01 至 AC-18 全部通过且不存在未解决的 `SPEC_CONFLICT`，Exact V1 才能声明为 `FROZEN`。
 
-在 Exact V1 contract layer 冻结之前，不得开发 UI、LLM 集成、图像生成集成、
-vector database、自主优化器或生产部署能力。
+在 Exact V1 contract layer 冻结之前，不得开发 UI、LLM 集成、图像生成集成、vector database、自主优化器或生产部署能力。

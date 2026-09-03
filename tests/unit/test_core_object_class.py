@@ -11,6 +11,16 @@ EXPECTED_VALUES = {
     "DERIVED_VIEW",
 }
 
+P0_PUBLIC_API = {
+    "CanonicalObjectClass",
+    "DIModel",
+    "FrozenDIModel",
+    "LogicalId",
+    "ObjectId",
+    "ObjectType",
+    "SchemaVersion",
+}
+
 
 def test_canonical_object_class_symbol_exists() -> None:
     assert hasattr(types, "CanonicalObjectClass")
@@ -28,22 +38,13 @@ def test_canonical_object_class_is_string_enum() -> None:
     assert enum_type.CANONICAL_REVISION == "CANONICAL_REVISION"
 
 
-def test_core_and_contract_packages_export_only_p0_public_api() -> None:
+def test_p0_public_api_remains_available_after_p1() -> None:
     import design_intelligence.contracts as contracts
     import design_intelligence.contracts.core as core
 
-    expected = {
-        "CanonicalObjectClass",
-        "DIModel",
-        "FrozenDIModel",
-        "LogicalId",
-        "ObjectId",
-        "ObjectType",
-        "SchemaVersion",
-    }
-    assert set(core.__all__) == expected
-    assert set(contracts.__all__) == expected
-    for name in expected:
+    assert P0_PUBLIC_API.issubset(core.__all__)
+    assert P0_PUBLIC_API.issubset(contracts.__all__)
+    for name in P0_PUBLIC_API:
         assert hasattr(core, name)
         assert hasattr(contracts, name)
 

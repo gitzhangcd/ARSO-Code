@@ -1,0 +1,9 @@
+{
+  "name": "arso-p1-rfc8785-oracle",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "devDependencies": {
+    "canonicalize": "4.0.0"
+  }
+}

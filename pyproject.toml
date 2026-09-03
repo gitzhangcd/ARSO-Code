@@ -7,7 +7,7 @@ name = "design-intelligence-contracts"
 version = "0.0.0"
 description = "Design Intelligence V5.0 Exact V1 contract repository"
 requires-python = ">=3.12"
-dependencies = ["pydantic>=2.12,<3"]
+dependencies = ["pydantic>=2.12,<3", "rfc8785==0.1.4"]
 
 [project.optional-dependencies]
 test = ["pytest>=8,<9"]

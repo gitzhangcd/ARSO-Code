@@ -1,0 +1,7 @@
+[
+  {"name":"property-order","value":{"b":1,"a":2}},
+  {"name":"unicode","value":{"名称":"服装","a":"αβγ"}},
+  {"name":"escaping","value":{"text":"line\nquote\"slash\\end"}},
+  {"name":"nested","value":{"z":[true,null,{"b":2,"a":1}],"a":"x"}},
+  {"name":"numbers","value":{"fraction":1.5,"integer":42,"negative_zero":-0.0,"small":0.000001}}
+]
