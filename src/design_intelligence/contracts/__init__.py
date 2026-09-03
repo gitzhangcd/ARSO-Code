@@ -13,6 +13,8 @@ from .core import (
     ObjectRef,
     ObjectType,
     SchemaVersion,
+    canonical_json_bytes,
+    compute_content_hash,
 )
 
 __all__ = [
@@ -28,4 +30,6 @@ __all__ = [
     "ObjectRef",
     "ObjectType",
     "SchemaVersion",
+    "canonical_json_bytes",
+    "compute_content_hash",
 ]
