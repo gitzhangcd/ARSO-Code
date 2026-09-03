@@ -1,15 +1,14 @@
-# Phase 0 规范权威说明
+# 规范权威说明
 
-审计日期：2026-09-03  
-仓库：ARSOFashion  
-阶段：规范摄取与仓库一致性审计  
-结论：权威链已经建立；Phase 0、Phase 1 与 P0 均已通过评审/冻结，P1 已获授权
+审计日期：2026-09-03
+仓库：ARSOFashion
+阶段：F6.1 Exact V1 Contract Implementation
+结论：权威链已经建立；Phase 0、Phase 1 与 P0 均已通过评审/冻结；P1 已完成实现、自动验证与独立 Freeze Review，等待用户 Freeze Checkpoint
 
 ## 规范输入路径说明
 
-规范已经统一迁移到 `specs/`。该目录现在是唯一规范入口，包含预期的 7 份规范；
-原目录路径不再使用。Phase 1 使用 SHA-256 manifest 验证迁移后的
-规范源内容没有发生意外漂移。
+规范已经统一迁移到 `specs/`。该目录是唯一规范入口，包含预期的 7 份规范；
+原目录路径不再使用。SHA-256 manifest 用于验证规范源内容没有发生意外漂移。
 
 ## 规范权威顺序
 
@@ -38,9 +37,10 @@ flowchart TD
     ENG --> EX[1 Exact V1 Schema 与 API 冻结规范]
     X --> EX
     EX --> AUDIT[Phase 0 工程 contract 审计]
-    AUDIT -->|人工评审门禁| P0[Phase 1 Contract Repository Skeleton]
-    P0 --> P1A[P0 Core nominal types + base classes]
-    P1A --> P1[P1 Exact refs + canonical hash + registry foundation]
+    AUDIT --> SKELETON[Phase 1 Contract Repository Skeleton]
+    SKELETON --> P0[P0 Core nominal types + base classes]
+    P0 --> P1[P1 Exact refs + canonical hash + registry foundation]
+    P1 --> P2[P2 Full B01 exact schemas]
 ```
 
 箭头表示依赖和标准化方向。如果两份规范发生冲突，仍以数字较小的优先级为准。
@@ -61,8 +61,8 @@ flowchart TD
 
 | 状态 | 当前范围 |
 |---|---|
-| `FROZEN` | 架构；primitive/capability 所有权；exact reference model；不可变历史；Task/System/Knowledge/Review 边界；snapshot 语义；标准化后的 F0-F6 语义 contract；owner-mediated writeback；四类长期 lineage；P0 nominal identity/base policy。 |
-| `FREEZE CANDIDATE` | Exact V1 Pydantic schema；ARSO-MIC interface schema；完整 command/event/protocol 接口；canonical hash 实现。 |
+| `FROZEN` | 架构；primitive/capability 所有权；exact reference semantic model；不可变历史；Task/System/Knowledge/Review 边界；snapshot 语义；标准化后的 F0-F6 语义 contract；owner-mediated writeback；四类长期 lineage；P0 nominal identity/base policy。 |
+| `FREEZE CANDIDATE` | Exact V1 Pydantic schema/API 实现集合；ARSO-MIC interface schema；完整 command/event/protocol 接口；P1 canonical hash/registry implementation，直到用户 P1 Freeze Checkpoint。 |
 | `OPEN` | 物理数据库 schema；存储引擎；事件总线；算法、模型和阈值；检索与排序；executor/model 选择；实证结论。 |
 | `DEFERRED` | 自动生产激活与部署；全局语义自主演化；meta-learning；cross-domain/cross-enterprise transfer；持续生产自修改。 |
 
@@ -70,12 +70,20 @@ flowchart TD
 
 1. 预期的 7 份规范均已位于 `specs/`，原路径歧义已解决。
 2. 优先级 2 和 3 的文件具有不同 SHA-256，但优先级 3 的内部标题和文档 ID
-   仍声明为 `DI-V5-ENG`。目前观察到的差异主要是格式和残留引用标记，无法确认其是否为
-   一份具有独立身份的 Cross-Spec 文档。
-3. 规范中提到的 B01/B02 owner exact contract 文件不在当前仓库中。
-   低优先级叙述性文档不能替代这些缺失的 exact contract。
+   仍声明为 `DI-V5-ENG`。该历史身份歧义保留在 `SPEC_CONFLICTS.md` A-02 中，不影响 P1 已冻结的高优先级 reference/hash/registry requirements。
+3. 规范中提到的 B01/B02 owner exact contract 文件仍不在当前仓库中；
+   低优先级叙述性文档不能替代这些缺失的 exact contract。因此 P2 未获授权。
 4. 优先级 1 明确确认 F0-F6 不存在需要重开架构的冲突；当前剩余阻断项属于
-   exact contract 完整性和可执行 conformance 问题。
+   Exact V1 完整性和后续可执行 conformance 问题。
+
+## P1 设计、实现与审查记录
+
+- Design Specification：`docs/superpowers/specs/2026-09-03-p1-reference-hash-registry-design.md`
+- Implementation Plan：`docs/superpowers/plans/2026-09-03-p1-reference-hash-registry-implementation.md`
+- Implementation Audit：`P1_REFERENCE_HASH_REGISTRY_AUDIT.md`
+- Independent Freeze Review：`P1_REFERENCE_HASH_REGISTRY_FREEZE_REVIEW.md`
+
+P1 已完成 Exact refs、RFC 8785 canonical hash 与 minimum executable Object Registry foundation；完整 registry inventory、owner-specific CanonicalPayload、semantic resolver 等仍按后续阶段处理。
 
 ## 当前阶段门禁
 
@@ -83,11 +91,10 @@ flowchart TD
 Phase 0: COMPLETE / REVIEWED / APPROVED
 Phase 1: COMPLETE / VERIFIED / FROZEN
 P0: COMPLETE / REVIEWED / FROZEN
-P1: AUTHORIZED / DESIGN IN PROGRESS
+P1: COMPLETE / AUTOMATED CHECKS PASS / INDEPENDENT FREEZE REVIEW PASS / AWAITING USER FREEZE REVIEW
 P2: NOT AUTHORIZED
 Exact V1: FREEZE CANDIDATE
 ```
 
-P0 最终 Freeze 决策记录在 `P0_FREEZE_DECISION.md`。P1 已获授权，但必须先对
-Exact refs、RFC 8785 canonical hash 与 registry foundation 完成设计/规范消歧；
-在 P1 Freeze Checkpoint 之前不得进入 P2。
+P0 最终 Freeze 决策记录在 `P0_FREEZE_DECISION.md`。
+P1 当前可以进入用户 Frozen Checkpoint，但在用户明确批准 P1 `FROZEN` 与后续 P2 授权之前，不得实现 P2。
