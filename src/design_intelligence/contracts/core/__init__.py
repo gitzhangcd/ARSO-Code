@@ -1,4 +1,4 @@
-"""Public P0-P2 core contract API."""
+"""Core contract namespace with P1 public exports preserved exactly."""
 
 from .base import DIModel, FrozenDIModel
 from .hashing import canonical_json_bytes, compute_content_hash
@@ -25,31 +25,21 @@ from .types import (
     TenantScopeType,
 )
 
+# P1 froze this public star-export surface. P2 shared-shell symbols remain
+# explicit attributes of this module but are intentionally not added here.
 __all__ = [
-    "ActorId",
-    "ActorRef",
-    "ActorType",
-    "CanonicalObject",
     "CanonicalObjectClass",
     "CanonicalRef",
-    "CanonicalRevision",
     "ContentHash",
     "DIModel",
     "ExactObjectRef",
     "FrozenDIModel",
-    "ImmutableFact",
-    "JsonValue",
     "LogicalId",
     "LogicalObjectRef",
     "ObjectId",
     "ObjectRef",
-    "ObjectRevision",
     "ObjectType",
-    "Provenance",
     "SchemaVersion",
-    "TenantId",
-    "TenantScope",
-    "TenantScopeType",
     "canonical_json_bytes",
     "compute_content_hash",
 ]
