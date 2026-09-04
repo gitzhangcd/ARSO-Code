@@ -1,0 +1,26 @@
+name: P2 AC-01 schema artifact export
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - name: Install project
+        run: python -m pip install -e '.[test]'
+      - name: Export deterministic B01 schemas
+        run: PYTHONPATH=src python tools/export_b01_json_schemas.py
+      - name: Upload generated schemas
+        uses: actions/upload-artifact@v4
+        with:
+          name: p2-ac01-json-schema
+          path: generated/json_schema/di.b01.*.schema.json
+          if-no-files-found: error
