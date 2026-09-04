@@ -18,13 +18,22 @@ jobs:
           head -n 7 specs/SPEC_SOURCE_CHECKSUMS.sha256 > /tmp/original-seven.sha256
           sha256sum -c /tmp/original-seven.sha256
 
-      - name: Print B01 owner contract SHA-256
-        run: sha256sum specs/00-CODE-FREEZE/DI_B01_Exact_V1_Owner_Contract.md
+      - name: Generate B01 owner contract SHA-256
+        run: sha256sum specs/00-CODE-FREEZE/DI_B01_Exact_V1_Owner_Contract.md | tee /tmp/b01-owner.sha256
+
+      - name: Upload B01 owner checksum evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: b01-owner-checksum
+          path: /tmp/b01-owner.sha256
+          if-no-files-found: error
+          retention-days: 1
 
       - name: B01 surface coverage
         run: |
           python - <<'PY'
           from pathlib import Path
+          import re
 
           text = Path('specs/00-CODE-FREEZE/DI_B01_Exact_V1_Owner_Contract.md').read_text(encoding='utf-8')
           objects = [
@@ -36,7 +45,11 @@ jobs:
               'ReferenceIntentBinding',
               'DesignTaskBinding',
           ]
-          missing = [name for name in objects if f'# {name}' not in text and f'## {name}' not in text]
+          missing = []
+          for name in objects:
+              pattern = rf'^#{{1,3}}\s+(?:\d+(?:\.\d+)?\.?\s+)?{re.escape(name)}\s*$'
+              if re.search(pattern, text, flags=re.MULTILINE) is None:
+                  missing.append(name)
           if missing:
               raise SystemExit(f'missing B01 object sections: {missing}')
           print(f'B01 canonical object coverage: {len(objects)}/7')
