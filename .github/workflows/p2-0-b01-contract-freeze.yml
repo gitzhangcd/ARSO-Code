@@ -79,6 +79,7 @@ jobs:
             B01_SOURCE_RECOVERY_MATRIX.md \
             B01_FIELD_DECISION_LEDGER.md \
             B01_CROSS_SPEC_FREEZE_AUDIT.md \
+            B01_P2_0_FREEZE_REVIEW.md \
             docs/superpowers/specs/2026-09-04-p2-0-b01-contract-recovery-design.md \
             docs/superpowers/plans/2026-09-04-p2-0-b01-contract-recovery-implementation.md \
             specs/00-CODE-FREEZE/DI_B01_Exact_V1_Owner_Contract.md; then
