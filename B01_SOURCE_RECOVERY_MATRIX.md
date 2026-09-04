@@ -325,7 +325,7 @@ candidate baseline 仅有 sentinel，不提供 owner fields。
 | wire types | MISSING | 需 freeze |
 | requiredness | PARTIAL | route relation强，其余待 freeze |
 | reference kinds | PARTIAL | route ref待 classification冻结 |
-| object class | STRONG/PARTIAL | candidate/global registry语义支持 canonical revision方向，但仍需 owner-level正式记录 |
+| object class | PARTIAL | global semantics support canonicality，但 candidate sentinel 不增加 owner-authority；revision policy仍需 P2.0 正式冻结 |
 | registry policy | STRONG for negative flags | artifact=false, intervention-target=false 已由 global rule冻结 |
 | CanonicalPayload | MISSING | P2.0 必须明确 |
 | negative boundaries | STRONG | Spec != GenerationPackage != ordinary SystemArtifact |
