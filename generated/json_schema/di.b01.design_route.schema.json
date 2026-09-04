@@ -1,0 +1,333 @@
+{
+  "$defs": {
+    "ActorId": {
+      "description": "Strict non-empty nominal identity for an attributed actor.",
+      "minLength": 1,
+      "title": "ActorId",
+      "type": "string"
+    },
+    "ActorRef": {
+      "additionalProperties": false,
+      "description": "Exact two-part actor attribution reference.",
+      "properties": {
+        "actor_id": {
+          "$ref": "#/$defs/ActorId"
+        },
+        "actor_type": {
+          "$ref": "#/$defs/ActorType"
+        }
+      },
+      "required": [
+        "actor_type",
+        "actor_id"
+      ],
+      "title": "ActorRef",
+      "type": "object"
+    },
+    "ActorType": {
+      "description": "Strict non-empty open vocabulary for actor attribution type.",
+      "minLength": 1,
+      "title": "ActorType",
+      "type": "string"
+    },
+    "BriefRequirement": {
+      "additionalProperties": false,
+      "description": "One authored B01 brief constraint or preference.",
+      "properties": {
+        "dimension": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Dimension"
+        },
+        "statement": {
+          "title": "Statement",
+          "type": "string"
+        },
+        "strength": {
+          "$ref": "#/$defs/RequirementStrength"
+        }
+      },
+      "required": [
+        "statement",
+        "strength",
+        "dimension"
+      ],
+      "title": "BriefRequirement",
+      "type": "object"
+    },
+    "ContentHash": {
+      "description": "Self-describing SHA-256 content hash wire value.",
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "title": "ContentHash",
+      "type": "string"
+    },
+    "ExactObjectRef": {
+      "additionalProperties": false,
+      "description": "Persistent exact reference for one canonical revision.",
+      "properties": {
+        "content_hash": {
+          "$ref": "#/$defs/ContentHash"
+        },
+        "logical_id": {
+          "$ref": "#/$defs/LogicalId"
+        },
+        "object_type": {
+          "$ref": "#/$defs/ObjectType"
+        },
+        "version_id": {
+          "$ref": "#/$defs/ObjectId"
+        }
+      },
+      "required": [
+        "object_type",
+        "logical_id",
+        "version_id",
+        "content_hash"
+      ],
+      "title": "ExactObjectRef",
+      "type": "object"
+    },
+    "JsonValue": {},
+    "LogicalId": {
+      "description": "Long-lived identity of one logical entity.",
+      "title": "LogicalId",
+      "type": "string"
+    },
+    "ObjectId": {
+      "description": "Opaque identity of one exact immutable object/version.",
+      "title": "ObjectId",
+      "type": "string"
+    },
+    "ObjectRef": {
+      "additionalProperties": false,
+      "description": "Persistent reference for one non-versioned immutable object.",
+      "properties": {
+        "content_hash": {
+          "$ref": "#/$defs/ContentHash"
+        },
+        "object_id": {
+          "$ref": "#/$defs/ObjectId"
+        },
+        "object_type": {
+          "$ref": "#/$defs/ObjectType"
+        }
+      },
+      "required": [
+        "object_type",
+        "object_id",
+        "content_hash"
+      ],
+      "title": "ObjectRef",
+      "type": "object"
+    },
+    "ObjectRevision": {
+      "description": "Server-assigned revision ordering metadata, never identity or parentage.",
+      "minimum": 1,
+      "title": "ObjectRevision",
+      "type": "integer"
+    },
+    "ObjectType": {
+      "description": "Nominal canonical object-type identity.",
+      "title": "ObjectType",
+      "type": "string"
+    },
+    "Provenance": {
+      "additionalProperties": false,
+      "description": "Immutable source basis using only persistent canonical references.",
+      "properties": {
+        "external_source_refs": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "title": "External Source Refs",
+          "type": "array"
+        },
+        "source_refs": {
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/ExactObjectRef"
+              },
+              {
+                "$ref": "#/$defs/ObjectRef"
+              }
+            ]
+          },
+          "title": "Source Refs",
+          "type": "array"
+        }
+      },
+      "required": [
+        "source_refs",
+        "external_source_refs"
+      ],
+      "title": "Provenance",
+      "type": "object"
+    },
+    "RequirementStrength": {
+      "description": "Frozen B01 requirement-strength wire vocabulary.",
+      "enum": [
+        "MUST",
+        "PREFER",
+        "EXPLORE",
+        "AVOID",
+        "FORBID"
+      ],
+      "title": "RequirementStrength",
+      "type": "string"
+    },
+    "SchemaVersion": {
+      "description": "Nominal schema-version identity.",
+      "title": "SchemaVersion",
+      "type": "string"
+    },
+    "TenantId": {
+      "description": "Strict non-empty nominal tenant-isolation identity.",
+      "minLength": 1,
+      "title": "TenantId",
+      "type": "string"
+    },
+    "TenantScope": {
+      "additionalProperties": false,
+      "description": "Infrastructure-level GLOBAL or single-TENANT isolation scope.",
+      "properties": {
+        "scope_type": {
+          "$ref": "#/$defs/TenantScopeType"
+        },
+        "tenant_id": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/TenantId"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "scope_type",
+        "tenant_id"
+      ],
+      "title": "TenantScope",
+      "type": "object"
+    },
+    "TenantScopeType": {
+      "description": "Frozen tenant-isolation discriminator values.",
+      "enum": [
+        "GLOBAL",
+        "TENANT"
+      ],
+      "title": "TenantScopeType",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "description": "One authored mechanism route implementing a DesignDecision.",
+  "properties": {
+    "constraints": {
+      "items": {
+        "$ref": "#/$defs/BriefRequirement"
+      },
+      "title": "Constraints",
+      "type": "array"
+    },
+    "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+    },
+    "created_by": {
+      "$ref": "#/$defs/ActorRef"
+    },
+    "decision_ref": {
+      "$ref": "#/$defs/ExactObjectRef"
+    },
+    "extensions": {
+      "additionalProperties": {
+        "$ref": "#/$defs/JsonValue"
+      },
+      "title": "Extensions",
+      "type": "object"
+    },
+    "id": {
+      "$ref": "#/$defs/ObjectId"
+    },
+    "logical_id": {
+      "$ref": "#/$defs/LogicalId"
+    },
+    "mechanisms": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Mechanisms",
+      "type": "array"
+    },
+    "object_type": {
+      "$ref": "#/$defs/ObjectType",
+      "const": "di.b01.design_route"
+    },
+    "parent_refs": {
+      "items": {
+        "$ref": "#/$defs/ExactObjectRef"
+      },
+      "title": "Parent Refs",
+      "type": "array"
+    },
+    "provenance": {
+      "$ref": "#/$defs/Provenance"
+    },
+    "rationale": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Rationale"
+    },
+    "revision": {
+      "$ref": "#/$defs/ObjectRevision"
+    },
+    "route_name": {
+      "title": "Route Name",
+      "type": "string"
+    },
+    "schema_version": {
+      "$ref": "#/$defs/SchemaVersion"
+    },
+    "tenant_scope": {
+      "$ref": "#/$defs/TenantScope"
+    }
+  },
+  "required": [
+    "schema_version",
+    "id",
+    "object_type",
+    "created_at",
+    "created_by",
+    "tenant_scope",
+    "provenance",
+    "extensions",
+    "logical_id",
+    "revision",
+    "parent_refs",
+    "decision_ref",
+    "route_name",
+    "mechanisms",
+    "constraints",
+    "rationale"
+  ],
+  "title": "DesignRoute",
+  "type": "object"
+}
