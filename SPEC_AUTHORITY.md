@@ -3,7 +3,7 @@
 审计日期：2026-09-05  
 仓库：ARSO-Code  
 阶段：规范摄取、冻结治理与 Exact V1 分阶段实现  
-结论：Phase 0、Phase 1、P0、P1 已冻结；B01 owner-field recovery 已完成；P2.0A shared canonical-shell recovery 已形成 scoped exact contract candidate，正在独立 Freeze Review 前验证；P2 尚未授权。
+结论：Phase 0、Phase 1、P0、P1 已冻结；B01 owner-field recovery 与 P2.0A shared canonical-shell remediation 均通过独立 Review；P2.0 已达到 `READY FOR USER FREEZE DECISION`，但尚未 `FROZEN`，P2 尚未授权。
 
 ## 规范输入路径说明
 
@@ -32,7 +32,7 @@ specs/00-CODE-FREEZE/DI_B01_Exact_V1_Owner_Contract.md
 | 6 | `specs/02-UPSTREAM/Design-Intelligence-x-ARSO-V2.2.1-Implementation-Blueprint.txt` | Blueprint V1.0 | 集成蓝图与实施背景。 |
 | 7 | `specs/03-RESEARCH/ARSO-Research-Specification-V2.2.1.txt` | Research V2.2.1 | 科学依据与研究主张边界。 |
 
-规则：
+Rules：
 
 ```text
 1B MUST NOT override 1A.
@@ -53,7 +53,7 @@ specs/00-CODE-FREEZE/DI_B01_Exact_V1_Owner_Contract.md
 
 ## P2.0A scoped contract
 
-P2.0A 只冻结：
+P2.0A 冻结候选范围：
 
 ```text
 ActorId
@@ -96,8 +96,8 @@ Phase 0: COMPLETE / REVIEWED / APPROVED
 Phase 1: COMPLETE / VERIFIED / FROZEN
 P0: FROZEN
 P1: FROZEN
-P2.0: B01 OWNER-FIELD RECOVERY PASS / REMEDIATION UNDER REVIEW
-P2.0A: RECOVERY CONTRACT COMPLETE / INDEPENDENT REVIEW PENDING
+P2.0A: RECOVERY PASS / INDEPENDENT REVIEW PASS / NOT FROZEN
+P2.0: B01 RECOVERY PASS / RE-REVIEW PASS / READY FOR USER FREEZE DECISION
 P2: NOT AUTHORIZED
 P3+: NOT AUTHORIZED
 Exact V1: FREEZE CANDIDATE
@@ -109,43 +109,52 @@ P2.0A evidence：
 SHARED_CORE_SOURCE_RECOVERY_MATRIX.md
 SHARED_CORE_FIELD_DECISION_LEDGER.md
 SHARED_CORE_CROSS_SPEC_FREEZE_AUDIT.md
+P2_0A_FREEZE_REVIEW.md
 docs/superpowers/specs/2026-09-05-p2-0a-shared-canonical-shell-recovery-design.md
 docs/superpowers/plans/2026-09-05-p2-0a-shared-canonical-shell-recovery-implementation.md
 specs/00-CODE-FREEZE/DI_Shared_Canonical_Shell_Exact_V1_Contract.md
 ```
 
-Current recovery candidate result：
+Independent result：
 
 ```text
-SC01 ActorRef       CLOSED IN CANDIDATE
-SC02 TenantScope    CLOSED IN CANDIDATE
-SC03 Provenance     CLOSED IN CANDIDATE
-SC04 ObjectRevision CLOSED IN CANDIDATE
+SC01 ActorRef       CLOSED
+SC02 TenantScope    CLOSED
+SC03 Provenance     CLOSED
+SC04 ObjectRevision CLOSED
 shared-core SPEC_CONFLICT = 0
 blocking shared-core field SPEC_GAP = 0
+Critical = 0
+Important = 0
+Minor = 0
 ```
 
-这些结论仍需 automated verification + independent Freeze Review；在此之前不得把 P2.0A 或 P2.0 宣布为 `FROZEN`。
+P2.0 re-review：`B01_P2_0_FREEZE_REVIEW.md`。
+
+```text
+7 / 7 B01 objects covered
+B01 owner-field SPEC_GAP = 0
+shared-core blocking SPEC_GAP = 0
+SPEC_CONFLICT = 0
+P2 contract-level implementability = PASS
+```
 
 ## P2 授权门禁
 
-只有：
+当前仍需用户明确批准 P2.0 Freeze。
+
+批准后治理顺序：
 
 ```text
-B01 owner contract Freeze approved
-+
-shared canonical shell Freeze approved
-+
-P2.0 final independent review PASS
-+
-no blocking P2 prerequisite SPEC_GAP
-+
-user explicitly authorizes P2
+merge PR #5 into p2-0-b01-contract-recovery
+-> fresh verification of exact PR #4 combined head
+-> record P2.0 Freeze decision
+-> merge PR #4 to main with expected-head protection
+-> verify main checkpoint
+-> authorize P2 Full B01 Exact Schemas only by explicit decision
 ```
 
-之后才允许实现 `Full B01 Exact Schemas`。
-
-在此之前不得新增 `src/design_intelligence/contracts/b01/*.py`，也不得因为 P2.0A contract candidate 而提前实现 production shared-core Python types。
+在此之前不得新增 `src/design_intelligence/contracts/b01/*.py`，也不得把 P2.0A candidate 提前实现为 production shared-core Python types。
 
 ## Exact V1 最终发布规则
 
