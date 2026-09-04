@@ -13,67 +13,76 @@ Phase 0: COMPLETE / REVIEWED / APPROVED
 Phase 1: COMPLETE / VERIFIED / FROZEN
 P0: FROZEN
 P1: FROZEN
-P2.0: B01 OWNER-FIELD RECOVERY PASS / FREEZE BLOCKED BY SHARED-CORE SPEC_GAP
-P2.0A: RECOMMENDED / NOT AUTHORIZED
+P2.0A: RECOVERY PASS / INDEPENDENT REVIEW PASS / NOT FROZEN
+P2.0: B01 RECOVERY PASS / RE-REVIEW PASS / READY FOR USER FREEZE DECISION
 P2: NOT AUTHORIZED
 P3+: NOT AUTHORIZED
 Exact V1: FREEZE CANDIDATE
 ```
 
-P0 与 P1 已经通过人工 Freeze Checkpoint 并合入 `main`。
+P0 与 P1 已通过人工 Freeze Checkpoint 并合入 `main`。
 
-P2.0 已恢复 B01 field-level owner contract：
+P2.0 已恢复 B01 field-level owner contract；P2.0A 已完成 shared canonical-shell remediation candidate：
 
 ```text
-specs/00-CODE-FREEZE/DI_B01_Exact_V1_Owner_Contract.md
+specs/00-CODE-FREEZE/DI_Shared_Canonical_Shell_Exact_V1_Contract.md
 ```
 
-证据：
+P2.0A scope：
 
 ```text
-B01_SOURCE_RECOVERY_MATRIX.md
-B01_FIELD_DECISION_LEDGER.md
-B01_CROSS_SPEC_FREEZE_AUDIT.md
-B01_P2_0_FREEZE_REVIEW.md
+ActorId
+ActorType
+ActorRef
+TenantId
+TenantScopeType
+TenantScope
+Provenance
+ObjectRevision
+CanonicalObject structural base
+CanonicalRevision structural base
+ImmutableFact structural base
+UTC canonical timestamp normalization
 ```
 
-B01 owner fields 已达到：
+Independent Review：
 
 ```text
-7 / 7 objects covered
-B01 SPEC_CONFLICT = 0
-blocking B01 owner-field SPEC_GAP = 0
+SC01 ActorRef       CLOSED
+SC02 TenantScope    CLOSED
+SC03 Provenance     CLOSED
+SC04 ObjectRevision CLOSED
+Critical = 0
+Important = 0
+Minor = 0
+shared-core SPEC_CONFLICT = 0
+blocking shared-core field SPEC_GAP = 0
 ```
 
-但独立 Freeze Review 发现 shared canonical shell 仍缺 exact contract：
+P2.0 re-review 已确认：
 
 ```text
-P2.0-SC01 ActorRef
-P2.0-SC02 TenantScope
-P2.0-SC03 Provenance
-P2.0-SC04 ObjectRevision
+7 / 7 B01 objects covered
+B01 owner-field SPEC_GAP = 0
+shared-core blocking SPEC_GAP = 0
+P2 contract-level implementability = PASS
+P2.0 = READY FOR USER FREEZE DECISION
 ```
 
-因此：
+但：
 
 ```text
-P2.0 FREEZE = BLOCKED
+P2.0 != FROZEN
 P2 = NOT AUTHORIZED
 ```
 
-推荐但尚未授权：
-
-```text
-P2.0A｜Shared Canonical Shell Support Contract Recovery
-```
-
-在用户明确授权 P2.0A 前，不得从 `di_contracts_v1` 复制这些 shared-core candidate structures，不得写 `src/design_intelligence/contracts/b01/*.py`。
+在用户明确批准 P2.0 Freeze 前，不得新增 `src/design_intelligence/contracts/b01/*.py`，也不得把 P2.0A candidate 实现成 production core Python types。
 
 ## 审计文档语言
 
 - 审计报告、差距报告、冲突报告、实施清单、状态说明和冻结结论以中文撰写。
-- 文件名、代码标识符、类型名、协议名、测试编号与状态关键词（`FROZEN`、`FREEZE CANDIDATE`、`OPEN`、`DEFERRED`、`SPEC_CONFLICT`、`SPEC_GAP`）保留英文。
-- 引用英文规范原句时同时给出中文解释。
+- 文件名、代码标识符、类型名、协议名、测试编号与状态关键词保留英文。
+- 引用英文规范时给出中文解释。
 
 ## 规范权威顺序
 
@@ -82,7 +91,8 @@ P2.0A｜Shared Canonical Shell Support Contract Recovery
 当前顺序：
 
 1A. `specs/00-CODE-FREEZE/DI_V5_Exact_V1_Schema_API_Contract_Freeze_Specification.md`
-1B. `specs/00-CODE-FREEZE/DI_B01_Exact_V1_Owner_Contract.md`（B01 field-level scoped `FREEZE CANDIDATE`；不得覆盖 1A）
+1B. `specs/00-CODE-FREEZE/DI_Shared_Canonical_Shell_Exact_V1_Contract.md`（shared support/nested + structural shell scoped `FREEZE CANDIDATE`）
+1C. `specs/00-CODE-FREEZE/DI_B01_Exact_V1_Owner_Contract.md`（B01 field-level scoped `FREEZE CANDIDATE`）
 2. `specs/01-AUTHORITY/Design-Intelligence-V5.0-Engineering-Specification-V1.0.txt`
 3. `specs/01-AUTHORITY/Cross-Spec-Consistency-Freeze.txt`
 4. `specs/02-UPSTREAM/ARSO-Engineering-Specification-V2.2.1.txt`
@@ -90,23 +100,50 @@ P2.0A｜Shared Canonical Shell Support Contract Recovery
 6. `specs/02-UPSTREAM/Design-Intelligence-x-ARSO-V2.2.1-Implementation-Blueprint.txt`
 7. `specs/03-RESEARCH/ARSO-Research-Specification-V2.2.1.txt`
 
-1B 只允许填补 1A N11 的 B01 completeness gap。它不能被用来定义不属于 B01 primitive ownership 的 shared core type internals。
+Rules：
+
+```text
+1B MUST NOT override 1A.
+1C MUST consume 1B and MUST NOT redefine shared support internals.
+2+ MUST NOT override frozen 1A/1B/1C scope.
+```
 
 如果存在真实矛盾：
 
 ```text
-SPEC_CONFLICT
-→ stop affected path
+SPEC_CONFLICT -> stop affected path
 ```
 
 如果缺少精确 contract：
 
 ```text
-SPEC_GAP
-→ do not guess
+SPEC_GAP -> do not guess
 ```
 
-`di_contracts_v1/` 只读、只作为 executable evidence，不是 owner authority。
+`di_contracts_v1/` 只读、只作为 executable evidence，不是 authority。
+
+## Shared canonical shell invariants
+
+```text
+ActorId != ObjectId != LogicalId != TenantId
+ActorType = open typed vocabulary
+TenantScopeType = GLOBAL | TENANT
+GLOBAL != public/permissionless
+
+Provenance.source_refs = CanonicalRef only
+LogicalObjectRef forbidden in committed provenance
+Provenance.command_ref:ObjectRef = forbidden
+Provenance.run_ref:ObjectRef = deferred
+
+ObjectRevision = integer >= 1
+revision = server-assigned ordering metadata
+revision != identity/schema version/concurrency token
+parentage = parent_refs
+
+support/nested/structural types != canonical domain primitives
+```
+
+P2.0A MUST NOT change P0/P1 frozen contracts for ObjectId/LogicalId/SchemaVersion/ObjectType, Exact refs, hash engine or registry foundation。
 
 ## 已冻结的架构不变量
 
@@ -121,28 +158,16 @@ DesignDecision != DesignSpec
 DesignSpec != GenerationPackage
 DesignSpec != ordinary SystemArtifact
 ReferenceAsset != ReferenceIntentBinding != CompiledReferenceBinding
-
-Confidence != Identifiability
-ProbeRecommendation != ProbePlan
-History != Memory != Knowledge
-MemoryMaturity != KnowledgeMaturity
+Constraint != Preference
+DesignRoute != RandomVariant
 
 EveryLongTermFeedbackLoop
 must cross an immutable version/snapshot boundary.
 ```
 
-P2.0 还必须保持：
-
-```text
-Constraint != Preference
-DesignRoute != RandomVariant
-committed B01 refs contain no LogicalObjectRef
-B01 task semantics are not System Artifacts
-```
-
 ## ARSO 对象所有权
 
-不得为以下 ARSO canonical primitive 创建 DI shadow type：
+不得为下列 ARSO canonical primitives 创建 DI shadow type：
 
 ```text
 ReferenceTaskSpec
@@ -170,51 +195,63 @@ ExperimentAssignment
 BudgetReservation
 ```
 
-生产 contract 必须通过明确 integration boundary 导入/适配权威 ARSO type；临时 stub 不属于 Exact V1 canonical type。
+P2.0A 尤其不得通过 `Provenance.run_ref` 提前决定 ARSO RunRecord 的 object class/ref kind。
 
 ## 引用与变更规则
 
-- committed/runtime object 必须使用 exact persistent ref，并验证 `content_hash`。
+- committed/runtime object 使用 exact persistent ref 并验证 `content_hash`。
 - `LogicalObjectRef` 只能用于 authoring workflow。
-- 禁止隐式 `latest/current/newest/most recent`。
+- 禁止隐式 latest/current/newest。
 - 历史 canonical object 不可变。
 - 变更遵循 `Command -> validation -> new immutable object/revision -> Event -> CAS pointer update`。
-- Branch head 更新必须比较 expected head；不匹配返回 `HEAD_CONFLICT`，禁止 Last-Write-Wins。
+- Branch head 更新需要 expected head/CAS；冲突返回 `HEAD_CONFLICT`。
 
 ## P2.0 Freeze Gate
 
-除了 B01 owner-field completeness，P2.0 的目标还要求 P2 能在不猜 contract 的条件下构造完整 canonical models。因此下列条件必须同时满足：
+P2.0 已满足技术 review 条件，但仍需人工 Freeze：
 
 ```text
 7 / 7 B01 canonical objects covered
-every B01 owner field has type/cardinality/requiredness/ref policy
+B01 owner-field SPEC_GAP = 0
+SC01-SC04 shared shell closed
+shared-core SPEC_GAP = 0
 all 7 object classifications fixed
 all 7 registry policies fixed
-all 7 B01 CanonicalPayload policies fixed
-shared canonical shell exact types frozen
-no unexplained field
-no silent candidate promotion
-8 / 8 normative checksums
-no B01 production Python leakage
+all required CanonicalPayload policies fixed
+9 / 9 normative checksums
+no original-source drift
+no candidate-baseline drift
+no production core/B01 leakage
+P0/P1 regression PASS
 SPEC_CONFLICT = 0
-independent Freeze Review = PASS
+P2.0A independent review PASS
+P2.0 final independent review PASS
+```
+
+最后仍需要：
+
+```text
 user explicitly approves P2.0 Freeze
 ```
 
-当前 shared-shell exactness 不满足，因此 P2 不得启动。
+批准后按顺序：
+
+```text
+merge PR #5 into p2-0-b01-contract-recovery
+-> fresh verification of PR #4 exact combined head
+-> record P2.0 freeze decision
+-> merge PR #4 to main
+-> verify main
+-> only then explicitly authorize P2
+```
 
 ## Exact V1 状态边界
 
 ```text
-FROZEN:
-  已通过人工 Freeze Checkpoint 的 contract
-FREEZE CANDIDATE:
-  尚未完成全部 Exact V1 release gates 的 schema/API contract
-OPEN:
-  algorithms/models/thresholds/physical DB/storage/event bus
-DEFERRED:
-  production auto-activation/global semantic autonomous evolution/
-  meta-learning/cross-domain transfer/continuous production self-modification
+FROZEN: human-approved checkpoint
+FREEZE CANDIDATE: schema/API contract still awaiting complete release gates
+OPEN: algorithms/models/thresholds/storage/event bus and other non-frozen choices
+DEFERRED: production auto-activation/global semantic autonomous evolution/meta-learning/cross-domain transfer
 ```
 
 只有 CS-01–CS-32、AC-01–AC-18 全部通过且无 unresolved `SPEC_CONFLICT`，Exact V1 才能声明 `FROZEN`。

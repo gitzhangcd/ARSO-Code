@@ -1,61 +1,93 @@
 # Exact V1 规范权威说明
 
-审计日期：2026-09-04  
+审计日期：2026-09-05  
 仓库：ARSO-Code  
 阶段：规范摄取、冻结治理与 Exact V1 分阶段实现  
-结论：Phase 0、Phase 1、P0、P1 已冻结；B01 owner-field recovery 已完成，但 P2.0 Freeze 被 shared canonical-shell `SPEC_GAP` 阻断；P2 尚未授权
+结论：Phase 0、Phase 1、P0、P1 已冻结；B01 owner-field recovery 与 P2.0A shared canonical-shell remediation 均通过独立 Review；P2.0 已达到 `READY FOR USER FREEZE DECISION`，但尚未 `FROZEN`，P2 尚未授权。
 
 ## 规范输入路径说明
 
 `specs/` 是唯一规范入口。
 
-Phase 1 冻结时存在 7 份原始 authority/upstream/research source。P2.0 新增第 8 份 scoped normative candidate：
+当前 normative manifest 共 9 份：Phase 1 的 7 份原始来源 + B01 scoped owner contract + shared canonical-shell scoped contract。
 
 ```text
+specs/00-CODE-FREEZE/DI_Shared_Canonical_Shell_Exact_V1_Contract.md
 specs/00-CODE-FREEZE/DI_B01_Exact_V1_Owner_Contract.md
 ```
 
-`specs/SPEC_SOURCE_CHECKSUMS.sha256` 当前验证 `8 / 8` 文件；原 7 份来源 checksum 保持不变。
+`specs/SPEC_SOURCE_CHECKSUMS.sha256` 必须验证 `9 / 9`；原 8 个已登记 digest 不得因为 P2.0A 被改写。
 
 ## 规范权威顺序
 
 | 优先级 | 仓库内规范 | 文档身份与状态 | 规范职责 |
 |---:|---|---|---|
-| 1A | `specs/00-CODE-FREEZE/DI_V5_Exact_V1_Schema_API_Contract_Freeze_Specification.md` | `DI-V5-EXACT-CONTRACT`、`V1.0-FC1`、`FREEZE CANDIDATE` | 全局 Code-Level Authority；冻结 F0-F6 normalization、cross-domain invariants、CS/AC release gates。 |
-| 1B | `specs/00-CODE-FREEZE/DI_B01_Exact_V1_Owner_Contract.md` | `DI-B01-EXACT-CONTRACT`、`V1.0-FC1`、`FREEZE CANDIDATE` | 仅补齐 N11 的 B01 field-level owner contract；不得覆盖 1A，也不拥有 shared-core support type internals。 |
-| 2 | `specs/01-AUTHORITY/Design-Intelligence-V5.0-Engineering-Specification-V1.0.txt` | `DI-V5-ENG`、`V1.0`；Architecture `FROZEN`、exact schema `FREEZE CANDIDATE` | 工程、运行时、对象所有权与边界。 |
+| 1A | `specs/00-CODE-FREEZE/DI_V5_Exact_V1_Schema_API_Contract_Freeze_Specification.md` | `DI-V5-EXACT-CONTRACT`、`V1.0-FC1`、`FREEZE CANDIDATE` | 全局 Code-Level Authority；F0-F6 normalization、cross-domain invariants、CS/AC release gates。 |
+| 1B | `specs/00-CODE-FREEZE/DI_Shared_Canonical_Shell_Exact_V1_Contract.md` | `DI-SHARED-CANONICAL-SHELL-EXACT-CONTRACT`、`V1.0-FC1`、`FREEZE CANDIDATE` | Shared support/nested types 与 CanonicalObject/CanonicalRevision structural shell；不得覆盖 1A。 |
+| 1C | `specs/00-CODE-FREEZE/DI_B01_Exact_V1_Owner_Contract.md` | `DI-B01-EXACT-CONTRACT`、`V1.0-FC1`、`FREEZE CANDIDATE` | B01 field-level owner contract；消费 1B shared shell，不得重定义其 internals。 |
+| 2 | `specs/01-AUTHORITY/Design-Intelligence-V5.0-Engineering-Specification-V1.0.txt` | `DI-V5-ENG`、`V1.0` | 工程、运行时、对象所有权与边界。 |
 | 3 | `specs/01-AUTHORITY/Cross-Spec-Consistency-Freeze.txt` | DI-E01-E08 Cross-Spec 一致性权威 | normalization 与跨规范冻结边界。 |
-| 4 | `specs/02-UPSTREAM/ARSO-Engineering-Specification-V2.2.1.txt` | ARSO Engineering V2.2.1 | 通用 ARSO primitive 与集成边界 canonical owner。 |
+| 4 | `specs/02-UPSTREAM/ARSO-Engineering-Specification-V2.2.1.txt` | ARSO Engineering V2.2.1 | ARSO primitive 与集成边界 canonical owner。 |
 | 5 | `specs/02-UPSTREAM/Design-Intelligence-V5.0-Application-Specification.txt` | `DI-V5-AS`、5.0 | 产品语义与 B01-B08 应用职责。 |
-| 6 | `specs/02-UPSTREAM/Design-Intelligence-x-ARSO-V2.2.1-Implementation-Blueprint.txt` | Blueprint V1.0 | 集成蓝图与低优先级实施背景。 |
+| 6 | `specs/02-UPSTREAM/Design-Intelligence-x-ARSO-V2.2.1-Implementation-Blueprint.txt` | Blueprint V1.0 | 集成蓝图与实施背景。 |
 | 7 | `specs/03-RESEARCH/ARSO-Research-Specification-V2.2.1.txt` | Research V2.2.1 | 科学依据与研究主张边界。 |
 
-规则：
+Rules：
 
 ```text
 1B MUST NOT override 1A.
-1B MUST NOT fabricate global/shared-core support contracts outside B01 ownership.
-2+ MUST NOT override 1A/1B where frozen.
+1C MUST NOT override 1A/1B.
+1B support types are not new canonical domain primitives.
+2+ MUST NOT override 1A/1B/1C where frozen.
 ```
 
 ## 规范解析规则
 
 1. 先查 1A global Exact Contract。
-2. B01 field-level schema 查 1B；1B 只填补 N11 completeness gap。
-3. 若 1A/1B 已给出 exact 定义，直接遵守。
-4. 未定义区域按 2→7 恢复证据。
-5. shared-core type 若只有 field role、没有 exact internal contract，也属于 `SPEC_GAP`；不得从 candidate baseline 复制。
-6. 无法同时满足的 frozen requirement → `SPEC_CONFLICT`。
+2. Canonical shell support internals 查 1B。
+3. B01 business/design field-level schema 查 1C。
+4. 若 1A/1B/1C 已给出 exact 定义，直接遵守，不重新解释。
+5. 未定义区域按 2→7 恢复证据；缺 exact contract → `SPEC_GAP`，不得从 candidate baseline 猜测。
+6. 真实不可兼容要求 → `SPEC_CONFLICT` 并停止受影响路径。
 7. `OPEN` / `DEFERRED` 不因实现便利自动升级为 contract。
 
-## 冻结状态总表
+## P2.0A scoped contract
 
-| 状态 | 当前范围 |
-|---|---|
-| `FROZEN` | Architecture；primitive/capability ownership；标准化 F0-F6 语义；P0 nominal identity/base policy；P1 exact refs/RFC8785 hash/registry foundation。 |
-| `FREEZE CANDIDATE` | 全局 Exact V1；`DI-B01-EXACT-CONTRACT`；ARSO exact integration；完整 command/event/protocol；complete registry；resolver；CAS；snapshot firewalls。 |
-| `OPEN` | 物理数据库 schema；存储引擎；事件总线；算法、模型、阈值；检索/排序；executor/model 选择；实证结论。 |
-| `DEFERRED` | 自动生产激活与部署；全局语义自主演化；meta-learning；cross-domain/cross-enterprise transfer；持续生产自修改。 |
+P2.0A 冻结候选范围：
+
+```text
+ActorId
+ActorType
+ActorRef
+TenantId
+TenantScopeType
+TenantScope
+Provenance
+ObjectRevision
+CanonicalObject structural base
+CanonicalRevision structural base
+ImmutableFact structural base
+UTC canonical timestamp normalization
+```
+
+关键 normalization：
+
+```text
+ActorType = open typed vocabulary
+standard codes = USER/SERVICE/AGENT/SYSTEM/EXTERNAL
+
+TenantScopeType = GLOBAL | TENANT
+GLOBAL != public/permissionless
+
+Provenance = source_refs + external_source_refs
+candidate command_ref:ObjectRef = rejected
+candidate run_ref:ObjectRef = deferred
+
+ObjectRevision = integer >= 1 ordering metadata
+parentage = parent_refs
+```
+
+P2.0A 不重新冻结 P0/P1 types，不写 production core/B01 models，不定义 Command/Event/RunRecord exact schema。
 
 ## 当前阶段
 
@@ -64,88 +96,65 @@ Phase 0: COMPLETE / REVIEWED / APPROVED
 Phase 1: COMPLETE / VERIFIED / FROZEN
 P0: FROZEN
 P1: FROZEN
-P2.0: B01 OWNER-FIELD RECOVERY PASS / FREEZE BLOCKED BY SHARED-CORE SPEC_GAP
-P2.0A: RECOMMENDED / NOT AUTHORIZED
+P2.0A: RECOVERY PASS / INDEPENDENT REVIEW PASS / NOT FROZEN
+P2.0: B01 RECOVERY PASS / RE-REVIEW PASS / READY FOR USER FREEZE DECISION
 P2: NOT AUTHORIZED
 P3+: NOT AUTHORIZED
 Exact V1: FREEZE CANDIDATE
 ```
 
-P2.0 evidence：
+P2.0A evidence：
 
 ```text
-B01_SOURCE_RECOVERY_MATRIX.md
-B01_FIELD_DECISION_LEDGER.md
-B01_CROSS_SPEC_FREEZE_AUDIT.md
-B01_P2_0_FREEZE_REVIEW.md
-specs/00-CODE-FREEZE/DI_B01_Exact_V1_Owner_Contract.md
+SHARED_CORE_SOURCE_RECOVERY_MATRIX.md
+SHARED_CORE_FIELD_DECISION_LEDGER.md
+SHARED_CORE_CROSS_SPEC_FREEZE_AUDIT.md
+P2_0A_FREEZE_REVIEW.md
+docs/superpowers/specs/2026-09-05-p2-0a-shared-canonical-shell-recovery-design.md
+docs/superpowers/plans/2026-09-05-p2-0a-shared-canonical-shell-recovery-implementation.md
+specs/00-CODE-FREEZE/DI_Shared_Canonical_Shell_Exact_V1_Contract.md
 ```
 
-## P2.0 独立 Review 结论
-
-B01 owner-field layer：
+Independent result：
 
 ```text
-7 / 7 objects covered
-B01 SPEC_CONFLICT = 0
-blocking B01 owner-field SPEC_GAP = 0
-P2.0 automated verification = PASS
+SC01 ActorRef       CLOSED
+SC02 TenantScope    CLOSED
+SC03 Provenance     CLOSED
+SC04 ObjectRevision CLOSED
+shared-core SPEC_CONFLICT = 0
+blocking shared-core field SPEC_GAP = 0
+Critical = 0
+Important = 0
+Minor = 0
 ```
 
-但是完整 B01 canonical model 还依赖 shared canonical shell，而以下 exact wire contract 尚未由 authority chain 冻结：
+P2.0 re-review：`B01_P2_0_FREEZE_REVIEW.md`。
 
 ```text
-P2.0-SC01 ActorRef
-P2.0-SC02 TenantScope
-P2.0-SC03 Provenance
-P2.0-SC04 ObjectRevision
+7 / 7 B01 objects covered
+B01 owner-field SPEC_GAP = 0
+shared-core blocking SPEC_GAP = 0
+SPEC_CONFLICT = 0
+P2 contract-level implementability = PASS
 ```
-
-当前完整结构只能在 `di_contracts_v1` candidate 中找到，不能作为正式 authority。
-
-因此：
-
-```text
-P2.0 Freeze = BLOCKED
-P2 = NOT AUTHORIZED
-```
-
-推荐下一步但尚未授权：
-
-```text
-P2.0A｜Shared Canonical Shell Support Contract Recovery
-```
-
-其最小范围应恢复：
-
-```text
-ActorRef
-ActorId / ActorType as required
-TenantScope
-TenantId / TenantScopeType as required
-Provenance
-ObjectRevision
-```
-
-不得通过修改已冻结 P0/P1 语义来规避该缺口；应在 1A 下新增 scoped shared-core companion contract，并通过独立 Freeze Review。
 
 ## P2 授权门禁
 
-只有在：
+当前仍需用户明确批准 P2.0 Freeze。
+
+批准后治理顺序：
 
 ```text
-B01 owner contract frozen
-+
-shared canonical shell exact contract frozen
-+
-no blocking P2 prerequisite SPEC_GAP
-+
-user explicitly authorizes P2
+merge PR #5 into p2-0-b01-contract-recovery
+-> fresh verification of exact PR #4 combined head
+-> record P2.0 Freeze decision
+-> merge PR #4 to main with expected-head protection
+-> verify main checkpoint
+-> authorize P2 Full B01 Exact Schemas only by explicit decision
 ```
 
-后，才允许实现 `Full B01 Exact Schemas`。
-
-在此之前不得新增 `src/design_intelligence/contracts/b01/*.py`。
+在此之前不得新增 `src/design_intelligence/contracts/b01/*.py`，也不得把 P2.0A candidate 提前实现为 production shared-core Python types。
 
 ## Exact V1 最终发布规则
 
