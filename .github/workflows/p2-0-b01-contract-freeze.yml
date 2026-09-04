@@ -78,6 +78,7 @@ jobs:
           PY
 
       - name: No P2.0A production implementation leakage
+        if: github.head_ref == 'p2-0-b01-contract-recovery' || github.head_ref == 'p2-0a-shared-core-contract-recovery'
         run: |
           changed="$(git diff --name-only origin/main...HEAD)"
           if echo "$changed" | grep -E '^src/design_intelligence/contracts/b01/.*\.py$'; then

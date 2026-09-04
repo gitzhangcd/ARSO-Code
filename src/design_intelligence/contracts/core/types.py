@@ -1,10 +1,11 @@
-"""P0 nominal core types for Design Intelligence contracts."""
+"""P0-P2 nominal core types for Design Intelligence contracts."""
 
 from __future__ import annotations
 
 from enum import StrEnum
+from typing import Annotated
 
-from pydantic import ConfigDict, RootModel
+from pydantic import ConfigDict, Field, RootModel
 
 
 class _NominalString(RootModel[str]):
@@ -27,6 +28,37 @@ class SchemaVersion(_NominalString):
 
 class ObjectType(_NominalString):
     """Nominal canonical object-type identity."""
+
+
+class ActorId(RootModel[Annotated[str, Field(min_length=1)]]):
+    """Strict non-empty nominal identity for an attributed actor."""
+
+    model_config = ConfigDict(strict=True, frozen=True)
+
+
+class ActorType(RootModel[Annotated[str, Field(min_length=1)]]):
+    """Strict non-empty open vocabulary for actor attribution type."""
+
+    model_config = ConfigDict(strict=True, frozen=True)
+
+
+class TenantId(RootModel[Annotated[str, Field(min_length=1)]]):
+    """Strict non-empty nominal tenant-isolation identity."""
+
+    model_config = ConfigDict(strict=True, frozen=True)
+
+
+class ObjectRevision(RootModel[Annotated[int, Field(ge=1)]]):
+    """Server-assigned revision ordering metadata, never identity or parentage."""
+
+    model_config = ConfigDict(strict=True, frozen=True)
+
+
+class TenantScopeType(StrEnum):
+    """Frozen tenant-isolation discriminator values."""
+
+    GLOBAL = "GLOBAL"
+    TENANT = "TENANT"
 
 
 class CanonicalObjectClass(StrEnum):

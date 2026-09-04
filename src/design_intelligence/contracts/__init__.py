@@ -1,4 +1,4 @@
-"""Public Design Intelligence contract API frozen through P1 candidate."""
+"""Public Design Intelligence contract API with frozen P1 export surface."""
 
 from .core import (
     CanonicalObjectClass,
