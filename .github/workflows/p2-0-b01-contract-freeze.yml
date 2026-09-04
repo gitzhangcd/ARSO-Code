@@ -14,21 +14,17 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Registered normative source checksums
-        run: sha256sum -c specs/SPEC_SOURCE_CHECKSUMS.sha256
-
-      - name: Generate scoped contract SHA-256 evidence
+      - name: Full normative source checksums
         run: |
-          sha256sum specs/00-CODE-FREEZE/DI_B01_Exact_V1_Owner_Contract.md | tee /tmp/b01-owner.sha256
-          sha256sum specs/00-CODE-FREEZE/DI_Shared_Canonical_Shell_Exact_V1_Contract.md | tee /tmp/shared-core.sha256
+          test "$(wc -l < specs/SPEC_SOURCE_CHECKSUMS.sha256)" -eq 9
+          sha256sum -c specs/SPEC_SOURCE_CHECKSUMS.sha256
 
-      - name: Upload shared-core checksum evidence
-        uses: actions/upload-artifact@v4
-        with:
-          name: shared-core-checksum
-          path: /tmp/shared-core.sha256
-          if-no-files-found: error
-          retention-days: 1
+      - name: Verify shared-core registered digest
+        run: |
+          expected="$(grep 'DI_Shared_Canonical_Shell_Exact_V1_Contract.md' specs/SPEC_SOURCE_CHECKSUMS.sha256 | awk '{print $1}')"
+          actual="$(sha256sum specs/00-CODE-FREEZE/DI_Shared_Canonical_Shell_Exact_V1_Contract.md | awk '{print $1}')"
+          test "$expected" = "$actual"
+          echo "shared-core contract digest: $actual"
 
       - name: B01 surface coverage
         run: |
