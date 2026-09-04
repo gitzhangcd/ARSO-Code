@@ -192,46 +192,55 @@ The formal review recorded three non-blocking maintenance items:
 
 These do not alter B01 wire semantics and do not block the P2 Freeze.
 
-## Decision-head verification
+## Verification evidence
 
-The first decision record head was:
+Formal review head:
+
+```text
+e76358d843adfcff9350fd286446a8a752ea348d
+P1 run 33926043029 = SUCCESS
+P2.0/B01 run 33926043113 = SUCCESS
+```
+
+Initial decision-record head:
 
 ```text
 c1408d8a3a5689b59367a635617336d16176162e
+P1 run 33926245681 = SUCCESS
+P2.0/B01 run 33926245684 = SUCCESS
 ```
 
-Fresh verification on that exact decision head:
+Pre-publication head before this final evidence-only update:
 
 ```text
-P1 contract verification
-run 33926245681 = SUCCESS
-
-P2.0 B01 + Shared-Core contract verification
-run 33926245684 = SUCCESS
+e43ce704b2781871e3af3e9ccab40e33622e646f
+P1 run 33926307299 = SUCCESS
+P2.0/B01 run 33926307282 = SUCCESS
 ```
 
-The two runs cover root tests including AC-01, candidate-baseline regression, 9/9 normative checksums, shared-core digest, B01/shared-core source coverage, production compilation, whitespace/placeholder checks, frozen-source drift, and authority-source scope.
+Each pair covered root tests including AC-01, candidate-baseline regression, 9/9 normative checksums, shared-core digest, B01/shared-core source coverage, production compilation, whitespace/placeholder checks, frozen-source drift, and authority-source scope.
 
-This verification evidence is historical evidence for the decision content. Because this paragraph itself creates a new commit, the final PR head containing it MUST again receive fresh verification before merge.
+Because this final evidence-only update creates one last exact head, that exact head MUST itself receive fresh verification before merge. No further content update is permitted between that verification and the expected-head merge.
 
 ## 发布门禁
 
 Before merge:
 
 ```text
-1. final PR head containing this decision record MUST receive fresh P1 verification PASS;
-2. final PR head MUST receive fresh P2.0/B01 + Shared-Core verification PASS;
+1. final exact PR head MUST receive fresh P1 verification PASS;
+2. final exact PR head MUST receive fresh P2.0/B01 + Shared-Core verification PASS;
 3. PR #6 MUST still target main and remain mergeable;
-4. merge MUST use the expected exact PR head SHA.
+4. merge MUST use the expected exact PR head SHA;
+5. no further branch commit is permitted after the final green verification.
 ```
 
 After merge:
 
 ```text
 1. published main MUST contain this P2_FREEZE_DECISION.md;
-2. published main tree MUST be verified against the tested final PR head;
-3. current P1/P2 workflows are PR-only, so tree equality with the tested final head is the publication-equivalence proof unless a separate main/push run exists;
-4. no semantic change may be introduced during merge.
+2. published main tree MUST equal the tested final exact PR-head tree;
+3. current P1/P2 workflows are PR-only, so tree equality is the publication-equivalence proof unless a separate main/push run exists;
+4. no semantic change may be introduced by the merge commit.
 ```
 
 ## 状态
@@ -240,7 +249,7 @@ After merge:
 P0 = FROZEN
 P1 = FROZEN
 P2.0/P2.0A = FROZEN
-P2 = FROZEN / PENDING FINAL-HEAD VERIFICATION + PUBLICATION TO main
+P2 = FROZEN / PENDING FINAL EXACT-HEAD VERIFICATION + PUBLICATION TO main
 P3+ = NOT AUTHORIZED
 Exact V1 global = FREEZE CANDIDATE
 ```
