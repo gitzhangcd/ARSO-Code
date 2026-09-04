@@ -15,6 +15,7 @@ from design_intelligence.contracts.core import (
     ImmutableFact,
     JsonValue,
     ObjectRef,
+    ObjectType,
 )
 from design_intelligence.contracts.core.shell import ensure_finite_json_value
 
@@ -99,11 +100,17 @@ class _B01ImmutableFact(ImmutableFact):
         return self
 
 
+def _fixed_object_type_schema(value: str):
+    """Keep ObjectType runtime validation while publishing the fixed schema constant."""
+    return Field(json_schema_extra={"const": value})
+
+
 class StyleBrief(_B01CanonicalRevision):
     """B01 authored task brief and requirement envelope."""
 
     _EXPECTED_OBJECT_TYPE = "di.b01.style_brief"
 
+    object_type: ObjectType = _fixed_object_type_schema(_EXPECTED_OBJECT_TYPE)
     category: str | None
     customer_segments: tuple[str, ...]
     market_channels: tuple[str, ...]
@@ -125,6 +132,7 @@ class ReferenceIntentBinding(_B01CanonicalRevision):
 
     _EXPECTED_OBJECT_TYPE = "di.b01.reference_intent_binding"
 
+    object_type: ObjectType = _fixed_object_type_schema(_EXPECTED_OBJECT_TYPE)
     reference_asset_ref: CanonicalRef
     intent_codes: Annotated[tuple[str, ...], Field(min_length=1)]
     application_scope: tuple[str, ...]
@@ -138,6 +146,7 @@ class DesignContextBinding(_B01CanonicalRevision):
 
     _EXPECTED_OBJECT_TYPE = "di.b01.design_context_binding"
 
+    object_type: ObjectType = _fixed_object_type_schema(_EXPECTED_OBJECT_TYPE)
     style_brief_ref: ExactObjectRef
     bindings: tuple[ContextRefBinding, ...]
 
@@ -147,6 +156,7 @@ class DesignDecision(_B01CanonicalRevision):
 
     _EXPECTED_OBJECT_TYPE = "di.b01.design_decision"
 
+    object_type: ObjectType = _fixed_object_type_schema(_EXPECTED_OBJECT_TYPE)
     brief_ref: ExactObjectRef
     context_binding_ref: ExactObjectRef
     primary_focus: str | None
@@ -166,6 +176,7 @@ class DesignRoute(_B01CanonicalRevision):
 
     _EXPECTED_OBJECT_TYPE = "di.b01.design_route"
 
+    object_type: ObjectType = _fixed_object_type_schema(_EXPECTED_OBJECT_TYPE)
     decision_ref: ExactObjectRef
     route_name: str
     mechanisms: Annotated[tuple[str, ...], Field(min_length=1)]
@@ -178,6 +189,7 @@ class DesignSpec(_B01CanonicalRevision):
 
     _EXPECTED_OBJECT_TYPE = "di.b01.design_spec"
 
+    object_type: ObjectType = _fixed_object_type_schema(_EXPECTED_OBJECT_TYPE)
     route_ref: ExactObjectRef
     semantic_parameter_space_ref: CanonicalRef
     assignments: Annotated[tuple[DesignSpecAssignment, ...], Field(min_length=1)]
@@ -190,6 +202,7 @@ class DesignTaskBinding(_B01ImmutableFact):
 
     _EXPECTED_OBJECT_TYPE = "di.b01.design_task_binding"
 
+    object_type: ObjectType = _fixed_object_type_schema(_EXPECTED_OBJECT_TYPE)
     design_state_ref: ObjectRef
     style_brief_ref: ExactObjectRef
     evaluation_contract_ref: CanonicalRef
