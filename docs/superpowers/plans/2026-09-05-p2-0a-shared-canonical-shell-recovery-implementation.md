@@ -37,17 +37,17 @@
 - [ ] **Step 1:** Record every shared-core field/type as `DIRECT_FROZEN`, `NORMALIZED_RECOVERY`, `NEW_FREEZE_DECISION`, `DEFERRED`, or `REJECTED`.
 - [ ] **Step 2:** State exact wire type, requiredness, cardinality, invariants, and authority rationale for each decision.
 - [ ] **Step 3:** Explicitly reject closed candidate `ActorType` exhaustiveness, candidate opaque-ID regex promotion, `Provenance.command_ref:ObjectRef`, and candidate `run_ref:ObjectRef` promotion.
-- [ ] **Step 4:** Verify the ledger contains no `TBD`, `TODO`, `FIXME`, no B01 owner fields, no Command/Event identity contract, and no ARSO `RunRecord` structure.
+- [ ] **Step 4:** Verify the ledger contains no unresolved placeholder markers recognized by the CI gate, no B01 owner fields, no Command/Event identity contract, and no ARSO `RunRecord` structure.
 - [ ] **Step 5:** Commit with message `docs: freeze shared-core field decision ledger`.
 
 Expected result:
 
 ```text
-SC01 ActorRef decision surface      COMPLETE
-SC02 TenantScope decision surface   COMPLETE
-SC03 Provenance decision surface    COMPLETE
+SC01 ActorRef decision surface       COMPLETE
+SC02 TenantScope decision surface    COMPLETE
+SC03 Provenance decision surface     COMPLETE
 SC04 ObjectRevision decision surface COMPLETE
-SPEC_CONFLICT discovered            0
+SPEC_CONFLICT discovered             0
 ```
 
 ---
@@ -76,10 +76,10 @@ SPEC_CONFLICT discovered            0
 Expected result:
 
 ```text
-P2.0-SC01 ActorRef       CLOSED in scoped candidate
-P2.0-SC02 TenantScope    CLOSED in scoped candidate
-P2.0-SC03 Provenance     CLOSED in scoped candidate
-P2.0-SC04 ObjectRevision CLOSED in scoped candidate
+P2.0-SC01 ActorRef        CLOSED in scoped candidate
+P2.0-SC02 TenantScope     CLOSED in scoped candidate
+P2.0-SC03 Provenance      CLOSED in scoped candidate
+P2.0-SC04 ObjectRevision  CLOSED in scoped candidate
 ```
 
 ---
@@ -154,13 +154,7 @@ P2.0A preliminary recommendation = READY FOR INDEPENDENT REVIEW
 - [ ] **Step 1:** Change normative checksum gate from exactly 8 to exactly 9 and run `sha256sum -c` on all nine entries.
 - [ ] **Step 2:** Extend scoped authority allowlist to permit only the shared-core contract and checksum manifest in addition to the existing B01 contract.
 - [ ] **Step 3:** Add support-surface coverage checks for ActorRef, TenantScope, Provenance, ObjectRevision and structural CanonicalObject/CanonicalRevision sections.
-- [ ] **Step 4:** Add no-production-leakage checks for both:
-
-```text
-src/design_intelligence/contracts/core/*.py changes attributable to P2.0A
-src/design_intelligence/contracts/b01/*.py
-```
-
+- [ ] **Step 4:** Add no-production-leakage checks for both production core changes and B01 production model changes.
 - [ ] **Step 5:** Preserve P0/P1 root tests, candidate baseline regression, compile, placeholder and whitespace gates.
 - [ ] **Step 6:** Run workflows on the resulting head and require both P1 regression and P2.0/P2.0A scoped gate `completed/success`.
 - [ ] **Step 7:** If a gate fails, diagnose the gate/contract boundary; do not weaken the gate merely to obtain green status.
