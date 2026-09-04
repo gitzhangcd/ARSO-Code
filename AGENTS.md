@@ -13,8 +13,8 @@ Phase 0: COMPLETE / REVIEWED / APPROVED
 Phase 1: COMPLETE / VERIFIED / FROZEN
 P0: FROZEN
 P1: FROZEN
-P2.0: B01 OWNER-FIELD RECOVERY PASS / REMEDIATION UNDER REVIEW
-P2.0A: RECOVERY CONTRACT COMPLETE / INDEPENDENT REVIEW PENDING
+P2.0A: RECOVERY PASS / INDEPENDENT REVIEW PASS / NOT FROZEN
+P2.0: B01 RECOVERY PASS / RE-REVIEW PASS / READY FOR USER FREEZE DECISION
 P2: NOT AUTHORIZED
 P3+: NOT AUTHORIZED
 Exact V1: FREEZE CANDIDATE
@@ -22,13 +22,13 @@ Exact V1: FREEZE CANDIDATE
 
 P0 与 P1 已通过人工 Freeze Checkpoint 并合入 `main`。
 
-P2.0 已恢复 B01 owner-field contract；P2.0A 正在补齐其 shared canonical-shell dependency：
+P2.0 已恢复 B01 field-level owner contract；P2.0A 已完成 shared canonical-shell remediation candidate：
 
 ```text
 specs/00-CODE-FREEZE/DI_Shared_Canonical_Shell_Exact_V1_Contract.md
 ```
 
-P2.0A recovery scope：
+P2.0A scope：
 
 ```text
 ActorId
@@ -45,28 +45,38 @@ ImmutableFact structural base
 UTC canonical timestamp normalization
 ```
 
-当前 candidate result：
+Independent Review：
 
 ```text
-SC01 ActorRef       CLOSED IN CANDIDATE
-SC02 TenantScope    CLOSED IN CANDIDATE
-SC03 Provenance     CLOSED IN CANDIDATE
-SC04 ObjectRevision CLOSED IN CANDIDATE
+SC01 ActorRef       CLOSED
+SC02 TenantScope    CLOSED
+SC03 Provenance     CLOSED
+SC04 ObjectRevision CLOSED
+Critical = 0
+Important = 0
+Minor = 0
 shared-core SPEC_CONFLICT = 0
 blocking shared-core field SPEC_GAP = 0
 ```
 
-但 P2.0A independent Freeze Review 与 P2.0 re-review 尚未完成，因此：
+P2.0 re-review 已确认：
 
 ```text
-P2.0A != FROZEN
+7 / 7 B01 objects covered
+B01 owner-field SPEC_GAP = 0
+shared-core blocking SPEC_GAP = 0
+P2 contract-level implementability = PASS
+P2.0 = READY FOR USER FREEZE DECISION
+```
+
+但：
+
+```text
 P2.0 != FROZEN
 P2 = NOT AUTHORIZED
 ```
 
-在用户明确批准最终 P2.0 Freeze 前，不得新增 `src/design_intelligence/contracts/b01/*.py`。
-
-在 shared-core Freeze 前，也不得把 P2.0A contract candidate 实现成 production core Python types。
+在用户明确批准 P2.0 Freeze 前，不得新增 `src/design_intelligence/contracts/b01/*.py`，也不得把 P2.0A candidate 实现成 production core Python types。
 
 ## 审计文档语言
 
@@ -133,7 +143,7 @@ parentage = parent_refs
 support/nested/structural types != canonical domain primitives
 ```
 
-P2.0A MUST NOT change P0/P1 frozen contracts for ObjectId/LogicalId/SchemaVersion/ObjectType, Exact refs, hash engine or registry foundation.
+P2.0A MUST NOT change P0/P1 frozen contracts for ObjectId/LogicalId/SchemaVersion/ObjectType, Exact refs, hash engine or registry foundation。
 
 ## 已冻结的架构不变量
 
@@ -196,16 +206,17 @@ P2.0A 尤其不得通过 `Provenance.run_ref` 提前决定 ARSO RunRecord 的 ob
 - 变更遵循 `Command -> validation -> new immutable object/revision -> Event -> CAS pointer update`。
 - Branch head 更新需要 expected head/CAS；冲突返回 `HEAD_CONFLICT`。
 
-## P2.0 / P2.0A Freeze Gate
+## P2.0 Freeze Gate
 
-必须同时满足：
+P2.0 已满足技术 review 条件，但仍需人工 Freeze：
 
 ```text
-7 / 7 B01 objects covered
+7 / 7 B01 canonical objects covered
 B01 owner-field SPEC_GAP = 0
 SC01-SC04 shared shell closed
 shared-core SPEC_GAP = 0
-all owner/object classifications and registry policies fixed
+all 7 object classifications fixed
+all 7 registry policies fixed
 all required CanonicalPayload policies fixed
 9 / 9 normative checksums
 no original-source drift
@@ -215,10 +226,24 @@ P0/P1 regression PASS
 SPEC_CONFLICT = 0
 P2.0A independent review PASS
 P2.0 final independent review PASS
+```
+
+最后仍需要：
+
+```text
 user explicitly approves P2.0 Freeze
 ```
 
-在此之前 P2 不得启动。
+批准后按顺序：
+
+```text
+merge PR #5 into p2-0-b01-contract-recovery
+-> fresh verification of PR #4 exact combined head
+-> record P2.0 freeze decision
+-> merge PR #4 to main
+-> verify main
+-> only then explicitly authorize P2
+```
 
 ## Exact V1 状态边界
 
