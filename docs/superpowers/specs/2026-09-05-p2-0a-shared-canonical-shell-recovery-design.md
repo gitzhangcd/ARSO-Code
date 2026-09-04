@@ -21,9 +21,9 @@ B01 SPEC_CONFLICT = 0
 
 ```text
 created_by
- tenant_scope
- provenance
- revision   [for versioned objects]
+tenant_scope
+provenance
+revision   [for versioned objects]
 ```
 
 独立 Freeze Review 发现 authority chain 只冻结了这些字段的角色/语义，没有冻结 support types 的 exact wire contract：
@@ -156,9 +156,9 @@ Verdict：`RECOMMENDED`。
 
 ```text
 created_by: str
- tenant_scope: dict
- provenance: dict
- revision: int
+tenant_scope: dict
+provenance: dict
+revision: int
 ```
 
 Rejected because it defeats strict validation, tenant invariants, semantic auditability, and static conformance.
@@ -215,11 +215,22 @@ SYSTEM
 EXTERNAL
 ```
 
+Standard semantic boundaries：
+
+| Code | Exact V1 meaning |
+|---|---|
+| `USER` | 由可识别的人类用户/操作员发起并归因到该交互用户身份的动作。 |
+| `SERVICE` | 由非 Agent 的软件服务、后台进程或集成服务身份执行的动作；该值本身不声称具有自主决策语义。 |
+| `AGENT` | 由在委托权限下进行自主或半自主决策的软件 Agent 身份执行的动作。 |
+| `SYSTEM` | 由平台/系统自身生成、且没有更具体独立 `SERVICE` 或 `AGENT` 身份可归因时使用的系统级动作。 |
+| `EXTERNAL` | 由本系统管理 actor namespace 之外的主体执行或导入、但仍具有稳定外部 actor identity 的动作。 |
+
 Rules：
 
 ```text
-standard codes retain exact spelling/meaning
+standard codes retain exact spelling and meanings above
 additional non-empty values allowed
+additional values MUST NOT redefine a standard code
 no closed-enum exhaustiveness claim
 ```
 
@@ -281,6 +292,13 @@ Exact closed values：
 GLOBAL
 TENANT
 ```
+
+Exact meanings：
+
+| Value | Exact V1 meaning |
+|---|---|
+| `GLOBAL` | 该对象不归属于某一个特定 tenant isolation boundary。是否允许跨 tenant 使用仍由 owner/governance policy 决定；`GLOBAL` **不等于 public / anonymous access**。 |
+| `TENANT` | 该对象被隔离并归属于恰好一个 `tenant_id`；不得在未经过明确 governance/promotion 的情况下跨 tenant 使用。 |
 
 Why closed here：
 
@@ -354,7 +372,7 @@ Rules：
 ```text
 source_refs only ExactObjectRef/ObjectRef
 LogicalObjectRef forbidden
-external_source_refs are non-empty opaque strings
+external_source_refs are non-empty opaque stable references, not free-form notes
 ordering preserved
 immutable
 ```
@@ -546,7 +564,7 @@ P2.0A does not override that choice and does not decide B02+ owner payload selec
 | TenantScope | scope_type | yes | scalar | TenantScopeType |
 | TenantScope | tenant_id | yes | scalar nullable | discriminator invariant |
 | Provenance | source_refs | yes | tuple; may empty | CanonicalRef only |
-| Provenance | external_source_refs | yes | tuple; may empty | non-empty string values |
+| Provenance | external_source_refs | yes | tuple; may empty | non-empty stable string values |
 | ObjectRevision | integer >=1 | yes on revisions | scalar | ordering metadata |
 | CanonicalObject | canonical metadata shell | yes | structural | global field mapping |
 | CanonicalRevision | logical_id/revision/parent_refs | yes | structural | versioned shell |
@@ -587,10 +605,10 @@ After this written design is approved, Recovery Implementation should generate a
 Expected blocker closure：
 
 ```text
-SC01 ActorRef      -> CLOSED
-SC02 TenantScope   -> CLOSED
-SC03 Provenance    -> CLOSED
-SC04 ObjectRevision-> CLOSED
+SC01 ActorRef       -> CLOSED
+SC02 TenantScope    -> CLOSED
+SC03 Provenance     -> CLOSED
+SC04 ObjectRevision -> CLOSED
 ```
 
 Then P2.0 can be re-evaluated as：
