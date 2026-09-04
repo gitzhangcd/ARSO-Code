@@ -7,6 +7,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 SOURCE = ROOT / "src" / "design_intelligence"
 CORE = SOURCE / "contracts" / "core"
+B01 = SOURCE / "contracts" / "b01"
 REGISTRY = SOURCE / "registry"
 
 P1_REQUIRED_CORE = {
@@ -35,12 +36,7 @@ P1_REQUIRED_REGISTRY = {
     "StateDomain",
 }
 
-P2_PLUS_FORBIDDEN_SYMBOLS = {
-    "StyleBrief",
-    "DesignContextBinding",
-    "DesignDecision",
-    "DesignRoute",
-    "DesignSpec",
+P3_PLUS_FORBIDDEN_SYMBOLS = {
     "FashionOntology",
     "DesignGrammar",
     "SemanticParameterSpace",
@@ -52,7 +48,7 @@ P2_PLUS_FORBIDDEN_SYMBOLS = {
 }
 
 
-def test_p1_public_api_exact_sets() -> None:
+def test_p1_public_api_exact_sets_remain_frozen_during_p2() -> None:
     import design_intelligence.contracts as contracts
     import design_intelligence.contracts.core as core
     import design_intelligence.registry as registry
@@ -62,16 +58,16 @@ def test_p1_public_api_exact_sets() -> None:
     assert set(registry.__all__) == P1_REQUIRED_REGISTRY
 
 
-def test_p2_plus_symbols_are_not_implemented_early() -> None:
+def test_p3_plus_symbols_are_not_implemented_during_p2() -> None:
     text = "\n".join(path.read_text(encoding="utf-8") for path in SOURCE.rglob("*.py"))
-    for symbol in P2_PLUS_FORBIDDEN_SYMBOLS:
+    for symbol in P3_PLUS_FORBIDDEN_SYMBOLS:
         assert symbol not in text
 
 
-def test_only_core_and_registry_may_define_classes_during_p1() -> None:
+def test_only_authorized_namespaces_may_define_classes_through_p2() -> None:
     for path in SOURCE.rglob("*.py"):
-        if CORE in path.parents or REGISTRY in path.parents:
+        if CORE in path.parents or B01 in path.parents or REGISTRY in path.parents:
             continue
         tree = ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
         class_names = [node.name for node in ast.walk(tree) if isinstance(node, ast.ClassDef)]
-        assert class_names == [], f"P1 forbids classes outside core/registry in {path}: {class_names}"
+        assert class_names == [], f"P2 forbids classes outside core/B01/registry in {path}: {class_names}"
