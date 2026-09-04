@@ -192,15 +192,35 @@ The formal review recorded three non-blocking maintenance items:
 
 These do not alter B01 wire semantics and do not block the P2 Freeze.
 
-## 发布门禁
+## Decision-head verification
 
-This decision file changes the PR exact head and therefore does not self-certify publication.
+The first decision record head was:
+
+```text
+c1408d8a3a5689b59367a635617336d16176162e
+```
+
+Fresh verification on that exact decision head:
+
+```text
+P1 contract verification
+run 33926245681 = SUCCESS
+
+P2.0 B01 + Shared-Core contract verification
+run 33926245684 = SUCCESS
+```
+
+The two runs cover root tests including AC-01, candidate-baseline regression, 9/9 normative checksums, shared-core digest, B01/shared-core source coverage, production compilation, whitespace/placeholder checks, frozen-source drift, and authority-source scope.
+
+This verification evidence is historical evidence for the decision content. Because this paragraph itself creates a new commit, the final PR head containing it MUST again receive fresh verification before merge.
+
+## 发布门禁
 
 Before merge:
 
 ```text
-1. this exact decision head MUST receive fresh P1 verification PASS;
-2. this exact decision head MUST receive fresh P2.0/B01 + Shared-Core verification PASS;
+1. final PR head containing this decision record MUST receive fresh P1 verification PASS;
+2. final PR head MUST receive fresh P2.0/B01 + Shared-Core verification PASS;
 3. PR #6 MUST still target main and remain mergeable;
 4. merge MUST use the expected exact PR head SHA.
 ```
@@ -209,9 +229,9 @@ After merge:
 
 ```text
 1. published main MUST contain this P2_FREEZE_DECISION.md;
-2. published main tree MUST be verified against the tested decision head;
-3. if repository automation provides a main/push verification run, it MUST pass;
-4. if current workflows are PR-only, tree equality with the tested decision head is the publication-equivalence proof, and no new semantic change may be introduced during merge.
+2. published main tree MUST be verified against the tested final PR head;
+3. current P1/P2 workflows are PR-only, so tree equality with the tested final head is the publication-equivalence proof unless a separate main/push run exists;
+4. no semantic change may be introduced during merge.
 ```
 
 ## 状态
@@ -220,7 +240,7 @@ After merge:
 P0 = FROZEN
 P1 = FROZEN
 P2.0/P2.0A = FROZEN
-P2 = FROZEN / PENDING DECISION-HEAD VERIFICATION + PUBLICATION TO main
+P2 = FROZEN / PENDING FINAL-HEAD VERIFICATION + PUBLICATION TO main
 P3+ = NOT AUTHORIZED
 Exact V1 global = FREEZE CANDIDATE
 ```
