@@ -13,10 +13,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Preserve original seven source checksums
+      - name: Full normative source checksums
         run: |
-          head -n 7 specs/SPEC_SOURCE_CHECKSUMS.sha256 > /tmp/original-seven.sha256
-          sha256sum -c /tmp/original-seven.sha256
+          test "$(wc -l < specs/SPEC_SOURCE_CHECKSUMS.sha256)" -eq 8
+          sha256sum -c specs/SPEC_SOURCE_CHECKSUMS.sha256
 
       - name: Generate B01 owner contract SHA-256
         run: sha256sum specs/00-CODE-FREEZE/DI_B01_Exact_V1_Owner_Contract.md | tee /tmp/b01-owner.sha256
@@ -78,6 +78,7 @@ jobs:
           if grep -RInE '\b(TBD|TODO|FIXME)\b' \
             B01_SOURCE_RECOVERY_MATRIX.md \
             B01_FIELD_DECISION_LEDGER.md \
+            B01_CROSS_SPEC_FREEZE_AUDIT.md \
             docs/superpowers/specs/2026-09-04-p2-0-b01-contract-recovery-design.md \
             docs/superpowers/plans/2026-09-04-p2-0-b01-contract-recovery-implementation.md \
             specs/00-CODE-FREEZE/DI_B01_Exact_V1_Owner_Contract.md; then
