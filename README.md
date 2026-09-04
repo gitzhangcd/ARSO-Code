@@ -9,7 +9,8 @@ Phase 0: COMPLETE / REVIEWED / APPROVED
 Phase 1: COMPLETE / VERIFIED / FROZEN
 P0: FROZEN
 P1: FROZEN
-P2.0: RECOVERY IMPLEMENTATION COMPLETE / FINAL VERIFICATION IN PROGRESS
+P2.0: B01 OWNER-FIELD RECOVERY PASS / FREEZE BLOCKED BY SHARED-CORE SPEC_GAP
+P2.0A: RECOMMENDED / NOT AUTHORIZED
 P2: NOT AUTHORIZED
 P3+: NOT AUTHORIZED
 Exact V1: FREEZE CANDIDATE
@@ -17,18 +18,19 @@ Exact V1: FREEZE CANDIDATE
 
 P0 已冻结 core nominal identity、canonical object class wire values 与最小 Pydantic base-model policy。最终决策见 [`P0_FREEZE_DECISION.md`](P0_FREEZE_DECISION.md)。
 
-P1 已冻结 Exact refs + RFC 8785 canonical hash + registry foundation。最终决策见 [`P1_FREEZE_DECISION.md`](P1_FREEZE_DECISION.md)，实现审计见 [`P1_REFERENCE_HASH_REGISTRY_AUDIT.md`](P1_REFERENCE_HASH_REGISTRY_AUDIT.md)，独立复核见 [`P1_REFERENCE_HASH_REGISTRY_FREEZE_REVIEW.md`](P1_REFERENCE_HASH_REGISTRY_FREEZE_REVIEW.md)。
+P1 已冻结 Exact refs + RFC 8785 canonical hash + registry foundation。最终决策见 [`P1_FREEZE_DECISION.md`](P1_FREEZE_DECISION.md)。
 
 ## P2.0｜B01 Contract Recovery
 
-P2.0 只处理 B01 owner-contract recovery，不包含 production Python schemas。
+P2.0 已完成 B01 owner-field recovery，且没有写 production Python schemas。
 
-当前 recovery artifacts：
+Recovery / review artifacts：
 
 ```text
 B01_SOURCE_RECOVERY_MATRIX.md
 B01_FIELD_DECISION_LEDGER.md
 B01_CROSS_SPEC_FREEZE_AUDIT.md
+B01_P2_0_FREEZE_REVIEW.md
 specs/00-CODE-FREEZE/DI_B01_Exact_V1_Owner_Contract.md
 ```
 
@@ -44,21 +46,46 @@ ReferenceIntentBinding
 DesignTaskBinding
 ```
 
-当前 recovery candidate 已得到：
+B01 owner-field recovery 结果：
 
 ```text
 7 / 7 object coverage
-SPEC_CONFLICT = 0
-blocking B01 field-level SPEC_GAP = 0
+B01 SPEC_CONFLICT = 0
+blocking B01 owner-field SPEC_GAP = 0
+P2.0 automated verification = PASS
 ```
 
-但 P2.0 尚未经过最终 independent Freeze Checkpoint，因此 **P2 仍未授权**，不得实现 `src/design_intelligence/contracts/b01/*.py`。
+独立 Freeze Review 进一步发现 shared canonical-shell exact contract 尚不完整：
+
+```text
+P2.0-SC01 ActorRef exact wire contract missing
+P2.0-SC02 TenantScope exact wire contract missing
+P2.0-SC03 Provenance exact wire contract missing
+P2.0-SC04 ObjectRevision exact wire contract missing
+```
+
+这些不是 B01 primitive-ownership gap，但每个 B01 canonical model 都依赖该 shared shell，因此当前仍不能在“不猜 contract”的前提下实现完整 P2 schemas。
+
+结论：
+
+```text
+P2.0 FREEZE = BLOCKED
+P2 = NOT AUTHORIZED
+```
+
+推荐下一规范阶段：
+
+```text
+P2.0A｜Shared Canonical Shell Support Contract Recovery
+```
+
+在 P2.0A 获得独立授权前不得自行从 `di_contracts_v1` 复制 `ActorRef / TenantScope / Provenance / ObjectRevision` 等 candidate structure。
 
 ## 规范入口
 
 `specs/` 是唯一规范入口，优先级见 [`SPEC_AUTHORITY.md`](SPEC_AUTHORITY.md)。
 
-Phase 1 的 7 个原始 source checksum 保持不变；P2.0 新增 scoped `DI-B01-EXACT-CONTRACT` 后，`specs/SPEC_SOURCE_CHECKSUMS.sha256` 现在验证 `8 / 8` normative files。
+Phase 1 的 7 个原始 source checksum 保持不变；P2.0 新增 scoped `DI-B01-EXACT-CONTRACT` 后，`specs/SPEC_SOURCE_CHECKSUMS.sha256` 验证 `8 / 8` normative files。
 
 ## Candidate baseline
 
@@ -66,21 +93,19 @@ Phase 1 的 7 个原始 source checksum 保持不变；P2.0 新增 scoped `DI-B0
 
 ## Verification
 
-P1 frozen verification：`.github/workflows/p1-contracts.yml`。  
-P2.0 B01 contract-freeze verification：`.github/workflows/p2-0-b01-contract-freeze.yml`。
+P1 regression：`.github/workflows/p1-contracts.yml`。  
+P2.0 scoped verification：`.github/workflows/p2-0-b01-contract-freeze.yml`。
 
-P2.0 关键门禁包括：
+在独立 Review 前的 head `2c75d9db4959cf0191ca0cce8065893c5100a399` 上：
 
 ```text
-8 / 8 normative checksum
-7 / 7 B01 owner-contract surface
-No B01 production implementation leakage
-P0/P1 root regression
-candidate baseline regression
-compileall
-placeholder scan
-whitespace policy
-scoped authority-source change gate
+P2.0 workflow run 33887779202 = SUCCESS
+P1 regression run 33887779153 = SUCCESS
+8 / 8 normative checksums = PASS
+7 / 7 B01 surface = PASS
+No B01 production implementation leakage = PASS
 ```
+
+自动门禁通过不能覆盖独立规范审查发现的 shared-core `SPEC_GAP`。
 
 Exact V1 只有在所有 mandatory schemas、ARSO authoritative imports、完整 Command/Event/Protocol、resolver、CAS、snapshot firewalls、CS-01–CS-32 与 AC-01–AC-18 全部通过且没有 unresolved `SPEC_CONFLICT` 后，才能从 `FREEZE CANDIDATE` 升级为 `FROZEN`。
