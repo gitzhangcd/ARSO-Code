@@ -3,9 +3,11 @@
 from __future__ import annotations
 
 from datetime import datetime, timezone
+import math
 from typing import Annotated, TypeAlias
 
-from pydantic import Field, FiniteFloat, field_validator, model_validator
+from pydantic import Field, field_validator, model_validator
+from pydantic.types import JsonValue as PydanticJsonValue
 
 from .base import FrozenDIModel
 from .refs import CanonicalRef, ExactObjectRef
@@ -21,9 +23,22 @@ from .types import (
     TenantScopeType,
 )
 
-JsonScalar: TypeAlias = None | bool | int | FiniteFloat | str
-JsonValue: TypeAlias = JsonScalar | list["JsonValue"] | dict[str, "JsonValue"]
+JsonValue: TypeAlias = PydanticJsonValue
 NonEmptyString = Annotated[str, Field(min_length=1)]
+
+
+def ensure_finite_json_value(value: JsonValue) -> JsonValue:
+    """Reject non-finite floats while preserving the frozen JSON-native shape."""
+
+    if isinstance(value, float) and not math.isfinite(value):
+        raise ValueError("JSONValue numbers must be finite")
+    if isinstance(value, list):
+        for item in value:
+            ensure_finite_json_value(item)
+    elif isinstance(value, dict):
+        for item in value.values():
+            ensure_finite_json_value(item)
+    return value
 
 
 class ActorRef(FrozenDIModel):
@@ -73,6 +88,15 @@ class CanonicalObject(FrozenDIModel):
         if value.tzinfo is None or value.utcoffset() is None:
             raise ValueError("created_at must be timezone-aware")
         return value.astimezone(timezone.utc)
+
+    @field_validator("extensions")
+    @classmethod
+    def validate_extensions_are_finite_json(
+        cls, value: dict[str, JsonValue]
+    ) -> dict[str, JsonValue]:
+        for item in value.values():
+            ensure_finite_json_value(item)
+        return value
 
 
 class CanonicalRevision(CanonicalObject):
