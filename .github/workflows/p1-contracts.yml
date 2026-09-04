@@ -4,6 +4,7 @@ on:
   pull_request:
     branches:
       - main
+      - p2-0-b01-contract-recovery
 
 jobs:
   contracts:
@@ -88,4 +89,4 @@ jobs:
             exit 1
           fi
 
-          echo "Original frozen sources unchanged; scoped checksum-registered owner contracts are allowed."
+          echo "Original frozen sources unchanged; scoped checksum-registered contracts are allowed."
