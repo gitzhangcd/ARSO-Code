@@ -4,6 +4,7 @@ on:
   pull_request:
     branches:
       - main
+      - p2-0-b01-contract-recovery
 
 jobs:
   contracts:
@@ -66,11 +67,26 @@ jobs:
               print("\n".join(errors))
               sys.exit(1)
           PY
-      - name: Authoritative source drift check
+      - name: Frozen source and candidate-baseline drift check
         run: |
-          changed="$(git diff --name-only origin/main...HEAD -- specs/ di_contracts_v1/)"
-          if [ -n "$changed" ]; then
-            echo "P1 must not modify authoritative specs or candidate baseline:"
-            echo "$changed"
+          changed_baseline="$(git diff --name-only origin/main...HEAD -- di_contracts_v1/)"
+          if [ -n "$changed_baseline" ]; then
+            echo "Candidate baseline must remain read-only:"
+            echo "$changed_baseline"
             exit 1
           fi
+
+          original_sources="$(head -n 7 specs/SPEC_SOURCE_CHECKSUMS.sha256 | awk '{print $2}')"
+          drifted=""
+          for path in $original_sources; do
+            if ! git diff --quiet origin/main...HEAD -- "$path"; then
+              drifted="$drifted\n$path"
+            fi
+          done
+          if [ -n "$drifted" ]; then
+            echo "Frozen original authority sources changed:"
+            printf '%b\n' "$drifted"
+            exit 1
+          fi
+
+          echo "Original frozen sources unchanged; scoped checksum-registered contracts are allowed."

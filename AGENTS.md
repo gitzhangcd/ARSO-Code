@@ -1,41 +1,34 @@
-# ARSOFashion 仓库协作规则
+# ARSO-Code 仓库协作规则
 
 ## 本地技能触发规则
 
 - 当用户输入 `/graphify` 时，必须先调用 `graphify` 技能，再执行其他操作。
 
-## 项目说明
-
-本项目是 Design Intelligence V5.0 的 ARSO V2.2.1 Reference Application。
-
-这是一个规范驱动的实现项目。
+## 项目状态
 
 ```text
 Phase 0: COMPLETE / REVIEWED / APPROVED
 Phase 1: COMPLETE / VERIFIED / FROZEN
 P0: FROZEN
 P1: FROZEN
-P2: NOT AUTHORIZED
+P2.0A: FROZEN AS INCLUDED REMEDIATION
+P2.0: FROZEN BY USER DECISION / MAIN PUBLICATION PENDING
+P2: AUTHORIZATION APPROVED / EFFECTIVE AFTER VERIFIED MAIN PUBLICATION
+P3+: NOT AUTHORIZED
 Exact V1: FREEZE CANDIDATE
 ```
 
-P0 Core nominal types + base classes 已经冻结并合并。
-P1 Exact refs + RFC 8785 canonical hash + registry foundation 已完成自动验证、独立 Freeze Review，并经用户明确批准冻结。最终决策见 `P1_FREEZE_DECISION.md`。
-
-在 P2 获得独立授权之前，不得实现 B01 exact production models。P2 授权前必须先确认 B01 owner exact contract 的字段级完整性；如仍缺失，必须记录 `SPEC_GAP` 并进入 contract recovery / spec freeze，而不是根据 baseline 或低优先级叙述自行补全。
-
-## 审计文档语言
-
-- 后续所有审计报告、差距报告、冲突报告、实施清单、状态说明和冻结结论均以中文撰写和展示。
-- 文件名、代码标识符、类型名、协议名、测试编号以及规范中的状态关键词（如 `FROZEN`、`FREEZE CANDIDATE`、`OPEN`、`DEFERRED`、`SPEC_CONFLICT`、`SPEC_GAP`）保留英文原文。
-- 必须引用英文规范原句时，同时给出简明中文解释，不能仅粘贴英文内容。
-- 表格标题、图示说明、结论和行动建议必须使用中文，确保无需阅读英文段落也能理解审计结果。
+P2.0 Freeze 记录：`P2_0_FREEZE_DECISION.md`。
 
 ## 规范权威顺序
 
-修改 canonical contract 之前，必须先阅读 `SPEC_AUTHORITY.md` 以及 `specs/` 下对应的规范。权威顺序如下：
+修改 canonical contract 前必须先阅读 `SPEC_AUTHORITY.md`。
 
-1. `specs/00-CODE-FREEZE/DI_V5_Exact_V1_Schema_API_Contract_Freeze_Specification.md`
+当前顺序：
+
+1A. `specs/00-CODE-FREEZE/DI_V5_Exact_V1_Schema_API_Contract_Freeze_Specification.md`
+1B. `specs/00-CODE-FREEZE/DI_Shared_Canonical_Shell_Exact_V1_Contract.md`
+1C. `specs/00-CODE-FREEZE/DI_B01_Exact_V1_Owner_Contract.md`
 2. `specs/01-AUTHORITY/Design-Intelligence-V5.0-Engineering-Specification-V1.0.txt`
 3. `specs/01-AUTHORITY/Cross-Spec-Consistency-Freeze.txt`
 4. `specs/02-UPSTREAM/ARSO-Engineering-Specification-V2.2.1.txt`
@@ -43,39 +36,62 @@ P1 Exact refs + RFC 8785 canonical hash + registry foundation 已完成自动验
 6. `specs/02-UPSTREAM/Design-Intelligence-x-ARSO-V2.2.1-Implementation-Blueprint.txt`
 7. `specs/03-RESEARCH/ARSO-Research-Specification-V2.2.1.txt`
 
-高优先级规范覆盖低优先级规范。不得因为框架惯例、持久化设计、开发便利、个人偏好或低优先级文档而修改 `FROZEN` contract。
+Rules：
 
-如果仍存在真实矛盾，必须输出 `SPEC_CONFLICT` 并停止对应实现路径。
-如果缺少精确字段级 contract，必须输出 `SPEC_GAP`，不得自行猜测。
+```text
+1B MUST NOT override 1A.
+1C MUST consume 1B and MUST NOT redefine shared support internals.
+2+ MUST NOT override frozen higher-priority scope.
+```
 
-## 已冻结的架构不变量
+`di_contracts_v1/` 只读，只作为 executable evidence，不是 normative authority。
+
+## Frozen architecture invariants
 
 ```text
 OneCanonicalObject => OnePrimitiveOwner
-
 TaskState != SystemState != KnowledgeState != ReviewState
-
 Evaluation != Evidence != Diagnosis != Action != Intervention
-
 DesignEdit != GenerationEdit != SystemIntervention != KnowledgePromotion
 
 StyleBrief != ReferenceTaskSpec
+DesignDecision != DesignSpec
 DesignSpec != GenerationPackage
 DesignSpec != ordinary SystemArtifact
-
 ReferenceAsset != ReferenceIntentBinding != CompiledReferenceBinding
-Confidence != Identifiability
-ProbeRecommendation != ProbePlan
-History != Memory != Knowledge
-MemoryMaturity != KnowledgeMaturity
+Constraint != Preference
+DesignRoute != RandomVariant
 
 EveryLongTermFeedbackLoop
 must cross an immutable version/snapshot boundary.
 ```
 
-## ARSO 对象所有权
+## Shared canonical shell invariants
 
-不得为以下 ARSO canonical primitive 创建 DI shadow type：
+```text
+ActorId != ObjectId != LogicalId != TenantId
+ActorType = open typed vocabulary
+TenantScopeType = GLOBAL | TENANT
+GLOBAL != public/permissionless
+
+Provenance.source_refs = CanonicalRef only
+LogicalObjectRef forbidden in committed provenance
+Provenance.command_ref:ObjectRef = forbidden
+Provenance.run_ref:ObjectRef = deferred
+
+ObjectRevision = integer >= 1
+revision = server-assigned ordering metadata
+revision != identity/schema version/concurrency token
+parentage = parent_refs
+
+support/nested/structural types != canonical domain primitives
+```
+
+P2.0/P2.0A 不改变 P0/P1 已冻结的 ObjectId/LogicalId/SchemaVersion/ObjectType、Exact refs、hash engine 或 registry foundation。
+
+## ARSO ownership boundary
+
+不得为以下 ARSO canonical primitives 创建 DI shadow type：
 
 ```text
 ReferenceTaskSpec
@@ -103,39 +119,73 @@ ExperimentAssignment
 BudgetReservation
 ```
 
-生产 contract 必须通过明确的集成边界导入或适配权威 ARSO type。临时 stub 不属于 Exact V1 canonical type。
+## Reference / mutation rules
 
-## 引用与变更规则
-
-- 已提交对象和运行时对象必须使用 exact version，并验证 `content_hash`。
+- committed/runtime object 使用 exact persistent ref 并验证 `content_hash`。
 - `LogicalObjectRef` 只能用于 authoring workflow。
-- 禁止隐式解析 `latest`、`current`、`newest` 或 `most recent`。
-- 历史 canonical object 必须不可变。
-- 变更必须遵循：`Command -> validation -> new immutable object/revision -> Event -> CAS pointer update`。
-- Branch head 更新必须比较 expected head；冲突时返回 `HEAD_CONFLICT`，禁止 Last-Write-Wins。
+- 禁止隐式 latest/current/newest。
+- 历史 canonical object 不可变。
+- 变更遵循 `Command -> validation -> new immutable object/revision -> Event -> CAS pointer update`。
+- Branch head 更新需要 expected head/CAS；冲突返回 `HEAD_CONFLICT`。
 
-## 状态边界
+## P2.0 frozen checkpoint
+
+Frozen scope：
 
 ```text
-FROZEN:
-  架构、所有权、边界、标准化后的 F0-F6 语义，以及已经通过人工 Freeze Checkpoint 的阶段 contract
-
-FREEZE CANDIDATE:
-  尚未完成全部 Exact V1 发布门禁的可执行 schema/API 集合
-
-OPEN:
-  算法、模型、阈值、物理数据库设计、存储与事件总线实现
-
-DEFERRED:
-  自动生产部署、全局 ontology/grammar 自主演化、meta-learning、
-  cross-domain transfer、持续生产自修改
+7 / 7 B01 canonical object owner contracts
+B01 owner-field wire shape / refs / requiredness / cardinality
+B01 object classification / registry policy
+B01 CanonicalPayload policy
+B01 semantic closure and negative boundaries
+shared canonical shell support contracts required by B01
 ```
 
-不得把 `OPEN` 选项当作已冻结 contract 实现。不得实现 `DEFERRED` 能力。
+Evidence：
 
-## 测试与范围规则
+```text
+B01 owner-field SPEC_GAP = 0
+shared-core blocking SPEC_GAP = 0
+SC01-SC04 = CLOSED
+SPEC_CONFLICT = 0
+P2.0A independent review: Critical=0 / Important=0 / Minor=0
+P2 contract-level implementability = PASS
+9 / 9 normative checksums
+```
 
-如果相关 conformance test 尚不存在，则对应 schema 不得视为完成。
-只有 CS-01 至 CS-32、AC-01 至 AC-18 全部通过且不存在未解决的 `SPEC_CONFLICT`，Exact V1 才能声明为 `FROZEN`。
+`P2_0_FREEZE_DECISION.md` 是本 checkpoint 的人工 Freeze 决策记录。
 
-在 Exact V1 contract layer 冻结之前，不得开发 UI、LLM 集成、图像生成集成、vector database、自主优化器或生产部署能力。
+## P2 activation gate
+
+用户已经批准：
+
+```text
+P2｜Full B01 Exact Schemas
+```
+
+但在本 branch 上仍不得开始 production implementation。P2 只有在：
+
+```text
+freeze-decision exact head fresh verification PASS
+-> PR #4 merged to main with expected-head protection
+-> resulting main checkpoint fresh verification PASS
+```
+
+之后才正式成为：
+
+```text
+P2: AUTHORIZED
+```
+
+P2 生效后必须在独立 P2 branch 上按 Superpowers planning + TDD 执行；`main` 继续代表最近的人类批准 frozen checkpoint。
+
+## Exact V1 状态边界
+
+```text
+FROZEN: human-approved scoped checkpoint
+FREEZE CANDIDATE: 全局 Exact V1 尚未完成全部 release gates
+OPEN: algorithms/models/thresholds/storage/event bus 等未冻结选择
+DEFERRED: production auto-activation/global semantic autonomous evolution/meta-learning/cross-domain transfer
+```
+
+只有 CS-01–CS-32、AC-01–AC-18 全部通过且无 unresolved `SPEC_CONFLICT`，Exact V1 才能声明全局 `FROZEN`。

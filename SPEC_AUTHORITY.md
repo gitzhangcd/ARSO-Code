@@ -1,86 +1,170 @@
-# Phase 0 规范权威说明
+# Exact V1 规范权威说明
 
-审计日期：2026-09-04  
-仓库：ARSOFashion  
+审计日期：2026-09-05  
+仓库：ARSO-Code  
 阶段：规范摄取、冻结治理与 Exact V1 分阶段实现  
-结论：权威链已经建立；Phase 0、Phase 1、P0、P1 均已通过评审/冻结；P2 尚未授权
+结论：P0、P1、P2.0/P2.0A 已获人工 Freeze；P2 授权已获批准，但只有在 P2.0 checkpoint 发布到 `main` 并完成 fresh verification 后生效；Exact V1 全局仍为 `FREEZE CANDIDATE`。
 
-## 规范输入路径说明
+## 规范入口与 manifest
 
-规范已经统一迁移到 `specs/`。该目录是唯一规范入口，包含预期的 7 份规范；原目录路径不再使用。Phase 1 以来持续使用 SHA-256 manifest 验证规范源没有发生意外漂移。
+`specs/` 是唯一规范入口。
+
+当前 normative manifest：
+
+```text
+9 / 9 files
+```
+
+组成：Phase 1 的 7 份原始来源 + shared canonical-shell scoped contract + B01 scoped owner contract。
 
 ## 规范权威顺序
 
-| 优先级 | 仓库内规范 | 文档身份与状态 | 规范职责 |
+| 优先级 | 仓库内规范 | scoped status | 规范职责 |
 |---:|---|---|---|
-| 1 | `specs/00-CODE-FREEZE/DI_V5_Exact_V1_Schema_API_Contract_Freeze_Specification.md` | `DI-V5-EXACT-CONTRACT`、`V1.0-FC1`、`FREEZE CANDIDATE` | 第一层代码级权威；冻结标准化后的 F0-F6 语义，并定义 CS/AC 发布门禁。 |
-| 2 | `specs/01-AUTHORITY/Design-Intelligence-V5.0-Engineering-Specification-V1.0.txt` | `DI-V5-ENG`、`V1.0`；架构为 `FROZEN`，exact schema 为 `FREEZE CANDIDATE` | 统一的工程、运行时和对象所有权 contract。 |
-| 3 | `specs/01-AUTHORITY/Cross-Spec-Consistency-Freeze.txt` | DI-E01-E08 Cross-Spec 一致性权威 | 一致性 normalization 与冻结边界。 |
-| 4 | `specs/02-UPSTREAM/ARSO-Engineering-Specification-V2.2.1.txt` | ARSO Engineering V2.2.1 | 通用 ARSO primitive 及集成边界 canonical owner。 |
-| 5 | `specs/02-UPSTREAM/Design-Intelligence-V5.0-Application-Specification.txt` | `DI-V5-AS`、5.0 | 产品语义及 B01-B08 应用职责。 |
-| 6 | `specs/02-UPSTREAM/Design-Intelligence-x-ARSO-V2.2.1-Implementation-Blueprint.txt` | Blueprint V1.0 | 集成蓝图与低优先级实施背景。 |
-| 7 | `specs/03-RESEARCH/ARSO-Research-Specification-V2.2.1.txt` | Research V2.2.1 | 科学依据与研究主张边界，不是代码级 schema 权威。 |
+| 1A | `specs/00-CODE-FREEZE/DI_V5_Exact_V1_Schema_API_Contract_Freeze_Specification.md` | Global Exact V1 `FREEZE CANDIDATE` | 全局 normalization、cross-domain invariants、CS/AC release gates。 |
+| 1B | `specs/00-CODE-FREEZE/DI_Shared_Canonical_Shell_Exact_V1_Contract.md` | `FROZEN` by `P2_0_FREEZE_DECISION.md` | Shared support/nested types 与 CanonicalObject/CanonicalRevision structural shell。 |
+| 1C | `specs/00-CODE-FREEZE/DI_B01_Exact_V1_Owner_Contract.md` | `FROZEN` by `P2_0_FREEZE_DECISION.md` | B01 field-level owner contract；消费 1B shared shell。 |
+| 2 | `specs/01-AUTHORITY/Design-Intelligence-V5.0-Engineering-Specification-V1.0.txt` | upstream authority | 工程、运行时、对象所有权与边界。 |
+| 3 | `specs/01-AUTHORITY/Cross-Spec-Consistency-Freeze.txt` | upstream freeze authority | normalization 与跨规范冻结边界。 |
+| 4 | `specs/02-UPSTREAM/ARSO-Engineering-Specification-V2.2.1.txt` | upstream authority | ARSO primitive 与集成边界 canonical owner。 |
+| 5 | `specs/02-UPSTREAM/Design-Intelligence-V5.0-Application-Specification.txt` | upstream | 产品语义与 B01-B08 应用职责。 |
+| 6 | `specs/02-UPSTREAM/Design-Intelligence-x-ARSO-V2.2.1-Implementation-Blueprint.txt` | upstream | 集成蓝图与实施背景。 |
+| 7 | `specs/03-RESEARCH/ARSO-Research-Specification-V2.2.1.txt` | research | 科学依据与研究主张边界。 |
 
-高优先级覆盖低优先级。低优先级内容不得改变已冻结的高优先级 contract。
+重要说明：1B/1C 文件头仍保留其 recovery 生成时的 `V1.0-FC1 / FREEZE CANDIDATE` 文档身份；`P2_0_FREEZE_DECISION.md` 冻结的是这些 **exact bytes / checksum-registered scoped contracts**。不得通过直接改写已登记 contract 状态文本来绕过 checksum / review history。
 
-## 规范解析规则
+Rules：
 
-1. 先在优先级 1 的 Exact Contract 中定位对应对象或不变量。
-2. 若优先级 1 已给出 exact 定义，直接遵守，不重新解释。
-3. 若只冻结语义/所有权，再按优先级 2 至 7 依次查找。
-4. 低优先级只能补充高优先级未定义的背景。
-5. 仍缺少字段级 exact schema 时，记录 `SPEC_GAP` 并停止对应实现。
-6. 冻结要求无法同时满足时，记录 `SPEC_CONFLICT` 并停止对应实现。
-7. `OPEN` / `DEFERRED` 不因上下文暗示自动变成实现要求。
+```text
+1B MUST NOT override 1A.
+1C MUST NOT override 1A/1B.
+1B support types are not new canonical domain primitives.
+2+ MUST NOT override frozen 1A/1B/1C scope.
+```
 
-## 冻结状态总表
+## 解析规则
 
-| 状态 | 当前范围 |
-|---|---|
-| `FROZEN` | 架构；primitive/capability ownership；标准化 F0-F6 语义；P0 nominal identity/base policy；P1 exact refs、RFC 8785 hash foundation 与 registry foundation。 |
-| `FREEZE CANDIDATE` | 完整 Exact V1 schema/API 集合；ARSO exact integration；完整 command/event/protocol；完整 registry inventory；semantic resolver；CAS；snapshot firewalls。 |
-| `OPEN` | 物理数据库 schema；存储引擎；事件总线；算法、模型、阈值；检索与排序；executor/model 选择；实证结论。 |
-| `DEFERRED` | 自动生产激活与部署；全局语义自主演化；meta-learning；cross-domain/cross-enterprise transfer；持续生产自修改。 |
+1. 先查 1A global Exact Contract。
+2. Canonical shell support internals 查 1B。
+3. B01 business/design field-level contract 查 1C。
+4. 1B/1C 的 frozen status 由 `P2_0_FREEZE_DECISION.md` 与 checksum-registered bytes 共同确定。
+5. 未定义区域按 2→7 恢复；缺 exact contract → `SPEC_GAP`，不得从 candidate baseline 猜测。
+6. 真实不可兼容要求 → `SPEC_CONFLICT` 并停止 affected path。
+7. `OPEN` / `DEFERRED` 不因实现便利自动升级。
 
-## 当前已冻结阶段
+## P2.0 frozen scope
+
+### B01 owner layer
+
+```text
+StyleBrief
+DesignContextBinding
+DesignDecision
+DesignRoute
+DesignSpec
+ReferenceIntentBinding
+DesignTaskBinding
+```
+
+冻结：
+
+```text
+field-level wire shapes
+requiredness / cardinality
+persistent reference policy
+object classification
+registry policy
+B01 CanonicalPayload policy
+semantic closure
+negative ownership/runtime boundaries
+```
+
+### Shared canonical shell remediation
+
+```text
+ActorId
+ActorType
+ActorRef
+TenantId
+TenantScopeType
+TenantScope
+Provenance
+ObjectRevision
+CanonicalObject structural base
+CanonicalRevision structural base
+ImmutableFact structural base
+UTC datetime normalization
+```
+
+关键 invariants：
+
+```text
+ActorType = open typed vocabulary
+TenantScopeType = GLOBAL | TENANT
+GLOBAL != public/permissionless
+Provenance.command_ref:ObjectRef = forbidden
+Provenance.run_ref:ObjectRef = deferred
+ObjectRevision = integer >= 1 ordering metadata
+parentage = parent_refs
+support/nested/structural types != canonical domain primitives
+```
+
+## Freeze evidence
+
+```text
+P2_0_FREEZE_DECISION.md
+B01_SOURCE_RECOVERY_MATRIX.md
+B01_FIELD_DECISION_LEDGER.md
+B01_CROSS_SPEC_FREEZE_AUDIT.md
+B01_P2_0_FREEZE_REVIEW.md
+SHARED_CORE_SOURCE_RECOVERY_MATRIX.md
+SHARED_CORE_FIELD_DECISION_LEDGER.md
+SHARED_CORE_CROSS_SPEC_FREEZE_AUDIT.md
+P2_0A_FREEZE_REVIEW.md
+```
+
+Review result：
+
+```text
+7 / 7 B01 objects covered
+B01 owner-field SPEC_GAP = 0
+shared-core blocking SPEC_GAP = 0
+SC01-SC04 = CLOSED
+SPEC_CONFLICT = 0
+P2.0A Critical = 0
+P2.0A Important = 0
+P2.0A Minor = 0
+P2 contract-level implementability = PASS
+```
+
+## 当前阶段
 
 ```text
 Phase 0: COMPLETE / REVIEWED / APPROVED
 Phase 1: COMPLETE / VERIFIED / FROZEN
-P0: COMPLETE / REVIEWED / FROZEN
-P1: COMPLETE / REVIEWED / FROZEN
-P2: NOT AUTHORIZED
+P0: FROZEN
+P1: FROZEN
+P2.0A: FROZEN AS INCLUDED REMEDIATION
+P2.0: FROZEN BY USER DECISION / MAIN PUBLICATION PENDING
+P2: AUTHORIZATION APPROVED / EFFECTIVE AFTER VERIFIED MAIN PUBLICATION
+P3+: NOT AUTHORIZED
 Exact V1: FREEZE CANDIDATE
 ```
 
-P0 决策记录：`P0_FREEZE_DECISION.md`。
-P1 决策记录：`P1_FREEZE_DECISION.md`。
+## P2 activation gate
 
-## P2 前置门禁
-
-P2 目标是 `Full B01 Exact Schemas`。优先级 1 规范已经明确指出：B01 的 primitive ownership 与 semantic role 已冻结，但当前仓库中的 F6.1 executable baseline **不包含完整 B01 field-level exact schemas**；不得从低优先级叙述或 candidate baseline 猜测缺失字段。
-
-因此 P1 merge 后，P2 是否授权必须先判断：
+用户已明确批准 `P2｜Full B01 Exact Schemas`，但必须按顺序完成：
 
 ```text
-B01 owner exact contract available and sufficiently complete?
+P2_0_FREEZE_DECISION committed
+-> exact decision head verification PASS
+-> PR #4 merge to main with expected-head protection
+-> resulting main checkpoint fresh verification PASS
+-> P2 authorization becomes effective
 ```
 
-若答案为否：
-
-```text
-P2 implementation = BLOCKED
-允许先进入 B01 Contract Recovery / Spec Freeze
-```
-
-若答案为是：
-
-```text
-P2 implementation may be authorized
-```
-
-无论哪种情况，在明确授权前不得写 B01 production models。
+P2 生效后只能在独立 P2 branch 上进入 planning/TDD/implementation；不得直接在 `main` 编写 P2 production models。
 
 ## Exact V1 最终发布规则
 
-只有当 mandatory schemas、authoritative ARSO imports、完整 Command/Event/Protocol、semantic resolver、CAS、snapshot firewalls、CS-01–CS-32、AC-01–AC-18 全部通过且不存在未解决 `SPEC_CONFLICT` 时，Exact V1 才能从 `FREEZE CANDIDATE` 升级为 `FROZEN`。
+只有 mandatory schemas、authoritative ARSO imports、完整 Command/Event/Protocol、semantic resolver、CAS、snapshot firewalls、CS-01–CS-32、AC-01–AC-18 全部通过且不存在 unresolved `SPEC_CONFLICT` 时，Exact V1 才能全局从 `FREEZE CANDIDATE` 升级为 `FROZEN`。
