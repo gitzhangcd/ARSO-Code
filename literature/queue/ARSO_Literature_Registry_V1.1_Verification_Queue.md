@@ -1,0 +1,51 @@
+# ARSO Literature Registry V1.1｜Verification Queue
+
+Remaining records requiring follow-up: **45**
+
+| ID | Current label | Status | Missing / issue | Suggested next step |
+|---|---|---|---|---|
+| ARSO-LIT-014 | AutoTraceGT | UNRESOLVED | AutoTraceGT shorthand not yet resolved to a unique primary paper. | Recover exact Daily Brief / Monthly Audit source, then verify primary paper. |
+| ARSO-LIT-017 | DCFA | UNRESOLVED | DCFA shorthand not yet resolved to a unique primary paper. | Recover exact Daily Brief / Monthly Audit source, then verify primary paper. |
+| ARSO-LIT-019 | Diagnosing with Insights / AgentScope | VERIFIED_SECONDARY | AGENTSCOPE is the approach/alias. Author list not yet normalized from a primary bibliographic record. | Locate primary bibliographic page and complete missing fields. |
+| ARSO-LIT-025 | F2R | UNRESOLVED | F2R shorthand not yet resolved to a unique primary paper. | Recover exact Daily Brief / Monthly Audit source, then verify primary paper. |
+| ARSO-LIT-028 | How Fast Do Agents Rot? | VERIFIED_SECONDARY | Exact DOI/primary identifier not yet normalized. | Locate primary bibliographic page and complete missing fields. |
+| ARSO-LIT-030 | LLM-as-a-Judge Is Not an Oracle | UNRESOLVED | Title is generic; exact primary bibliographic record not yet verified. | Recover exact Daily Brief / Monthly Audit source, then verify primary paper. |
+| ARSO-LIT-037 | TRUCE | UNRESOLVED | TRUCE shorthand not yet resolved to a unique primary paper. | Recover exact Daily Brief / Monthly Audit source, then verify primary paper. |
+| ARSO-LIT-047 | CADET: Debugging and Fixing Misconfigurations using Counterfactual Reasoning | UNRESOLVED | Canonical bibliographic metadata was not fully verified in the V1.1 pass. | Recover exact Daily Brief / Monthly Audit source, then verify primary paper. |
+| ARSO-LIT-052 | FLARE: Few-shot Learning-based Adaptive Reflective Engine | VERIFIED_PDF | Authors/title verified in uploaded PromptAgent collection; external canonical identifier still open. | Locate canonical publisher/arXiv record and add stable identifier. |
+| ARSO-LIT-054 | GPTSwarm | UNRESOLVED | GPTSwarm exact canonical bibliographic record still to verify. | Recover exact Daily Brief / Monthly Audit source, then verify primary paper. |
+| ARSO-LIT-068 | RIDER: Evolutionary Prompt Optimization with Adaptive Operator Selection for Software Engineering | VERIFIED_PDF | Authors/title verified from uploaded PromptAgent collection; external identifier remains open. | Locate canonical publisher/arXiv record and add stable identifier. |
+| ARSO-LIT-069 | Self-Refine: Iterative Refinement with Self-Feedback | VERIFIED_SECONDARY | Incomplete canonical metadata. | Locate primary bibliographic page and complete missing fields. |
+| ARSO-LIT-070 | TextGrad: Automatic “Differentiation” via Text | UNRESOLVED | TextGrad metadata not normalized in this pass. | Recover exact Daily Brief / Monthly Audit source, then verify primary paper. |
+| ARSO-LIT-075 | Does Your Agent’s Memory Survive a Model Upgrade? | UNRESOLVED | Canonical bibliographic metadata was not fully verified in the V1.1 pass. | Recover exact Daily Brief / Monthly Audit source, then verify primary paper. |
+| ARSO-LIT-083 | Benchmarking Biomedical Foundation Models | UNRESOLVED | Daily-brief title is broad; exact cited paper needs source-level recovery. | Recover exact Daily Brief / Monthly Audit source, then verify primary paper. |
+| ARSO-LIT-084 | Bioinfoysis | UNRESOLVED | Bioinfoysis name not yet resolved to a unique paper. | Recover exact Daily Brief / Monthly Audit source, then verify primary paper. |
+| ARSO-LIT-085 | CRISPR RT–qPCR Artifact | UNRESOLVED | Daily-brief item is a topic/result label; exact source needs recovery. | Recover exact Daily Brief / Monthly Audit source, then verify primary paper. |
+| ARSO-LIT-086 | Improving Portability of Knowledge-Based Planning Using an LLM-Driven Plan Refinement Framework in Lung Radiotherapy | UNRESOLVED | Radiotherapy portability paper requires exact journal record verification. | Recover exact Daily Brief / Monthly Audit source, then verify primary paper. |
+| ARSO-LIT-087 | MoChiAgent / Mother-Child AI Agent | UNRESOLVED | MoChiAgent/Mother-Child AI Agent exact citation requires normalization. | Recover exact Daily Brief / Monthly Audit source, then verify primary paper. |
+| ARSO-LIT-088 | PlanningCopilot: An Agentic Framework Integrating ESAPI Modules for Autonomous Treatment Planning in Lung Radiotherapy | UNRESOLVED | PlanningCopilot exact Medical Physics record requires normalization. | Recover exact Daily Brief / Monthly Audit source, then verify primary paper. |
+| ARSO-LIT-089 | AgentFactory | UNRESOLVED | AgentFactory shorthand is not unique. | Recover exact Daily Brief / Monthly Audit source, then verify primary paper. |
+| ARSO-LIT-090 | ARCHITECT | UNRESOLVED | ARCHITECT shorthand is not unique. | Recover exact Daily Brief / Monthly Audit source, then verify primary paper. |
+| ARSO-LIT-092 | AutoSciRub — Learning to Evaluate Before Improving | UNRESOLVED | AutoSciRub exact canonical record requires verification. | Recover exact Daily Brief / Monthly Audit source, then verify primary paper. |
+| ARSO-LIT-093 | CAPO | LIKELY_RESOLVED | Monthly-audit shorthand CAPO is most likely this 2026 paper given audit timing. A different 2025 'Cost-Aware Prompt Optimization' paper also uses CAPO; retain ambiguity note until audit source is rechecked. | Re-open original audit source and disambiguate against homonymous candidates. |
+| ARSO-LIT-094 | CoolPrompt: Automatic Prompt Optimization Framework for Large Language Models | UNRESOLVED | CoolPrompt exact canonical record requires verification. | Recover exact Daily Brief / Monthly Audit source, then verify primary paper. |
+| ARSO-LIT-096 | Don’t Generate, Classify! | UNRESOLVED | Don’t Generate, Classify! exact canonical record requires verification. | Recover exact Daily Brief / Monthly Audit source, then verify primary paper. |
+| ARSO-LIT-097 | Emergent Misalignment and Deception in Multi-Agent Research Swarms | UNRESOLVED | Emergent Misalignment and Deception in Multi-Agent Research Swarms exact canonical record requires verification. | Recover exact Daily Brief / Monthly Audit source, then verify primary paper. |
+| ARSO-LIT-098 | EvoX: Meta-Evolution for Automated Discovery | UNRESOLVED | EvoX metadata beyond the uploaded-PDF entry still needs primary normalization. | Recover exact Daily Brief / Monthly Audit source, then verify primary paper. |
+| ARSO-LIT-099 | ExTS | UNRESOLVED | ExTS shorthand not uniquely resolved. | Recover exact Daily Brief / Monthly Audit source, then verify primary paper. |
+| ARSO-LIT-100 | FlowBot | UNRESOLVED | FlowBot shorthand not uniquely resolved. | Recover exact Daily Brief / Monthly Audit source, then verify primary paper. |
+| ARSO-LIT-103 | GOLLuM | UNRESOLVED | GOLLuM shorthand not uniquely resolved. | Recover exact Daily Brief / Monthly Audit source, then verify primary paper. |
+| ARSO-LIT-105 | JIT-Agent | UNRESOLVED | JIT-Agent shorthand not uniquely resolved. | Recover exact Daily Brief / Monthly Audit source, then verify primary paper. |
+| ARSO-LIT-106 | JTPRO: A Joint Tool–Prompt Reflective Optimization Framework for Language Agents | UNRESOLVED | JTPRO exact primary record still needs verification. | Recover exact Daily Brief / Monthly Audit source, then verify primary paper. |
+| ARSO-LIT-108 | MAPRO | UNRESOLVED | MAPRO shorthand not uniquely resolved. | Recover exact Daily Brief / Monthly Audit source, then verify primary paper. |
+| ARSO-LIT-109 | On the Limit of Language Models as Planning Formalizers | UNRESOLVED | Planning formalizers paper needs exact primary record verification. | Recover exact Daily Brief / Monthly Audit source, then verify primary paper. |
+| ARSO-LIT-110 | OPERA | UNRESOLVED | OPERA shorthand not uniquely resolved. | Recover exact Daily Brief / Monthly Audit source, then verify primary paper. |
+| ARSO-LIT-111 | PlanFence | UNRESOLVED | PlanFence shorthand not uniquely resolved. | Recover exact Daily Brief / Monthly Audit source, then verify primary paper. |
+| ARSO-LIT-112 | PRompt Optimization in Multi-Step Tasks: Integrating Human Feedback and Heuristic-based Sampling | UNRESOLVED | PROMST exact primary record still needs bibliographic normalization. | Recover exact Daily Brief / Monthly Audit source, then verify primary paper. |
+| ARSO-LIT-114 | RE-GPS: Reflective Evolutionary Gradient Prompting System for Large Language Models | UNRESOLVED | RE-GPS primary identifier still needs verification. | Recover exact Daily Brief / Monthly Audit source, then verify primary paper. |
+| ARSO-LIT-115 | ReASearch | UNRESOLVED | ReASearch exact canonical record still needs verification. | Recover exact Daily Brief / Monthly Audit source, then verify primary paper. |
+| ARSO-LIT-117 | Robust Prompt Optimization for Large Language Models Against Distribution Shifts | UNRESOLVED | Robust Prompt Optimization Against Distribution Shifts primary record needs normalization. | Recover exact Daily Brief / Monthly Audit source, then verify primary paper. |
+| ARSO-LIT-118 | Symbolic Prompt Program Search: A Structure-Aware Approach to Efficient Compile-Time Prompt Optimization | UNRESOLVED | Symbolic Prompt Program Search primary record needs normalization. | Recover exact Daily Brief / Monthly Audit source, then verify primary paper. |
+| ARSO-LIT-119 | TPGO | UNRESOLVED | TPGO shorthand not uniquely resolved. | Recover exact Daily Brief / Monthly Audit source, then verify primary paper. |
+| ARSO-LIT-121 | Unleashing the Potential of Large Language Models as Prompt Optimizers: Analogical Analysis with Gradient-based Model Optimizers | UNRESOLVED | GPO/gradient-analogy prompt-optimizer paper needs exact primary record verification. | Recover exact Daily Brief / Monthly Audit source, then verify primary paper. |
+| ARSO-LIT-122 | WHALE | UNRESOLVED | WHALE shorthand is ambiguous; the retrieved software project is not sufficient to assert it is the brief's cited paper. | Recover exact Daily Brief / Monthly Audit source, then verify primary paper. |
