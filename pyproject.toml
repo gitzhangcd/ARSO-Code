@@ -15,6 +15,9 @@ test = ["pytest>=8,<9"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-q"
+markers = [
+  "p01_red: intentionally red P0.1 scientific-integrity conformance gate",
+]
 
 [tool.setuptools.packages.find]
 where = ["src"]
