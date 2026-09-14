@@ -1,0 +1,14 @@
+{
+  "lock_id": "synthetic_p0_1_i0_lock",
+  "experiment_id": "p0_1_oracle_diagnosis_value_pilot",
+  "fixture_id": "synthetic_001",
+  "scientific_experiment_status": "NOT_STARTED",
+  "batch_001_status": "NOT_EXECUTED",
+  "real_provider_calls": "NONE",
+  "required_conditions": ["ORACLE", "WRONG", "NONE", "IMPLICIT"],
+  "repair_operator": "deterministic_fake_repair_adapter_reserved_for_i1",
+  "evaluator": "synthetic_exact_evaluator_reserved_for_i1",
+  "mutation_policy": "transformation_spec.mapping_only",
+  "provider_fallback": "DISABLED",
+  "harness_only": true
+}

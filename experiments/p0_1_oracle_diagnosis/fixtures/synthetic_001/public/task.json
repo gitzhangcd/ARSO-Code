@@ -1,0 +1,11 @@
+{
+  "task_id": "synthetic_001",
+  "goal": "Preserve input fields a and b exactly in the output.",
+  "input_schema": {"a": "string", "b": "string"},
+  "output_schema": {"a": "string", "b": "string"},
+  "hard_constraints": [
+    "output.a must equal input.a",
+    "output.b must equal input.b"
+  ],
+  "harness_only": true
+}

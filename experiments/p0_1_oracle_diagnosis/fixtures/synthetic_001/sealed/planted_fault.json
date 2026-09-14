@@ -1,0 +1,11 @@
+{
+  "fault_id": "synthetic_001_fault",
+  "fault_locus": "transformation_spec.mapping",
+  "mechanism": "reversed_field_mapping",
+  "planted_change": {
+    "a": "input.b",
+    "b": "input.a"
+  },
+  "repair_visible": false,
+  "harness_only": true
+}

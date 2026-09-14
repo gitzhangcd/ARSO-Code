@@ -1,0 +1,10 @@
+{
+  "target_id": "synthetic_001_expected_repair",
+  "allowed_target": "transformation_spec.mapping",
+  "expected_patch": {
+    "a": "input.a",
+    "b": "input.b"
+  },
+  "repair_visible": false,
+  "harness_only": true
+}

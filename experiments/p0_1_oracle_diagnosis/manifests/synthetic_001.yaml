@@ -1,0 +1,13 @@
+batch_id: synthetic-harness-only
+fixture_id: synthetic_001
+purpose: p0_1_i0_harness_verification
+scientific_claim: false
+required_conditions:
+  - ORACLE
+  - WRONG
+  - NONE
+  - IMPLICIT
+public_fixture_root: experiments/p0_1_oracle_diagnosis/fixtures/synthetic_001/public
+sealed_fixture_root: experiments/p0_1_oracle_diagnosis/fixtures/synthetic_001/sealed
+qualification_ref: experiments/p0_1_oracle_diagnosis/fixtures/synthetic_001/qualification/qualification_record.json
+pre_run_lock_ref: experiments/p0_1_oracle_diagnosis/locks/synthetic_pre_run_lock.json
