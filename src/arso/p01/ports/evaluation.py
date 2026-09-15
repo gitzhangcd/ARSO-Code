@@ -2,13 +2,16 @@
 
 from typing import Protocol
 
+from arso.p01.contracts.candidate import CandidateChangeRecord
+from arso.p01.contracts.synthetic import SyntheticEvaluationContext, SyntheticEvaluationRecord
+
 
 class Evaluator(Protocol):
     """Evaluates a frozen candidate without receiving diagnosis-condition metadata."""
 
     def evaluate(
         self,
-        candidate_ref: str,
-        evaluation_context_ref: str,
-    ) -> str:
+        candidate: CandidateChangeRecord,
+        context: SyntheticEvaluationContext,
+    ) -> SyntheticEvaluationRecord:
         ...

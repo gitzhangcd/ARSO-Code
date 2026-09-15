@@ -2,6 +2,7 @@
 
 from typing import Protocol
 
+from arso.p01.contracts.candidate import RepairProposal
 from arso.p01.contracts.diagnosis import DiagnosisInjection
 from arso.p01.contracts.fixture import PublicQualifiedFixture
 from arso.p01.contracts.repair import RepairRequest
@@ -23,5 +24,5 @@ class RepairRequestBuilder(Protocol):
 class RepairOperator(Protocol):
     """Executes one repair request without evaluating its scientific success."""
 
-    def repair(self, request: RepairRequest) -> str:
+    def repair(self, request: RepairRequest) -> RepairProposal:
         ...
