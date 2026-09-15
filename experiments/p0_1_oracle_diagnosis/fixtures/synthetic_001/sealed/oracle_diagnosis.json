@@ -1,0 +1,7 @@
+{
+  "diagnosis_id": "synthetic_001_oracle_diagnosis",
+  "visible_payload": "The A↔B mapping rule in the transformation specification is reversed.",
+  "allowed_use": "ORACLE_DIAGNOSIS_MATERIALIZATION",
+  "repair_visible_only_after_materialization": true,
+  "harness_only": true
+}

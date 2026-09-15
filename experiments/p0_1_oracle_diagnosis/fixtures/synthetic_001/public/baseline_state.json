@@ -1,0 +1,10 @@
+{
+  "snapshot_id": "synthetic_001_baseline",
+  "behavior": "swap_fields",
+  "mapping": {
+    "a": "input.b",
+    "b": "input.a"
+  },
+  "deterministic": true,
+  "harness_only": true
+}

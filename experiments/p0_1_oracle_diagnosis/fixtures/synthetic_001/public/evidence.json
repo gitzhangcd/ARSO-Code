@@ -1,0 +1,15 @@
+{
+  "evidence_id": "synthetic_001_public_evidence",
+  "examples": [
+    {
+      "input": {"a": "red", "b": "blue"},
+      "observed_output": {"a": "blue", "b": "red"}
+    },
+    {
+      "input": {"a": "left", "b": "right"},
+      "observed_output": {"a": "right", "b": "left"}
+    }
+  ],
+  "repair_visible": true,
+  "harness_only": true
+}

@@ -1,0 +1,9 @@
+{
+  "qualification_id": "synthetic_001_qualification",
+  "fixture_id": "synthetic_001",
+  "status": "QUALIFIED",
+  "harness_only": true,
+  "scientific_claim": false,
+  "statement": "Qualified only to test P0.1 harness boundaries, truth isolation, and deterministic dry-run plumbing. Not Batch-001 and not empirical evidence.",
+  "qualified_at": "2026-09-14T00:00:00Z"
+}

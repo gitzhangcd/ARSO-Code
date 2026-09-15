@@ -1,0 +1,7 @@
+{
+  "condition_id": "synthetic_001_implicit",
+  "visible_payload": "Inspect the public task, baseline behavior, and observed examples, then propose one allowed repair.",
+  "explicit_fault_locus": false,
+  "explicit_causal_mechanism": false,
+  "harness_only": true
+}

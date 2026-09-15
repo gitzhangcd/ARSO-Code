@@ -1,0 +1,7 @@
+{
+  "condition_id": "synthetic_001_wrong",
+  "visible_payload": "The formatting/serialization stage is corrupting field order; repair that stage.",
+  "explicit_fault_locus": false,
+  "explicit_causal_mechanism": false,
+  "harness_only": true
+}

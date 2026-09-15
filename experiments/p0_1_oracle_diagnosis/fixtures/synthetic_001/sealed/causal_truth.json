@@ -1,0 +1,8 @@
+{
+  "truth_id": "synthetic_001_causal_truth",
+  "root_cause": "The transformation specification reverses the intended a and b field mapping.",
+  "causal_locus": "transformation_spec.mapping",
+  "expected_effect_of_correct_repair": "Outputs preserve a and b exactly.",
+  "repair_visible": false,
+  "harness_only": true
+}
