@@ -189,3 +189,13 @@ DEFERRED: production auto-activation/global semantic autonomous evolution/meta-l
 ```
 
 只有 CS-01–CS-32、AC-01–AC-18 全部通过且无 unresolved `SPEC_CONFLICT`，Exact V1 才能声明全局 `FROZEN`。
+
+## Cursor Cloud specific instructions
+
+本仓库是 Python 3.12 契约库，没有常驻开发服务器。默认镜像已包含 Python 3.12 与 Node.js。Cloud Agent `install` 在缺少 `python` 时把 `python3` 链接到 `/usr/local/bin/python`，然后执行 `python -m pip install --user -e '.[test]'`，并在 `tests/cross_language/node` 执行 `npm ci`。
+
+- 根包测试：`PYTHONPATH=src python -m pytest -q`。
+- 只读候选基线：在 `di_contracts_v1/` 下执行 `PYTHONPATH=. python -m pytest -q`。它复用根环境里的 pytest 与 pydantic，不要另建虚拟环境。
+- 规范校验：`sha256sum -c specs/SPEC_SOURCE_CHECKSUMS.sha256`。
+- 编译检查：`python -m compileall -q src/design_intelligence src/arso`。
+- P1 跨语言哈希门需要 `node` 与 `npm`。`tests/cross_language/test_p1_cross_language_jcs.py` 会把 `tests/cross_language/node` 复制到临时目录并自行执行 `npm ci`。
